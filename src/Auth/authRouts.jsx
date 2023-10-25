@@ -1,8 +1,8 @@
 import { Route, Routes } from 'react-router-dom'
-import Login from './login'
 import SignUp from './signUp'
 import NotFound from '../notFound'
 import RequestPassword from './requestPassword'
+import Login from './logIn'
 
 function AuthRouts() {
   return (
