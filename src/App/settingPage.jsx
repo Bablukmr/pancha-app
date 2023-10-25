@@ -82,9 +82,10 @@ const handleLogout=()=>{
             </div>
 
             <div className="w-full mt-3 flex items-center justify-center gap-2">
-              <button className="w-[50%] text-center py-2 rounded-md bg-blue-400  text-white">
+              <button className=" text-center py-2 px-4 rounded-md bg-blue-400  text-white">
                 Change Password
               </button>
+
             </div>
           </form>
             
