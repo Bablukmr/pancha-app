@@ -10,8 +10,8 @@ function AppLayout() {
 const [setting, setSetting] = useState(true);
 
   return (
-    <div className="w-full h-[100vh] relative flex  flex-col justify-center items-center">
-      <div className="text-2xl font-bold absolute top-0 right-0 m-4 cursor-pointer">
+    <div className="w-full h-[100vh] flex  flex-col justify-center items-center">
+      <div className="text-2xl z-50 font-bold cursor-pointer m-4 fixed top-0 right-0 ">
         {setting ? (
           <FiSettings
             onClick={() => {
@@ -30,7 +30,7 @@ const [setting, setSetting] = useState(true);
       {setting ? (
         <>
           <AppRouts />
-          <div className="bg-[#4C4C4C] h-[50px]  w-full absolute bottom-0 flex items-center justify-center ">
+          <div className="bg-[#4C4C4C] h-[50px] w-full fixed bottom-0 flex items-center justify-center ">
             <Link to="library" className="text-white w-[50%] p-2 h-full flex flex-col items-center justify-center">
               <IoLibraryOutline className="text-3xl" />
               <p className="text-xs">Library</p>
@@ -40,7 +40,6 @@ const [setting, setSetting] = useState(true);
               <AiOutlineSearch className="text-3xl " />
               <p className="text-xs">Search</p>
             </Link>
-
             <div></div>
           </div>
         </>

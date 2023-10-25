@@ -16,9 +16,9 @@ function Search() {
   }
 
   return (
-    <div className='w-full flex flex-col items-center justify-center'>
-      <div className="w-[80%] md:w-[50%] lg:w-[35%]  flex flex-col items-center justify-center">
-      <div className="w-full relative mt-2 rounded-md border border-solid flex items-center">
+    <div className='w-full absolute top-[100px] flex flex-col items-center justify-center'>
+      <div className="w-[80%] md:w-[50%] lg:w-[35%] flex flex-col items-center justify-center">
+      <div className="w-full relative rounded-md border border-solid flex items-center">
         <div className="p-2">
           <AiOutlineSearch />
         </div>

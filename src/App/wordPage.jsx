@@ -28,7 +28,6 @@ function WordPage() {
           <p className="">🔊</p>
         </div>
       </div>
-
     <p className="border my-8 border-black px-8 py-3 ">Text description of ASL sign</p>
 
         <ButtonComponent text="white" btnName="Add to Folder" />
