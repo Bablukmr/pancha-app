@@ -82,7 +82,7 @@ const handleLogout=()=>{
             </div>
 
             <div className="w-full mt-3 flex items-center justify-center gap-2">
-              <button className=" text-center py-2 px-4 rounded-md bg-blue-400  text-white">
+              <button onClick={(e) =>{ e.preventDefault(), window.confirm("Change Password")}} className=" text-center py-2 px-4 rounded-md bg-blue-400  text-white">
                 Change Password
               </button>
 

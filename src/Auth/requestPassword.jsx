@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function RequestPassword() {
 const navigate=useNavigate()
@@ -10,7 +10,7 @@ navigate("/auth")
   return (
     
     <div className="w-full h-screen flex flex-col items-center justify-center">
-        <h1 className="text-2xl my-4">LOGO</h1>
+         <h1 className="text-2xl my-4 absolute top-[90px]">LOGO</h1>
       <div className="w-[80%] md:w-[50%] lg:w-[35%]">
       <form className="w-full flex flex-col items-center justify-center gap-3">
       
