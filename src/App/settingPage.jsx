@@ -57,7 +57,7 @@ const handleLogout=()=>{
               <div className="border-[#A2A2A7]  mt-2 rounded-md border border-solid flex items-center ">
                 <input
                   type="email"
-                  placeholder="****** old password"
+                  placeholder=" ****** old password"
                   className="text-sm h-10 border-none w-full outline-blue-400  px-2 rounded-md"
                 />
               </div>
@@ -66,7 +66,7 @@ const handleLogout=()=>{
               <label className="text-sm">new password</label>
               <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
                 <input
-                  placeholder="****** new password"
+                  placeholder=" ****** new password"
                   className="text-sm h-10 border-none w-full  outline-[.5px] outline-blue-400 px-2 rounded-md"
                 />
               </div>
@@ -75,7 +75,7 @@ const handleLogout=()=>{
               <label className="text-sm">confirm new password</label>
               <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
                 <input
-                  placeholder="****** confirm new password"
+                  placeholder=" ****** confirm new password"
                   className="text-sm h-10 border-none w-full  outline-[.5px] outline-blue-400 px-2 rounded-md"
                 />
               </div>
@@ -90,7 +90,7 @@ const handleLogout=()=>{
           </form>
             
         </div>
-        <div className="w-full flex justify-between items-center gap-2 mt-4">
+        <div className="w-full flex justify-between items-center gap-2 mt-5">
      <ButtonComponent onClick={()=>alert("feedback")} bg="black" text="white" btnName="Previous Feedback"/>
      <ButtonComponent onClick={handleLogout} bg="black" text="white" btnName="Logout"/>
         </div>

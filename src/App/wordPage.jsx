@@ -3,6 +3,7 @@ import ButtonComponent from "../Components/buttonComponent";
 function WordPage() {
   return (
     <div className="w-full flex flex-col items-center justify-center">
+      <h1 className="text-2xl my-4 absolute top-[60px]">WORD</h1>
       <div className="w-[80%] md:w-[50%] lg:w-[35%] flex flex-col gap-2 items-center justify-center">
         <div className="w-[200px] flex flex-col items-center justify-center">
           <p>Word in English</p>
