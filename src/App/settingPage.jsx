@@ -1,15 +1,19 @@
 import { useState } from "react";
 import ButtonComponent from "../Components/buttonComponent";
+import { userLogout } from "../store/action";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 function SettingPage() {
 
-const handleLogout=()=>{
-    const confirmLogout = window.confirm("Are you sure you want to logout?");
-    if (confirmLogout) {
-      localStorage.removeItem("token");
-      window.location.reload();
-    }
-}
+  const dispatch = useDispatch();
+
+  const navigate=useNavigate()
+
+  const handleLogout = () => {
+    dispatch(userLogout());
+  
+  };
 
   const availableLanguages = ["Spanish", "French", "Chinese"];
   const [selectedLanguages, setSelectedLanguages] = useState([]);
@@ -25,7 +29,7 @@ const handleLogout=()=>{
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
+    <div className="w-full h-full  flex flex-col items-center justify-center">
       <h1 className="text-xl">Settings</h1>
       <div className="w-[80%] md:w-[50%] lg:w-[35%] flex flex-col">
         <div className="w-full py-2 border-b-2 border-black">
@@ -82,17 +86,30 @@ const handleLogout=()=>{
             </div>
 
             <div className="w-full mt-3 flex items-center justify-center gap-2">
-              <button onClick={(e) =>{ e.preventDefault(), window.confirm("Change Password")}} className=" text-center py-2 px-4 rounded-md bg-blue-400  text-white">
+              <button
+                onClick={(e) => {
+                  e.preventDefault(), window.confirm("Change Password");
+                }}
+                className=" text-center py-2 px-4 rounded-md bg-blue-400  text-white"
+              >
                 Change Password
               </button>
-
             </div>
           </form>
-            
         </div>
-        <div className="w-full flex justify-between items-center gap-2 mt-5">
-     <ButtonComponent onClick={()=>alert("feedback")} bg="black" text="white" btnName="Previous Feedback"/>
-     <ButtonComponent onClick={handleLogout} bg="black" text="white" btnName="Logout"/>
+        <div className="w-full mb-[60px] flex justify-between items-center gap-2 mt-6">
+          <ButtonComponent
+            onClick={() => alert("feedback")}
+            bg="black"
+            text="white"
+            btnName="Previous Feedback"
+          />
+          <ButtonComponent
+            onClick={handleLogout}
+            bg="black"
+            text="white"
+            btnName="Logout"
+          />
         </div>
       </div>
     </div>

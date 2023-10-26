@@ -41,15 +41,12 @@ function SignUp() {
               />
             </div>
           </div>
+              <p className="w-full text-start text-sm">Already have an account? <Link to="/auth" className="w-[50%] text-blue-400 underline">Login</Link></p>
 
-          <div className="w-full mt-3 flex items-center justify-center gap-2">
-            <div className="w-[50%] flex flex-col items-center">
-              <p className="text-center text-sm">Already have an account? <Link to="/auth" className="w-[50%] text-blue-400 underline">Login</Link></p>
-            </div>
-            <button onClick={handleSignup} className="w-[50%] text-center py-2 rounded-md bg-blue-400 text-white">
+          
+            <button onClick={handleSignup} className="w-full mt-2 text-center py-2 rounded-md bg-blue-400 text-white">
               Sign up
             </button>
-          </div>
         </form>
       </div>
     </div>

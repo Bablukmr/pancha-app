@@ -4,7 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 function Search() {
   const navigate = useNavigate();
-  const SearchItem = ["cat", "cricket", "car", "dog", "book", "pen"];
+  const SearchItem = ["cat", "cricket", "car", "dog", "book", "pen","apple", "ant", "airplane", "arrow", "alligator", 
+    "apartment", "astronaut", "acorn", "accordion", "ambulance", 
+    "anchor", "alpaca", "apricot", "armchair", "amplifier",];
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [matchingKeywords, setMatchingKeywords] = useState([]);
 
@@ -28,20 +31,20 @@ function Search() {
           </div>
           <input
             type="search"
-            placeholder="Search"
+            placeholder="Type here to search"
             className="text-sm h-10 border-none w-full outline-none pr-2 rounded-md"
             value={searchTerm}
             onChange={handleSearch}
           />
         </div>
         {matchingKeywords.length > 0 && (
-          <div className="mt-2 w-full shadow-md">
-            <ul className="w-full flex flex-col items-start">
+          <div className="mt-2 w-full  shadow-md pb-2 rounded-b-md bg-[#fafafa] ">
+            <ul className="w-full max-h-[250px]  overflow-y-scroll flex flex-col items-start ">
               {matchingKeywords.map((keyword, index) => (
                 <li 
-                  onClick={() => { navigate("word") }}
-                  key={index} 
-                  className="h-[40px] px-4 py-2 w-full border-b-2 cursor-pointer hover:bg-slate-100 "
+                  onClick={() => { navigate(`/word/${keyword}`) }}
+                  key={index}
+                  className="h-[40px] px-4 py-2 w-full border-b-2 border-[#f2f2f2] cursor-pointer hover:bg-slate-100 "
                 >
                   {keyword}
                 </li>

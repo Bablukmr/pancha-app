@@ -1,14 +1,19 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function ProtectedRoute({ Component }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const token = useSelector((state) => state.AuthReducer.token);
+
+  console.log(token);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log(token);
+
     if (!token) {
       navigate("/auth");
+      console.log("AAAA");
     }
   }, []);
 
