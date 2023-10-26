@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { useStore } from "./store/store";
 
 function App(props) {
-  const store = useStore(props.initialReduxState);
+const store = useStore(props.initialReduxState);
 
   return (
     <Provider store={useStore(store)}>
