@@ -14,8 +14,9 @@ function LibraryPage() {
     "apartment",
   ];
   return (
-    <div className="w-full flex mt-[70px] flex-col items-center justify-center">
-      <h1 className="text-xl my-6">Library</h1>
+    <div className="w-full h-[90vh] relative flex flex-col items-center justify-center">
+      <h1 className="text-xl absolute top-[5px]">Library</h1>
+      <div className="w-full absolute top-[50px] flex flex-col items-center justify-center"> 
       <div className="w-[80%] md:w-[50%] lg:w-[35%] border-black border-b-2 ">
         <p className="text-md my-2">Curated Folder</p>
         <div className="p-2 w-full border border-[#725555] pb-2 bg-[#fafafa] rounded-md mb-6">
@@ -61,6 +62,7 @@ function LibraryPage() {
           btnName="View Folder in Flash Mode"
         />
       </div>
+    </div>
     </div>
   );
 }

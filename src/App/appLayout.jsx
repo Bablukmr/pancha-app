@@ -25,6 +25,7 @@ function AppLayout() {
       }
     }
   }, [token]);
+  
   return (
     <div className="w-full h-[100vh] flex  flex-col justify-center items-center">
       <div className="text-2xl z-50 font-bold cursor-pointer m-4 md:m-8 fixed top-0 right-0 ">
@@ -46,6 +47,7 @@ function AppLayout() {
         <AppRouts />
       ) : (
         <div className="w-full">
+          
           <SettingPage />
         </div>
       )}

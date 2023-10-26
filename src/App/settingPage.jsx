@@ -29,9 +29,9 @@ function SettingPage() {
   };
 
   return (
-    <div className="w-full h-full  flex flex-col items-center justify-center">
-      <h1 className="text-xl">Settings</h1>
-      <div className="w-[80%] md:w-[50%] lg:w-[35%] flex flex-col">
+    <div className="w-full h-[90vh] relative flex flex-col items-center justify-center">
+      <h1 className="text-xl absolute top-[5px]">Settings</h1>
+      <div className="w-[80%] absolute top-[50px] md:w-[50%] lg:w-[35%] flex flex-col">
         <div className="w-full py-2 border-b-2 border-black">
           <p className="my-2">Show the following language</p>
           {availableLanguages.map((language, index) => (
