@@ -8,8 +8,8 @@ function ProtectedRoute({ Component }) {
   const token = useSelector((state) => state.AuthReducer.token);
   console.log(token);
   useEffect(() => {
-    let token=localStorage.getItem("token")
-    if (!token) {
+    // let token=localStorage.getItem("token")
+    if(!token) {
       navigate("/auth");
     }
   });
