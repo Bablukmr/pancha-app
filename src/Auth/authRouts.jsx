@@ -8,10 +8,10 @@ function AuthRouts() {
   return (
     <>
     <Routes>
-      <Route path='/*' element={<Login/>} />
+      <Route path='/' element={<Login/>} />
       <Route path="signup" element={<SignUp/>} />
       <Route path="request" element={<RequestPassword/>} />
-      <Route path="/*" element={<NotFound/>} />
+      <Route path="*" element={<NotFound/>} />
     </Routes>
     </>
   )
