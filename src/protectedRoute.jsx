@@ -9,7 +9,7 @@ function ProtectedRoute({ Component }) {
   console.log(token);
   useEffect(() => {
     // let token=localStorage.getItem("token")
-    if(!token) {
+    if(token===null) {
       navigate("/auth");
     }
   });
