@@ -6,23 +6,30 @@ import { useDispatch } from "react-redux";
 
 function SettingPage() {
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(userLogout());
   };
 
-  const availableLanguages = ["Spanish", "French", "Chinese"];
+  const availableLanguages = [
+    { id: 6, name: "Hindi" },
+    { id: 1, name: "Spanish" },
+    { id: 2, name: "French" },
+    { id: 3, name: "Chinese" },
+    { id: 5, name: "German" },
+    { id: 6, name: "Japanese" },
+  ];
+
   const [selectedLanguages, setSelectedLanguages] = useState([]);
 
   const handleLanguageChange = (language) => {
-    if (selectedLanguages.includes(language)) {
+    if (selectedLanguages.includes(language.id)) {
       setSelectedLanguages(
-        selectedLanguages.filter((item) => item !== language)
+        selectedLanguages.filter((id) => id !== language.id)
       );
     } else {
-      setSelectedLanguages([...selectedLanguages, language]);
+      setSelectedLanguages([...selectedLanguages, language.id]);
     }
   };
 
@@ -30,65 +37,66 @@ function SettingPage() {
     <div className="w-full pb-4 md:pb-6 flex flex-col items-center justify-center">
       <h1 className="text-xl my-6">Settings</h1>
       <div className="w-[80%] md:w-[50%] lg:w-[35%] flex flex-col">
-        <div className="w-full py-2 border-b-2 border-black">
-          <p className="my-2">Show the following language</p>
-          {availableLanguages.map((language, index) => (
+        <p className="my-2">Show the following languages</p>
+        <div className="w-full py-2 h-[140px] overflow-y-auto ">
+          {availableLanguages.map((language) => (
             <div
-              key={index}
-              className="w-full flex items-center justify-between p-2 "
+              key={language.id}
+              className="w-full flex items-center justify-between p-2"
             >
               <div className="w-[80%]">
-                <label className="ml-2">{language}</label>
+                <label className="ml-2">{language.name}</label>
               </div>
               <div className="w-[20%]">
                 <input
                   type="checkbox"
-                  checked={selectedLanguages.includes(language)}
+                  checked={selectedLanguages.includes(language.id)}
                   onChange={() => handleLanguageChange(language)}
                 />
               </div>
             </div>
           ))}
         </div>
+       <p className=" border-b-2 border-black mt-4"></p>
 
         <div className="flex flex-col py-2 border-b-2 border-black">
           <p className="my-2">Change my password</p>
           <form className="w-full flex flex-col items-center justify-center p-2 gap-y-3">
             <div className="w-full">
-              <label className="text-sm">old password</label>
-              <div className="border-[#A2A2A7]  mt-2 rounded-md border border-solid flex items-center ">
+              <label className="text-sm">Old Password</label>
+              <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center ">
                 <input
-                  type="email"
-                  placeholder=" ****** old password"
-                  className="text-sm h-10 border-none w-full outline-blue-400  px-2 rounded-md"
+                  type="password"
+                  placeholder="****** Old Password"
+                  className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
                 />
               </div>
             </div>
             <div className="w-full">
-              <label className="text-sm">new password</label>
+              <label className="text-sm">New Password</label>
               <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
                 <input
-                  placeholder=" ****** new password"
-                  className="text-sm h-10 border-none w-full  outline-[.5px] outline-blue-400 px-2 rounded-md"
+                  type="password"
+                  placeholder="****** New Password"
+                  className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
                 />
               </div>
             </div>
             <div className="w-full">
-              <label className="text-sm">confirm new password</label>
+              <label className="text-sm">Confirm New Password</label>
               <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
                 <input
-                  placeholder=" ****** confirm new password"
-                  className="text-sm h-10 border-none w-full  outline-[.5px] outline-blue-400 px-2 rounded-md"
+                  type="password"
+                  placeholder="****** Confirm New Password"
+                  className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
                 />
               </div>
             </div>
 
             <div className="w-full mt-3 flex items-center justify-center gap-2">
               <button
-                onClick={(e) => {
-                  e.preventDefault(), window.confirm("Change Password");
-                }}
-                className=" text-center py-2 px-4 rounded-md bg-blue-400  text-white"
+                onClick={() => window.confirm("Change Password")}
+                className="text-center py-2 px-4 rounded-md bg-blue-400 text-white"
               >
                 Change Password
               </button>
