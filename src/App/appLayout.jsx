@@ -21,7 +21,7 @@ function AppLayout() {
         dispatch(userLogin(tokenn));
       } else {
         navigate("/auth");
-        window.location.reload();
+        // window.location.reload();
       }
     }
   }, [token]);

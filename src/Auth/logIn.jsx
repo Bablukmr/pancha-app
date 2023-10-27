@@ -11,7 +11,7 @@ function Login() {
   const token = useSelector((state) => state.AuthReducer.token);
   const LoginLoading=useSelector((state)=> state.AuthReducer.loadingLogin)
   const loginError =useSelector((state)=> state.AuthReducer.loginError)
-  console.log(loginError);
+  // console.log(loginError);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
