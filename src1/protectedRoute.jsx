@@ -6,16 +6,13 @@ function ProtectedRoute({ Component }) {
   const navigate = useNavigate();
 
   const token = useSelector((state) => state.AuthReducer.token);
-
   console.log(token);
-
   useEffect(() => {
-
-    if (!token) {
+    // let token=localStorage.getItem("token")
+    if(!token) {
       navigate("/auth");
-      console.log("AAAA");
     }
-  }, []);
+  },[token]);
 
   return <Component />;
 }
