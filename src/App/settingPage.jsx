@@ -95,7 +95,9 @@ function SettingPage() {
 
             <div className="w-full mt-3 flex items-center justify-center gap-2">
               <button
-                onClick={() => window.confirm("Change Password")}
+                 onClick={(e) => {
+                  e.preventDefault(), window.confirm("Change Password");
+                }}
                 className="text-center py-2 px-4 rounded-md bg-blue-400 text-white"
               >
                 Change Password
