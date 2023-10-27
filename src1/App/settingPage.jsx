@@ -5,12 +5,14 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 function SettingPage() {
+
   const dispatch = useDispatch();
 
-  const navigate = useNavigate();
+  const navigate=useNavigate()
 
   const handleLogout = () => {
     dispatch(userLogout());
+  
   };
 
   const availableLanguages = ["Spanish", "French", "Chinese"];
@@ -27,9 +29,9 @@ function SettingPage() {
   };
 
   return (
-    <div className="w-full pb-4 md:pb-6 flex flex-col items-center justify-center">
-      <h1 className="text-xl my-6">Settings</h1>
-      <div className="w-[80%] md:w-[50%] lg:w-[35%] flex flex-col">
+    <div className="w-full h-[90vh] relative flex flex-col items-center justify-center">
+      <h1 className="text-xl absolute top-[5px]">Settings</h1>
+      <div className="w-[80%] absolute top-[50px] md:w-[50%] lg:w-[35%] flex flex-col">
         <div className="w-full py-2 border-b-2 border-black">
           <p className="my-2">Show the following language</p>
           {availableLanguages.map((language, index) => (

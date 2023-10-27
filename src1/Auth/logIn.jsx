@@ -11,7 +11,7 @@ function Login() {
   const token = useSelector((state) => state.AuthReducer.token);
   const LoginLoading=useSelector((state)=> state.AuthReducer.loadingLogin)
   const loginError =useSelector((state)=> state.AuthReducer.loginError)
-  console.log(loginError);
+  // console.log(loginError);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -86,9 +86,9 @@ function Login() {
           type={notificationType}
         />
       </div>
-      <div className="w-full h-screen flex flex-col items-center justify-center">
+      <div className="w-full h-screen relative  flex flex-col items-center justify-center">
         <h1 className="text-2xl my-4 absolute top-[60px] ">LOGO</h1>
-        <div className="w-[80%] md:w-[50%] lg:w-[35%]">
+        <div className="w-[80%] absolute top-[200px] md:w-[50%] lg:w-[35%]">
           <form className="w-full flex flex-col items-center justify-center gap-3">
             <div className="w-full">
               <label className="text-sm">Username</label>
