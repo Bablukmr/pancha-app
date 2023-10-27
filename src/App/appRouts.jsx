@@ -6,6 +6,7 @@ import WordPage from "./wordPage";
 import DictionaryPage from "./dictionaryPage";
 import SettingPage from "./settingPage";
 import FlashcardMode from "./flashcardMode";
+import ViewEditPage from "./viewEditPage";
 
 function AppRouts() {
   return (
@@ -14,6 +15,7 @@ function AppRouts() {
       <Route path="/word/:name" element={<WordPage />} />
       <Route path="/dictionary" element={<DictionaryPage />} />
       <Route path="/library" element={<LibraryPage />} />
+      <Route path="/library/view-edit/:name" element={<ViewEditPage/>}/>
       <Route path="/library/:name" element={<FlashcardMode/>} />
       <Route path="/settings" element={<SettingPage />} />
       <Route path="/*" element={<NotFound />} />

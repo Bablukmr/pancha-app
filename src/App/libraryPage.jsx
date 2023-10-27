@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import ButtonComponent from "../Components/buttonComponent";
 import { useState } from "react";
+import { AiOutlineClose } from "react-icons/ai";
 
 function LibraryPage() {
   const [folder, setFolder] = useState("");
@@ -22,6 +23,14 @@ function LibraryPage() {
     },
   ];
 
+  const handleViewEdit = () => {
+    if (folder === "") {
+      navigate("");
+    } else {
+      navigate(`/library/view-edit/${folder}`);
+    }
+  };
+  const [model, setModel] = useState(false);
   return (
     <div className="w-full pb-4 md:pb-6 flex flex-col items-center justify-center">
       <h1 className="text-xl my-6">Library</h1>
@@ -67,12 +76,43 @@ function LibraryPage() {
           </ul>
         </div>
       </div>
+      {model ? (
+        <div className="w-full absolute top-[50px] bottom-[50px] bg-[#18171741] flex items-center justify-center">
+          <div className="w-[80%] md:w-[50%] lg:w-[35%] h-[300px] relative shadow-md rounded-md bg-white opacity-100 flex flex-col items-center justify-center">
+            <div
+              onClick={() => setModel(false)}
+              className="absolute top-0 right-0 m-5 text-xl cursor-pointer"
+            >
+              <AiOutlineClose />
+            </div>
+            <div className="w-[80%]">
+              <label className="text-sm">New Folder Name</label>
+              <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
+                <input
+                  placeholder="New Folder Name"
+                  className="text-sm h-10 border-none w-full outline-[.5px] outline-blue-400 px-2 rounded-md"
+                />
+              </div>
+            </div>
+            <button className="w-[80%]  mt-6 text-center py-2 rounded-md bg-blue-400 text-white">
+              Add New Folder
+            </button>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
       <div className="w-[80%] md:w-[50%] lg:w-[35%]  mt-4 flex flex-col items-start justify-start gap-3 mb-[70px]">
-        <button className="bg-[#A0E200] text-white rounded-md py-2 px-4">
+        <button
+          onClick={() => setModel(true)}
+          className="bg-[#A0E200] text-white rounded-md py-2 px-4"
+        >
           Add New Folder
         </button>
-
-        <button className="bg-[#E2202C] text-white rounded-md py-2 px-4">
+        <button
+          onClick={handleViewEdit}
+          className="bg-[#E2202C] text-white rounded-md py-2 px-4"
+        >
           View/Edit Folder
         </button>
         <ButtonComponent
