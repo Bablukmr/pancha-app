@@ -24,11 +24,15 @@ function LibraryPage() {
   ];
 
   const handleViewEdit = () => {
-    if (folder === "") {
-      navigate("");
-    } else {
-      navigate(`/library/view-edit/${folder}`);
+    if(!selectedItemId){
+      alert("Please Select Folder")
+      return
     }
+    // if (folder === "") {
+    //   navigate("");
+    // } else {
+      navigate(`/library/view-edit/${folder}`);
+    // }
   };
   const [model, setModel] = useState(false);
   return (
@@ -116,7 +120,11 @@ function LibraryPage() {
           View/Edit Folder
         </button>
         <ButtonComponent
-          onClick={() => navigate(`/library/${folder}`)}
+          onClick={() => {
+            if(!selectedItemId){
+              alert("Please Select Folder")
+            }
+            navigate(`/library/${folder}`)}}
           bg="white"
           text="white"
           btnName="View Folder in Flashcard Mode"
