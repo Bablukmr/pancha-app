@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 
 function ViewEditPage() {
+  const navigate = useNavigate();
   const params = useParams();
   const FolderName = params?.name;
   const [selectedItemId, setSelectedItemId] = useState(null);
@@ -24,6 +25,7 @@ if(!selectedItemId){
     setFilterNames((prevNames) =>
       prevNames.filter((item) => item.id !== selectedItemId)
     );
+    setSelectedItemId(null)
   };
   const [model, setModel] = useState(false);
   const [newWord, setNewWord] = useState("");
@@ -98,7 +100,9 @@ if(!selectedItemId){
         >
           Remove Word
         </button>
-        <button className="bg-[#E2202C]  w-[150px] text-white rounded-md py-2 px-4">
+        <button
+        onClick={()=>navigate("/library")}
+        className="bg-[#E2202C]  w-[150px] text-white rounded-md py-2 px-4">
           Delete Folder
         </button>
       </div>
