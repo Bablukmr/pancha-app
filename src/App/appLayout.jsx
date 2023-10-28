@@ -24,14 +24,18 @@ function AppLayout() {
         dispatch(userLogin(tokenn));
       } else {
         navigate("/auth");
-        // window.location.reload();
       }
     }
+
+    // const path = localStorage.getItem("path");
+    // console.log(path);
+    // if (token) {
+    //   navigate(`${path}`);
+    // }
   }, [token]);
 
   return (
     <div className="w-full h-screen ">
-
       <Header setSetting={setSetting} setting={setting} />
 
       <div
