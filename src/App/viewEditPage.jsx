@@ -17,15 +17,16 @@ function ViewEditPage() {
     { id: 6, name: "six" },
   ];
   const [filterNames, setFilterNames] = useState(BookArr);
+  console.log(filterNames);
   const handleRemove = () => {
-if(!selectedItemId){
-    alert("Select Word")
-    return
-}
+    if (!selectedItemId) {
+      alert("Select Word");
+      return;
+    }
     setFilterNames((prevNames) =>
       prevNames.filter((item) => item.id !== selectedItemId)
     );
-    setSelectedItemId(null)
+    setSelectedItemId(null);
   };
   const [model, setModel] = useState(false);
   const [newWord, setNewWord] = useState("");
@@ -33,6 +34,7 @@ if(!selectedItemId){
     if (newWord) {
       const newId = filterNames.length + 1;
       const newWordObj = { id: newId, name: newWord };
+      // console.log(newWordObj);
       setFilterNames((prevNames) => [...prevNames, newWordObj]);
       setNewWord("");
       setModel(false);
@@ -101,8 +103,9 @@ if(!selectedItemId){
           Remove Word
         </button>
         <button
-        onClick={()=>navigate("/library")}
-        className="bg-[#E2202C]  w-[150px] text-white rounded-md py-2 px-4">
+          onClick={() => navigate("/library")}
+          className="bg-[#E2202C]  w-[150px] text-white rounded-md py-2 px-4"
+        >
           Delete Folder
         </button>
       </div>

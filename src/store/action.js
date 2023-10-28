@@ -29,7 +29,7 @@ export const userLogin = (token) => {
 
 export const userLogout = () => {
   localStorage.removeItem("token");
-  // localStorage.removeItem("path");
+  localStorage.removeItem("path");
   return (dispatch) => {
     dispatch({
       type: types.USER_DETAIL,

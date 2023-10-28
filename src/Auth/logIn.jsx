@@ -9,9 +9,9 @@ function Login() {
   const navigate = useNavigate();
 
   const token = useSelector((state) => state.AuthReducer.token);
-  const LoginLoading=useSelector((state)=> state.AuthReducer.loadingLogin)
-  const loginError =useSelector((state)=> state.AuthReducer.loginError)
-  console.log(loginError);
+  const LoginLoading = useSelector((state) => state.AuthReducer.loadingLogin);
+  const loginError = useSelector((state) => state.AuthReducer.loginError);
+  // console.log(loginError);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -37,11 +37,15 @@ function Login() {
     }
   }, [loginError]);
 
-  useEffect(()=>{
-  if(token){
-    navigate("/")
-  }
-  },[token])
+  const Path = localStorage.getItem("path");
+
+  useEffect(() => {
+    if (Path) {
+      if (token) navigate(Path);
+    } else {
+      if (token) navigate("/");
+    }
+  }, [token]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -67,7 +71,6 @@ function Login() {
       shownotiftion();
     } else {
       dispatch(userLogIn(email, password));
-      
       // navigate("/")
     }
   };
@@ -121,11 +124,11 @@ function Login() {
               Forgot credentials?
             </Link>
             <button
-            disabled={LoginLoading}
+              disabled={LoginLoading}
               onClick={handleLogin}
               className="w-full mt-2 text-center py-2 rounded-md bg-blue-400 text-white"
             >
-             {LoginLoading ?" Login..." : "Login"}
+              {LoginLoading ? " Login..." : "Login"}
             </button>
           </form>
           <p className="mt-2">
