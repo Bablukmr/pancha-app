@@ -13,12 +13,12 @@ function SettingPage() {
   };
 
   const availableLanguages = [
-    { id: 6, name: "Hindi" },
     { id: 1, name: "Spanish" },
     { id: 2, name: "French" },
     { id: 3, name: "Chinese" },
     { id: 5, name: "German" },
     { id: 6, name: "Japanese" },
+    { id: 7, name: "Hindi" },
   ];
 
   const [selectedLanguages, setSelectedLanguages] = useState([]);
