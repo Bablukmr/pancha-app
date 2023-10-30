@@ -1,14 +1,9 @@
 import AppRouts from "./appRouts";
-import { IoLibraryOutline } from "react-icons/io5";
-import { AiOutlineSearch } from "react-icons/ai";
-import { SlNotebook } from "react-icons/sl";
-import SettingPage from "./settingPage";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../store/action";
 import Footer from "../layout/footer";
-// import Header from "../layout/header";
 import Header from "../layout/header";
 
 function AppLayout() {
