@@ -55,6 +55,11 @@ function FlashcardMode() {
     }
   };
 
+  const english=new Audio("/tree_English.m4a")
+  const spanish=new Audio("/tree_spanish.m4a")
+  const chinese=new Audio("/tree_chinese.mp3")
+  
+
   return (
     <div className="w-full pb-4 md:pb-6 flex flex-col items-center justify-center">
       <h1 className="text-xl my-6">Flashcards for {selectedFolder}</h1>
@@ -80,19 +85,18 @@ function FlashcardMode() {
       <p className="w-full mt-4 font-bold text-center ">
         {BookArr[wordIndex].name}
       </p>
-
       <div
-        className="w-[96%] bg-[#fafafa] my-10 py-2 px-1 md:py-6 ms:px-4  md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col 
+        className="w-[96%] select-none bg-[#fafafa] my-10 py-2 px-1 md:py-6 ms:px-4  md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col 
       gap-y-5 md:gap-y-6 lg:gap-y-8 rounded-md items-center justify-center"
       >
         <div className="w-[200px] flex flex-col items-center justify-center">
           <p className="p-0 m-0">Word in English</p>
-          <p className="">🔊</p>
+          <p onClick={()=>english.play()} className="cursor-pointer ">🔊</p>
         </div>
         <div className="w-full flex items-center justify-center gap-2 md:gap-x-8 lg:gap-x-12">
           <div className="w-[190px] flex flex-col items-center justify-center">
             <p className="p-0 m-0 text-center">Word in French </p>
-            <p className="">🔊</p>
+            <p onClick={()=>english.play()} className="cursor-pointer ">🔊</p>
           </div>
           <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
             <p className="p-0 m-0">LOGO</p>
@@ -100,13 +104,13 @@ function FlashcardMode() {
           </div>
           <div className="w-[200px] flex flex-col items-center justify-center">
             <p className="p-0 m-0 text-center">Word in Chinese</p>
-            <p className="">🔊</p>
+            <p onClick={()=>chinese.play()} className="cursor-pointer ">🔊</p>
           </div>
         </div>
 
         <div className="w-[200px] flex flex-col items-center justify-center">
           <p className="p-0 m-0">Word in Spanish</p>
-          <p className="">🔊</p>
+          <p onClick={()=>spanish.play()} className="cursor-pointer ">🔊</p>
         </div>
       </div>
 

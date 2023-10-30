@@ -17,7 +17,7 @@ function ViewEditPage() {
     { id: 6, name: "six" },
   ];
   const [filterNames, setFilterNames] = useState(BookArr);
-  console.log(filterNames);
+  // console.log(filterNames);
   const handleRemove = () => {
     if (!selectedItemId) {
       alert("Select Word");
@@ -60,7 +60,7 @@ function ViewEditPage() {
         </ul>
       </div>
       {model ? (
-        <div className="w-full absolute top-[50px] bottom-[50px] bg-[#18171741] flex items-center justify-center">
+        <div className="w-full fixed top-[50px] bottom-[50px] bg-[#18171741] flex items-center justify-center">
           <div className="w-[80%] md:w-[50%] lg:w-[35%] h-[300px] relative shadow-md rounded-md bg-white opacity-100 flex flex-col items-center justify-center">
             <div
               onClick={() => setModel(false)}
