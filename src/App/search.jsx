@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 function Search() {
   const navigate = useNavigate();
-  const SearchItem = ["cat", "cricket", "car", "dog", "book", "pen","apple", "ant", "airplane", "arrow", "alligator", 
+  const SearchItem = ["Cat", "Tree", "Cricket", "Car", "Dog", "Book", "Pen","Apple", "Ant", "airplane", "arrow", "alligator", 
     "apartment", "astronaut", "acorn", "accordion", "ambulance", 
     "anchor", "alpaca", "apricot", "armchair", "amplifier",];
   
