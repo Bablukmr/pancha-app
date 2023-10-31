@@ -11,7 +11,7 @@ function WordPage() {
   const chinese = new Audio("/tree_chinese.mp3");
   const [videoBox, setVideoBox] = useState(false);
   const [video, setVideo] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   return (
     <>
