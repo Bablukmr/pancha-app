@@ -55,10 +55,10 @@ function FlashcardMode() {
     }
   };
 
-  const english=new Audio("/tree_English.m4a")
-  const spanish=new Audio("/tree_spanish.m4a")
-  const chinese=new Audio("/tree_chinese.mp3")
-  
+  const english = new Audio("/tree_English.m4a");
+  const spanish = new Audio("/tree_spanish.m4a");
+  const chinese = new Audio("/tree_chinese.mp3");
+  const [video, setVideo] = useState(true);
 
   return (
     <div className="w-full pb-4 md:pb-6 flex flex-col items-center justify-center">
@@ -91,26 +91,63 @@ function FlashcardMode() {
       >
         <div className="w-[200px] flex flex-col items-center justify-center">
           <p className="p-0 m-0">Word in English</p>
-          <p onClick={()=>english.play()} className="cursor-pointer ">🔊</p>
+          <p onClick={() => english.play()} className="cursor-pointer ">
+            🔊
+          </p>
         </div>
         <div className="w-full flex items-center justify-center gap-2 md:gap-x-8 lg:gap-x-12">
           <div className="w-[190px] flex flex-col items-center justify-center">
             <p className="p-0 m-0 text-center">Word in French </p>
-            <p onClick={()=>english.play()} className="cursor-pointer ">🔊</p>
+            <p onClick={() => english.play()} className="cursor-pointer ">
+              🔊
+            </p>
           </div>
-          <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
+          {/* <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
             <p className="p-0 m-0">LOGO</p>
             <p className="">image of word</p>
+          </div> */}
+          <div className="w-[200px] flex flex-col gap-y-2 items-center justify-center">
+            {video ? (
+              <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
+                <p className="p-0 m-0">IMAGE of word</p>
+                <img alt="img" />
+              </div>
+            ) : (
+              <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
+                <p className="p-0 m-0">Video Clip of ASL</p>
+
+                <p className="cursor-pointer ">▶️</p>
+              </div>
+            )}
+
+            <div className="flex gap-2">
+              <p
+                onClick={() => setVideo(true)}
+                className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
+                  video ? "bg-black" : ""
+                }`}
+              ></p>
+              <p
+                onClick={() => setVideo(false)}
+                className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
+                  video ? "" : "bg-black"
+                }`}
+              ></p>
+            </div>
           </div>
           <div className="w-[200px] flex flex-col items-center justify-center">
             <p className="p-0 m-0 text-center">Word in Chinese</p>
-            <p onClick={()=>chinese.play()} className="cursor-pointer ">🔊</p>
+            <p onClick={() => chinese.play()} className="cursor-pointer ">
+              🔊
+            </p>
           </div>
         </div>
 
         <div className="w-[200px] flex flex-col items-center justify-center">
           <p className="p-0 m-0">Word in Spanish</p>
-          <p onClick={()=>spanish.play()} className="cursor-pointer ">🔊</p>
+          <p onClick={() => spanish.play()} className="cursor-pointer ">
+            🔊
+          </p>
         </div>
       </div>
 

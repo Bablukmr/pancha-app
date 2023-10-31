@@ -21,8 +21,7 @@ function SettingPage() {
     { id: 7, name: "Hindi" },
   ];
 
-  const [selectedLanguages, setSelectedLanguages] = useState([]);
-
+  const [selectedLanguages, setSelectedLanguages] = useState([1, 2, 3]);
   const handleLanguageChange = (language) => {
     if (selectedLanguages.includes(language.id)) {
       setSelectedLanguages(
@@ -57,7 +56,7 @@ function SettingPage() {
             </div>
           ))}
         </div>
-       <p className=" border-b-2 border-black mt-4"></p>
+        <p className=" border-b-2 border-black mt-4"></p>
 
         <div className="flex flex-col py-2 border-b-2 border-black">
           <p className="my-2">Change my password</p>
@@ -93,9 +92,9 @@ function SettingPage() {
               </div>
             </div>
 
-            <div className="w-full mt-3 flex items-center justify-center gap-2">
+            <div className="w-full mt-3 flex flex-col items-start justify-center gap-2">
               <button
-                 onClick={(e) => {
+                onClick={(e) => {
                   e.preventDefault(), window.confirm("Change Password");
                 }}
                 className="text-center py-2 px-4 rounded-md bg-blue-400 text-white"
@@ -105,12 +104,12 @@ function SettingPage() {
             </div>
           </form>
         </div>
-        <div className="w-full mb-[60px] flex justify-between items-center gap-2 mt-6">
+        <div className="w-full mb-[60px] px-2 flex flex-col justify-between items-start gap-2 mt-6">
           <ButtonComponent
-            onClick={() => alert("feedback")}
+            onClick={() => navigate("/settings/feedback")}
             bg="black"
             text="white"
-            btnName="Previous Feedback"
+            btnName="Provide Feedback"
           />
           <ButtonComponent
             onClick={handleLogout}

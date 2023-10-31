@@ -9,11 +9,12 @@ function WordPage() {
   const spanish = new Audio("/tree_spanish.m4a");
   const chinese = new Audio("/tree_chinese.mp3");
   const [videoBox, setVideoBox] = useState(false);
+  const [video, setVideo] = useState(true);
 
   return (
     <div className="w-full h-[calc(100vh-100px)] flex flex-col items-center justify-center">
-      <h1 className="text-2xl  absolute top-[60px]">WORD</h1>
-      <p className="text-base  absolute top-[100px]">{params?.name}</p>
+      <h1 className="text-2xl  absolute top-[60px]">{params?.name}</h1>
+      {/* <p className="text-base  absolute top-[100px]">{params?.name}</p> */}
       <div
         className="w-[96%] select-none bg-[#fafafa] py-2 px-1 md:py-6 ms:px-4  md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col 
       gap-y-5 md:gap-y-6 lg:gap-y-8 rounded-md items-center justify-center"
@@ -31,11 +32,40 @@ function WordPage() {
               🔊
             </p>
           </div>
-          <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
-            <p className="p-0 m-0">Video Clip</p>
-            <p onClick={() => setVideoBox(true)} className="cursor-pointer ">
-              ▶️
-            </p>
+
+          <div className="w-[200px] flex flex-col gap-y-2 items-center justify-center">
+            {video ? (
+              <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
+                <p className="p-0 m-0">Video Clip of ASL</p>
+
+                <p
+                  onClick={() => setVideoBox(true)}
+                  className="cursor-pointer "
+                >
+                  ▶️
+                </p>
+              </div>
+            ) : (
+              <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
+                <p className="p-0 m-0">IMAGE of word</p>
+                <img alt="img" />
+              </div>
+            )}
+
+            <div className="flex gap-2">
+              <p
+                onClick={() => setVideo(true)}
+                className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
+                  video ? "bg-black" : ""
+                }`}
+              ></p>
+              <p
+                onClick={() => setVideo(false)}
+                className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
+                  video ? "" : "bg-black"
+                }`}
+              ></p>
+            </div>
           </div>
 
           <div className="w-[200px] flex flex-col items-center justify-center">
@@ -48,8 +78,11 @@ function WordPage() {
 
         {videoBox ? (
           <div className="w-[96%] rounded-t-md md:w-[75%] lg:w-[65%] xl:w-[50%] fixed flex flex-col items-center justify-center">
-            <div className="h-[30px] rounded-t-md pr-4 w-full bg-[#bfbfbf] flex justify-end items-center">
-              <AiOutlineClose onClick={() => setVideoBox(false)} />
+            <div className="h-[30px] md:h-[40px] rounded-t-md pr-4 w-full bg-[#bfbfbf] flex justify-end items-center">
+              <AiOutlineClose
+                onClick={() => setVideoBox(false)}
+                className="cursor-pointer"
+              />
             </div>
             {/* <div
               onClick={() => setVideoBox(false)}

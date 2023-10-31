@@ -7,6 +7,7 @@ import DictionaryPage from "./dictionaryPage";
 import SettingPage from "./settingPage";
 import FlashcardMode from "./flashcardMode";
 import ViewEditPage from "./viewEditPage";
+import ProvideFeedbackPage from "./provideFeedbackPage";
 
 function AppRouts() {
   return (
@@ -18,6 +19,7 @@ function AppRouts() {
       <Route path="/library/view-edit/:name" element={<ViewEditPage />} />
       <Route path="/library/:name" element={<FlashcardMode />} />
       <Route path="/settings" element={<SettingPage />} />
+      <Route path="/settings/feedback" element={<ProvideFeedbackPage />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>
   );
