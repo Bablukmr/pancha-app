@@ -21,8 +21,9 @@ export default function Header(props) {
         ) : (
           <FiArrowLeft
             onClick={() => {
-              navigate("/");
+              // navigate("/");
               setSetting(true);
+              window.history.back();
             }}
           />
         )}

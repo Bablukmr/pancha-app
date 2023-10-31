@@ -16,21 +16,22 @@ function WordPage() {
       <h1 className="text-2xl  absolute top-[60px]">{params?.name}</h1>
       {/* <p className="text-base  absolute top-[100px]">{params?.name}</p> */}
       <div
-        className="w-[96%] select-none bg-[#fafafa] py-2 px-1 md:py-6 ms:px-4  md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col 
+        className="mt-4 w-[96%] select-none bg-[#fafafa] py-2 px-1 md:py-6 ms:px-4  
+        md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col 
       gap-y-5 md:gap-y-6 lg:gap-y-8 rounded-md items-center justify-center"
       >
         <div className="w-[200px] flex flex-col items-center justify-center">
           <p className="p-0 m-0">Word in English</p>
-          <p onClick={() => english.play()} className="cursor-pointer ">
+          <button onClick={() => english.play()} className="cursor-pointer ">
             🔊
-          </p>
+          </button>
         </div>
         <div className="w-full flex items-center justify-center gap-2 md:gap-x-8 lg:gap-x-12">
           <div className="w-[190px] flex flex-col items-center justify-center">
             <p className="p-0 m-0 text-center">Word in French </p>
-            <p onClick={() => english.play()} className="cursor-pointer ">
+            <button onClick={() => english.play()} className="cursor-pointer ">
               🔊
-            </p>
+            </button>
           </div>
 
           <div className="w-[200px] flex flex-col gap-y-2 items-center justify-center">
@@ -70,9 +71,9 @@ function WordPage() {
 
           <div className="w-[200px] flex flex-col items-center justify-center">
             <p className="p-0 m-0 text-center">Word in Chinese</p>
-            <p onClick={() => chinese.play()} className="cursor-pointer ">
+            <button onClick={() => chinese.play()} className="cursor-pointer ">
               🔊
-            </p>
+            </button>
           </div>
         </div>
 
@@ -84,10 +85,6 @@ function WordPage() {
                 className="cursor-pointer"
               />
             </div>
-            {/* <div
-              onClick={() => setVideoBox(false)}
-              className="text-xl  absolute right-0 -top-10 m-4 cursor-pointer z-50"
-            ></div> */}
             <video
               src="/play_video.mp4"
               controls

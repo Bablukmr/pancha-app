@@ -58,8 +58,7 @@ function FlashcardMode() {
   const english = new Audio("/tree_English.m4a");
   const spanish = new Audio("/tree_spanish.m4a");
   const chinese = new Audio("/tree_chinese.mp3");
-  const [video, setVideo] = useState(true);
-
+const [video,setVideo]=useState(true)
   return (
     <div className="w-full pb-4 md:pb-6 flex flex-col items-center justify-center">
       <h1 className="text-xl my-6">Flashcards for {selectedFolder}</h1>
@@ -91,16 +90,16 @@ function FlashcardMode() {
       >
         <div className="w-[200px] flex flex-col items-center justify-center">
           <p className="p-0 m-0">Word in English</p>
-          <p onClick={() => english.play()} className="cursor-pointer ">
+          <button onClick={() => english.play()} className="cursor-pointer ">
             🔊
-          </p>
+          </button>
         </div>
         <div className="w-full flex items-center justify-center gap-2 md:gap-x-8 lg:gap-x-12">
           <div className="w-[190px] flex flex-col items-center justify-center">
             <p className="p-0 m-0 text-center">Word in French </p>
-            <p onClick={() => english.play()} className="cursor-pointer ">
+            <button onClick={() => english.play()} className="cursor-pointer ">
               🔊
-            </p>
+            </button>
           </div>
           {/* <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
             <p className="p-0 m-0">LOGO</p>
@@ -137,21 +136,21 @@ function FlashcardMode() {
           </div>
           <div className="w-[200px] flex flex-col items-center justify-center">
             <p className="p-0 m-0 text-center">Word in Chinese</p>
-            <p onClick={() => chinese.play()} className="cursor-pointer ">
+            <button onClick={() => chinese.play()} className="cursor-pointer ">
               🔊
-            </p>
+            </button>
           </div>
         </div>
 
         <div className="w-[200px] flex flex-col items-center justify-center">
           <p className="p-0 m-0">Word in Spanish</p>
-          <p onClick={() => spanish.play()} className="cursor-pointer ">
+          <button onClick={() => spanish.play()} className="cursor-pointer ">
             🔊
-          </p>
+          </button>
         </div>
       </div>
 
-      <div className="w-[96%]  md:w-[75%] lg:w-[65%] xl:w-[50%] flex items-center justify-around text-3xl md:text-4xl text-[#917d7d] ">
+      <div className="w-[96%] pb-10  md:w-[75%] lg:w-[65%] xl:w-[50%] flex items-center justify-around text-3xl md:text-4xl text-[#917d7d] ">
         <HiArrowSmLeft onClick={handlePrevious} className="cursor-pointer" />
         <HiOutlineRefresh onClick={handleSerial} className="cursor-pointer" />
         <LiaRandomSolid onClick={handleRandom} className="cursor-pointer" />
