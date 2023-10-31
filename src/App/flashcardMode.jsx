@@ -58,7 +58,7 @@ function FlashcardMode() {
   const english = new Audio("/tree_English.m4a");
   const spanish = new Audio("/tree_spanish.m4a");
   const chinese = new Audio("/tree_chinese.mp3");
-const [video,setVideo]=useState(true)
+  const [video, setVideo] = useState(true);
   return (
     <div className="w-full pb-4 md:pb-6 flex flex-col items-center justify-center">
       <h1 className="text-xl my-6">Flashcards for {selectedFolder}</h1>
@@ -112,10 +112,17 @@ const [video,setVideo]=useState(true)
                 <img alt="img" />
               </div>
             ) : (
-              <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
-                <p className="p-0 m-0">Video Clip of ASL</p>
-
-                <p className="cursor-pointer ">▶️</p>
+              <div className="w-[200px] rounded-md h-[100px]  flex flex-col items-center justify-center">
+                <div className="w-[80%]  border-2 ">
+                  <video
+                    onClick={() => alert("hi")}
+                    src="/play_video.mp4"
+                    controls
+                    autoPlay
+                    loop
+                    className="w-full h-full outline-none"
+                  />
+                </div>
               </div>
             )}
 
