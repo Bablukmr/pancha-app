@@ -68,6 +68,7 @@ function ViewEditPage() {
             >
               <AiOutlineClose />
             </div>
+            <form className="w-full flex flex-col items-center justify-center">
             <div className="w-[80%]">
               <label className="text-sm">New Word Name</label>
               <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
@@ -84,6 +85,8 @@ function ViewEditPage() {
             >
               Add New Word
             </button>
+            </form>
+           
           </div>
         </div>
       ) : (

@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ButtonComponent from "../Components/buttonComponent";
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Loading from "../Components/loading";
 
 function WordPage() {
+  const navigate = useNavigate();
   const params = useParams();
   const english = new Audio("/tree_English.m4a");
   const spanish = new Audio("/tree_spanish.m4a");
@@ -130,7 +131,11 @@ function WordPage() {
             Text description of ASL sign
           </p>
 
-          <ButtonComponent text="white" btnName="Add to Folder" />
+          <ButtonComponent
+            onClick={() => navigate(`/add-to-folder/1`)}
+            text="white"
+            btnName="Add to Folder"
+          />
         </div>
       )}
     </>

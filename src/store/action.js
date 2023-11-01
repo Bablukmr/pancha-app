@@ -62,7 +62,7 @@ export const userLogIn = (email, password) => {
       },
     });
     axios
-      .post("https://test.ranuvijay.me/dj-rest-auth/login/", {
+      .post("https://testapi.nhustle.in/dj-rest-auth/login/", {
         email: email,
         password: password,
       })

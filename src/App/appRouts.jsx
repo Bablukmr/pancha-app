@@ -8,12 +8,14 @@ import SettingPage from "./settingPage";
 import FlashcardMode from "./flashcardMode";
 import ViewEditPage from "./viewEditPage";
 import ProvideFeedbackPage from "./provideFeedbackPage";
+import UserFolderPage from "./userFolderPage";
 
 function AppRouts() {
   return (
     <Routes>
       <Route path="/" element={<Search />} />
       <Route path="/word/:name" element={<WordPage />} />
+      <Route path="/add-to-folder/:wordId" element={<UserFolderPage />} />
       <Route path="/dictionary" element={<DictionaryPage />} />
       <Route path="/library" element={<LibraryPage />} />
       <Route path="/library/view-edit/:name" element={<ViewEditPage />} />

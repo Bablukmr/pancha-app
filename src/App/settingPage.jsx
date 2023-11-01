@@ -1,34 +1,85 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ButtonComponent from "../Components/buttonComponent";
 import { userLogout } from "../store/action";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import ListLoading from "../Components/listLoading";
+import axios from "axios";
 
 function SettingPage() {
+  const token = useSelector((state) => state.AuthReducer.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [langLoading, setLangLoading] = useState(true);
   const handleLogout = () => {
     dispatch(userLogout());
   };
 
-  const availableLanguages = [
-    { id: 1, name: "Spanish" },
-    { id: 2, name: "French" },
-    { id: 3, name: "Chinese" },
-    { id: 5, name: "German" },
-    { id: 6, name: "Japanese" },
-    { id: 7, name: "Hindi" },
-  ];
+  useEffect(() => {
+    getCheck();
+  }, []);
 
-  const [selectedLanguages, setSelectedLanguages] = useState([1, 2, 3]);
-  const handleLanguageChange = (language) => {
-    if (selectedLanguages.includes(language.id)) {
-      setSelectedLanguages(
-        selectedLanguages.filter((id) => id !== language.id)
-      );
+  const [availableLanguages, setavailableLanguages] = useState([]);
+
+  const getCheck = () => {
+    axios
+      .get("https://testapi.nhustle.in/pancha/language", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((res) => {
+        const data = res.data;
+        console.log("data", data);
+        setavailableLanguages(data);
+        setLangLoading(false);
+      })
+      .catch((err) => {
+        console.log("Server Error", err);
+      });
+  };
+
+  const handleLanguageChange = (languages) => {
+    console.log("check", languages.active);
+    if (languages.active) {
+      axios
+        .post(
+          "https://testapi.nhustle.in/pancha/user-language/",
+          {
+            language: languages.id,
+            user: 2,
+          },
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          }
+        )
+
+        .then((res) => {
+          getCheck();
+
+          console.log(res);
+        })
+        .catch((err) => console.log("Server Error", err));
     } else {
-      setSelectedLanguages([...selectedLanguages, language.id]);
+      axios
+        .delete(
+          `https://testapi.nhustle.in/pancha/user-language/${languages.idd}/`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          }
+        )
+        .then((res) => {
+          const data = res.data;
+          console.log(data);
+          getCheck();
+        })
+        .catch((err) => {
+          console.log("Server Error", err);
+        });
     }
   };
 
@@ -37,25 +88,33 @@ function SettingPage() {
       <h1 className="text-xl my-6">Settings</h1>
       <div className="w-[80%] md:w-[50%] lg:w-[35%] flex flex-col">
         <p className="my-2">Show the following languages</p>
-        <div className="w-full py-2 h-[140px] overflow-y-auto ">
-          {availableLanguages.map((language) => (
-            <div
-              key={language.id}
-              className="w-full flex items-center justify-between p-2"
-            >
-              <div className="w-[80%]">
-                <label className="ml-2">{language.name}</label>
+
+        {langLoading ? (
+          <div className="h-[140px] w-full flex items-center justify-center">
+            <ListLoading />
+          </div>
+        ) : (
+          <div className="w-full py-2 h-[140px] overflow-y-auto ">
+            {availableLanguages.map((language) => (
+              <div
+                key={language.id}
+                className="w-full flex items-center justify-between p-2"
+              >
+                <div className="w-[80%]">
+                  <label className="ml-2">{language.name}</label>
+                </div>
+                <div className="w-[20%]">
+                  <input
+                    type="checkbox"
+                    checked={language.active}
+                    onChange={() => handleLanguageChange(language)}
+                  />
+                </div>
               </div>
-              <div className="w-[20%]">
-                <input
-                  type="checkbox"
-                  checked={selectedLanguages.includes(language.id)}
-                  onChange={() => handleLanguageChange(language)}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
+
         <p className=" border-b-2 border-black mt-4"></p>
 
         <div className="flex flex-col py-2 border-b-2 border-black">
