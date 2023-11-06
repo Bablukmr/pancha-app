@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
-import {} from "module";
 import { useSelector } from "react-redux";
 import NotificationBox from "../Components/notificationbox";
 
@@ -22,7 +21,7 @@ function ProvideFeedbackPage() {
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
-    }, 5000);
+    }, 2000);
   };
 
   const token = useSelector((state) => state.AuthReducer.token);
@@ -58,7 +57,7 @@ function ProvideFeedbackPage() {
     setSubmitLoading(true);
     axios
       .post(
-        "https://testapi.nhustle.in/pancha/feedback/",
+        "https://test.ranuvijay.me/pancha/feedback/",
         {
           word: newWord,
           subject: subject,

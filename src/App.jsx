@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AppLayout from "./App/appLayout";
+import AppLayout from "./layout/appLayout";
 import ProtectedRoute from "./protectedRoute";
 import AuthLayout from "./Auth/authLayout";
 import { Provider } from "react-redux";

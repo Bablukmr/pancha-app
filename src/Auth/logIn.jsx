@@ -26,7 +26,7 @@ function Login() {
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
-    }, 5000);
+    }, 2000);
   };
 
   useEffect(() => {

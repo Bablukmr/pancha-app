@@ -9,30 +9,41 @@ import { useSelector } from "react-redux";
 
 function LibraryPage() {
   const token = useSelector((state) => state.AuthReducer.token);
-  const [folder, setFolder] = useState("");
   const navigate = useNavigate();
 
-  const [selectedItemId, setSelectedItemId] = useState(null);
+  const [selectedFolderName, setSelectedFolderName] = useState("");
+  const [selectedFolderId, setSelectedFolderId] = useState(null);
   const [publicLoadind, setPublicLoading] = useState(true);
   const [UserLoadind, setUserLoading] = useState(true);
+  const [publicFolder, setPublicFolder] = useState([]);
+  const [userFolder, setUserFolder] = useState([]);
+
+  const [model, setModel] = useState(false);
+  const [newFolder, setNewFolder] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationType, setNotificationType] = useState(null);
+  const [notificationTitle, setNotificationTitle] = useState(null);
+  const [notificationBody, setNotificationBody] = useState(null);
 
   useEffect(() => {
     axios
-      .get("https://testapi.nhustle.in/pancha/public-folder", {
+      .get("https://test.ranuvijay.me/pancha/public-folder", {
         headers: {
           Authorization: `Token ${token}`,
         },
       })
       .then((res) => {
-        const data = res.data;
-        // console.log(data);
-        setPublicFolder(data);
+        setPublicFolder(res.data);
         setPublicLoading(false);
       })
-      .catch((err) => console.log("Server Error", err));
-    // setPublicLoading(false);
+      .catch((err) => {
+        setPublicLoading(false);
+        setNotificationTitle("Error !!");
+        setNotificationBody("Something went wrong fetching public folders.");
+        setNotificationType("error");
+        shownotiftion();
+      });
   }, []);
-  const [publicFolder, setPublicFolder] = useState([]);
 
   useEffect(() => {
     getUserFolder();
@@ -41,7 +52,7 @@ function LibraryPage() {
   const getUserFolder = () => {
     setUserLoading(true);
     axios
-      .get("https://testapi.nhustle.in/pancha/user-folder", {
+      .get("https://test.ranuvijay.me/pancha/user-folder", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -56,41 +67,35 @@ function LibraryPage() {
       .catch((err) => {
         setUserLoading(false);
         setNotificationTitle("Error !!");
-        setNotificationBody("Something Went to wrong");
+        setNotificationBody("Something went wrong fetching user folders.");
         setNotificationType("error");
         shownotiftion();
-        console.log("Server Error", err);
       });
   };
 
-  const [userFolder, setUserFolder] = useState([]);
-
   const handleViewEdit = () => {
-    if (!selectedItemId) {
-      alert("Please Select Folder");
+    if (!selectedFolderId) {
+      setNotificationTitle("Error !!");
+      setNotificationBody("Please select folder.");
+      setNotificationType("error");
+      shownotiftion();
       return;
     }
-    navigate(`/library/view-edit/${folder}`);
+    navigate(`/library/view-edit/${selectedFolderId}/${selectedFolderName}`);
   };
-  // console.log("publicLoadind", publicLoadind);
-  const [model, setModel] = useState(false);
-  const [newFolder, setNewFolder] = useState("");
-  const [showNotification, setShowNotification] = useState(false);
-  const [notificationType, setNotificationType] = useState(null);
-  const [notificationTitle, setNotificationTitle] = useState(null);
-  const [notificationBody, setNotificationBody] = useState(null);
+
   const shownotiftion = () => {
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
-    }, 5000);
+    }, 2000);
   };
   const [loading, setLoading] = useState(false);
   const handleAddFolder = (e) => {
     e.preventDefault();
     if (!newFolder) {
       setNotificationTitle("Error !!");
-      setNotificationBody("New Folder Name Missing");
+      setNotificationBody("New folder name missing");
       setNotificationType("error");
       shownotiftion();
       return;
@@ -98,7 +103,7 @@ function LibraryPage() {
     setLoading(true);
     axios
       .post(
-        "https://testapi.nhustle.in/pancha/folder/",
+        "https://test.ranuvijay.me/pancha/folder/",
         {
           name: newFolder,
           pulic_folder: false,
@@ -112,23 +117,26 @@ function LibraryPage() {
       )
       .then((res) => {
         getUserFolder();
-        const data = res.data;
-        console.log("data", data);
         setNewFolder("");
         setModel(false);
         setLoading(false);
         setNotificationTitle("Sucess !!");
-        setNotificationBody("Folder Added Sucessfully");
+        setNotificationBody("Folder created.");
         setNotificationType("success");
         shownotiftion();
       })
       .catch((err) => {
-        console.log("Server Error", err);
+        setLoading(false);
         setNotificationTitle("Error !!");
-        setNotificationBody("Something Went to wrong");
+        setNotificationBody("Something went wrong, try again.");
         setNotificationType("error");
         shownotiftion();
       });
+  };
+
+  const closeModel = () => {
+    setNewFolder("");
+    setModel(false);
   };
 
   return (
@@ -159,21 +167,19 @@ function LibraryPage() {
                 <ListLoading />
               </div>
             ) : (
-              <ul className="w-full max-h-[150px]  overflow-y-scroll flex flex-col items-start  ">
-                {publicFolder.map((keyword) => (
+              <ul className="w-full min-h-[120px] max-h-[150px]  overflow-y-scroll flex flex-col items-start  ">
+                {publicFolder.map((d) => (
                   <li
                     onClick={() => {
-                      setFolder(keyword.name);
-                      setSelectedItemId(keyword.id);
+                      setSelectedFolderName(d.name);
+                      setSelectedFolderId(d.id);
                     }}
-                    key={keyword.id}
+                    key={d.id}
                     className={`h-[40px] hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 w-full border-b-2 border-[#f2f2f2] cursor-pointer ${
-                      keyword.id === selectedItemId
-                        ? "bg-slate-600 text-white"
-                        : ""
+                      d.id === selectedFolderId ? "bg-slate-600 text-white" : ""
                     } `}
                   >
-                    {keyword.name}
+                    {d.name}
                   </li>
                 ))}
               </ul>
@@ -193,21 +199,19 @@ function LibraryPage() {
                 <ListLoading />
               </div>
             ) : (
-              <ul className="w-full max-h-[150px]  overflow-y-scroll flex flex-col items-start ">
-                {userFolder.map((keyword) => (
+              <ul className="w-full min-h-[120px] max-h-[150px]  overflow-y-scroll flex flex-col items-start ">
+                {userFolder.map((d) => (
                   <li
                     onClick={() => {
-                      setFolder(keyword.name);
-                      setSelectedItemId(keyword.id);
+                      setSelectedFolderName(d.name);
+                      setSelectedFolderId(d.id);
                     }}
-                    key={keyword.id}
+                    key={d.id}
                     className={`h-[40px] hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 w-full border-b-2 border-[#f2f2f2] cursor-pointer ${
-                      keyword.id === selectedItemId
-                        ? "bg-slate-600 text-white"
-                        : ""
+                      d.id === selectedFolderId ? "bg-slate-600 text-white" : ""
                     } `}
                   >
-                    {keyword.name}
+                    {d.name}
                   </li>
                 ))}
               </ul>
@@ -218,7 +222,7 @@ function LibraryPage() {
           <div className="w-full fixed top-[50px] bottom-[50px] bg-[#18171741] flex items-center justify-center">
             <div className="w-[80%] md:w-[50%] lg:w-[35%] h-[300px] relative shadow-md rounded-md bg-white opacity-100 flex flex-col items-center justify-center">
               <div
-                onClick={() => setModel(false)}
+                onClick={closeModel}
                 className="absolute top-0 right-0 m-5 text-xl cursor-pointer"
               >
                 <AiOutlineClose />
@@ -263,10 +267,16 @@ function LibraryPage() {
           </button>
           <ButtonComponent
             onClick={() => {
-              if (!selectedItemId) {
-                alert("Please Select Folder");
+              if (!selectedFolderId) {
+                setNotificationTitle("Error !!");
+                setNotificationBody("Please select folder.");
+                setNotificationType("error");
+                shownotiftion();
+              } else {
+                navigate(
+                  `/flashcard/${selectedFolderName}/${selectedFolderId}`
+                );
               }
-              navigate(`/library/${folder}`);
             }}
             bg="white"
             text="white"

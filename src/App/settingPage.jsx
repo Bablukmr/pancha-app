@@ -23,7 +23,7 @@ function SettingPage() {
 
   const getCheck = () => {
     axios
-      .get("https://testapi.nhustle.in/pancha/language", {
+      .get("https://test.ranuvijay.me/pancha/language", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -44,7 +44,7 @@ function SettingPage() {
     if (languages.active) {
       axios
         .post(
-          "https://testapi.nhustle.in/pancha/user-language/",
+          "https://test.ranuvijay.me/pancha/user-language/",
           {
             language: languages.id,
             user: 2,
@@ -65,7 +65,7 @@ function SettingPage() {
     } else {
       axios
         .delete(
-          `https://testapi.nhustle.in/pancha/user-language/${languages.idd}/`,
+          `https://test.ranuvijay.me/pancha/user-language/${languages.idd}/`,
           {
             headers: {
               Authorization: `Token ${token}`,
