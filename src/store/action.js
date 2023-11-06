@@ -62,7 +62,7 @@ export const userLogIn = (email, password) => {
       },
     });
     axios
-      .post("https://testapi.nhustle.in/dj-rest-auth/login/", {
+      .post("https://test.ranuvijay.me/dj-rest-auth/login/", {
         email: email,
         password: password,
       })
@@ -100,7 +100,7 @@ export const userLogIn = (email, password) => {
 // export const getUserData = (token) => {
 //   return (dispatch) => {
 //     axios
-//       .get("http://localhost:8000/dj-rest-auth/user/", {
+//       .get("https://test.ranuvijay.me/dj-rest-auth/user/", {
 //         headers: {
 //           Authorization: `Token ${token}`,
 //         },

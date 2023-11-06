@@ -6,7 +6,7 @@ import Loading from "../Components/loading";
 
 function WordPage() {
   const navigate = useNavigate();
-  const params = useParams();
+  // const params = useParams();
   const english = new Audio("/tree_English.m4a");
   const spanish = new Audio("/tree_spanish.m4a");
   const chinese = new Audio("/tree_chinese.mp3");
@@ -14,13 +14,15 @@ function WordPage() {
   const [video, setVideo] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  const { name, wordId } = useParams();
+
   return (
     <>
       {loading ? (
         <Loading />
       ) : (
         <div className="w-full h-[calc(100vh-100px)] flex flex-col items-center justify-center">
-          <h1 className="text-2xl  absolute top-[60px]">{params?.name}</h1>
+          <h1 className="text-2xl  absolute top-[60px]">{name}</h1>
           {/* <p className="text-base  absolute top-[100px]">{params?.name}</p> */}
           <div
             className="mt-4 w-[96%] select-none bg-[#fafafa] py-2 px-1 md:py-6 ms:px-4  
@@ -132,7 +134,7 @@ function WordPage() {
           </p>
 
           <ButtonComponent
-            onClick={() => navigate(`/add-to-folder/1`)}
+            onClick={() => navigate(`/add-to-folder/${wordId}`)}
             text="white"
             btnName="Add to Folder"
           />

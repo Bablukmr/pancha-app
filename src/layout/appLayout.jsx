@@ -3,14 +3,16 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userLogin } from "../store/action";
-import Footer from "../layout/footer";
-import Header from "../layout/header";
+import Footer from "./footer";
+import Header from "./header";
 
 function AppLayout() {
   const [setting, setSetting] = useState("false");
   const token = useSelector((state) => state.AuthReducer.token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  console.log("ttttt", token);
 
   useEffect(() => {
     if (!token) {
