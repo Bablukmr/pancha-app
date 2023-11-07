@@ -1,48 +1,60 @@
-import { AiOutlineSearch } from "react-icons/ai";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import NotificationBox from "../Components/notificationbox";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'; 
+import axios from 'axios';
+import NotificationBox from '../Components/notificationbox';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import Autocomplete from '@mui/material/Autocomplete';
+import SearchIcon from '@mui/icons-material/Search';
 
 export default function Search() {
   const navigate = useNavigate();
   const token = useSelector((state) => state.AuthReducer.token);
-  const [wordData, setWOrdData] = useState([]);
+  const [wordData, setWordData] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationType, setNotificationType] = useState(null);
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationBody, setNotificationBody] = useState(null);
+  const [searchValue, setSearchValue] = useState(false);
 
-  const shownotiftion = () => {
+  const shownotification = () => {
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
     }, 2000);
   };
 
-  const handleSearch = (e) => {
-    const inputValue = e?.target?.value;
-    console.log(inputValue);
-    if (inputValue) {
+  const handleSearch = (value) => {
+    if (value) {
+      setSearchValue(true);
+    }
+    if (value) {
       axios
-        .get(`https://test.ranuvijay.me/pancha/search-word?word=${inputValue}`, {
+        .get(`https://testapi.nhustle.in/pancha/search-word?word=${value}`, {
           headers: {
             Authorization: `Token ${token}`,
           },
         })
-        .then((d) => {
-          console.log(d.data);
-          setWOrdData(d.data);
+        .then((response) => {
+          const data = response.data;
+          if (data.length === 0) {
+            setWordData([{ name: 'Word not found', id: 0 }]);
+          } else {
+            setWordData(data);
+          }
+          setSearchValue(false);
         })
         .catch((err) => {
-          setNotificationTitle("Error !!");
-          setNotificationBody("Something went wrong to .");
-          setNotificationType("error");
-          shownotiftion();
+          setNotificationTitle('Error !!');
+          setNotificationBody('Something went wrong.');
+          setNotificationType('error');
+          shownotification();
+          setSearchValue(false);
         });
     } else {
-      setWOrdData([]);
+      setWordData([]);
+      setSearchValue(false);
     }
   };
 
@@ -50,7 +62,7 @@ export default function Search() {
     <>
       <div
         className={`fixed top-6 right-0 shadow-lg z-50 w-80 rounded-2xl transition-transform duration-300 transform ${
-          showNotification ? "translate-x-0" : "translate-x-full"
+          showNotification ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <NotificationBox
@@ -63,35 +75,56 @@ export default function Search() {
 
       <div className="w-full absolute top-[100px] flex flex-col items-center justify-center">
         <h1 className="mb-10 text-xl">Search</h1>
-        <div className="w-[80%] md:w-[50%] lg:w-[35%] flex flex-col items-center justify-center">
-          <div className="w-full relative rounded-md border border-solid flex items-center">
-            <div className="p-2">
-              <AiOutlineSearch />
-            </div>
-            <input
-              type="search"
-              placeholder="Type here to search"
-              className="text-sm h-10 border-none w-full outline-none pr-2 rounded-md"
-              onChange={handleSearch}
+        <div className="w-[80%] z-10 md:w-[50%] lg:w-[35%] flex flex-col items-center justify-center">
+          <Stack spacing={2} sx={{ width: '100%' }}>
+            <Autocomplete
+              loading={searchValue}
+              freeSolo
+              id="free-solo-2-demo"
+              disableClearable
+              options={wordData.map((option) => option.name)}
+              onInputChange={(event, value) => {
+                handleSearch(value);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Type here to search word"
+                  InputProps={{
+                    ...params.InputProps,
+                    type: 'search',
+                    sx: {
+                      height: 52,
+                    },
+                    startAdornment: (
+                      <SearchIcon color="disabled" fontSize="small" />
+                    ),
+                  }}
+                />
+              )}
+              onChange={(event, value) => {
+                const selectedWord = wordData.find(
+                  (word) => word.name === value
+                );
+                if (selectedWord) {
+                  if (selectedWord.name === 'Word not found') {
+                    return;
+                  } else navigate(`/word/${selectedWord.name}/${selectedWord.id}`);
+                }
+              }}
+              PaperProps={{
+                style: {
+                  maxHeight: 200,
+                  overflowY: 'auto',
+                },
+              }}
+              renderOption={(props, option) => (
+                <li {...props}>
+                  <SearchIcon color="disabled" fontSize="small" style={{marginRight: "20px"}} /> {option}
+                </li>
+              )}
             />
-          </div>
-          {wordData?.length > 0 && (
-            <div className="mt-2 w-full  shadow-md pb-2 rounded-b-md bg-[#fafafa] ">
-              <ul className="w-full max-h-[250px]  overflow-y-scroll flex flex-col items-start ">
-                {wordData?.map((d) => (
-                  <li
-                    onClick={() => {
-                      navigate(`/word/${d.name}/${d.id}`);
-                    }}
-                    key={d.id}
-                    className="h-[40px] px-4 py-2 w-full border-b-2 border-[#f2f2f2] cursor-pointer hover:bg-slate-100 "
-                  >
-                    {d.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+          </Stack>
         </div>
       </div>
     </>

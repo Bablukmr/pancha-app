@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ListLoading from "../Components/listLoading";
 import axios from "axios";
+import { Button } from "@mui/material";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 function SettingPage() {
   const token = useSelector((state) => state.AuthReducer.token);
@@ -23,7 +25,7 @@ function SettingPage() {
 
   const getCheck = () => {
     axios
-      .get("https://test.ranuvijay.me/pancha/language", {
+      .get("https://testapi.nhustle.in/pancha/language", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -44,7 +46,7 @@ function SettingPage() {
     if (languages.active) {
       axios
         .post(
-          "https://test.ranuvijay.me/pancha/user-language/",
+          "https://testapi.nhustle.in/pancha/user-language/",
           {
             language: languages.id,
             user: 2,
@@ -65,7 +67,7 @@ function SettingPage() {
     } else {
       axios
         .delete(
-          `https://test.ranuvijay.me/pancha/user-language/${languages.idd}/`,
+          `https://testapi.nhustle.in/pancha/user-language/${languages.idd}/`,
           {
             headers: {
               Authorization: `Token ${token}`,
@@ -152,30 +154,56 @@ function SettingPage() {
             </div>
 
             <div className="w-full mt-3 flex flex-col items-start justify-center gap-2">
-              <button
+              {/* <button
                 onClick={(e) => {
                   e.preventDefault(), window.confirm("Change Password");
                 }}
                 className="text-center py-2 px-4 rounded-md bg-blue-400 text-white"
               >
                 Change Password
-              </button>
+              </button> */}
+              <Button
+              style={{textTransform:"none" , padding: "6px 16px" }}
+                onClick={(e) => {
+                  e.preventDefault(), window.confirm("Change Password");
+                }}
+                variant="contained"
+              >
+                Change Password
+              </Button>
             </div>
           </form>
         </div>
-        <div className="w-full mb-[60px] px-2 flex flex-col justify-between items-start gap-2 mt-6">
-          <ButtonComponent
+        <div className="w-full mb-[60px] px-2 flex flex-col justify-between items-start gap-4 mt-6">
+          {/* <ButtonComponent
             onClick={() => navigate("/settings/feedback")}
             bg="black"
             text="white"
             btnName="Provide Feedback"
-          />
-          <ButtonComponent
+          /> */}
+
+          <Button
+          style={{textTransform:"none" , padding: "6px 16px" }}
+            onClick={() => navigate("/settings/feedback")}
+            variant="contained"
+          >
+            Provide Feedback
+          </Button>
+
+          {/* <ButtonComponent
             onClick={handleLogout}
             bg="black"
             text="white"
             btnName="Logout"
-          />
+          /> */}
+          <Button
+          style={{textTransform:"none" , padding: "6px 16px" }}
+            onClick={handleLogout}
+            endIcon={<LogoutIcon />}
+            variant="contained"
+          >
+            Logout
+          </Button>
         </div>
       </div>
     </div>

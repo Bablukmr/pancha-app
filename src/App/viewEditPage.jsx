@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineClose } from "react-icons/ai";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NotificationBox from "../Components/notificationbox";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import { Button } from "@mui/material";
 
 export default function ViewEditPage() {
   const navigate = useNavigate();
@@ -12,6 +15,7 @@ export default function ViewEditPage() {
   const FolderId = params?.id;
 
   const token = useSelector((state) => state.AuthReducer.token);
+  console.log("token", token);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [model, setModel] = useState(false);
   const [newWord, setNewWord] = useState("");
@@ -20,8 +24,12 @@ export default function ViewEditPage() {
   const [notificationType, setNotificationType] = useState(null);
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationBody, setNotificationBody] = useState(null);
+  const [apiWords, setApiWords] = useState([]);
+  const [selectedWord, setSelectedWord] = useState(null);
+  const [inputWord, setInputWord] = useState("");
+  const [showRedirectButton, setShowRedirectButton] = useState(false);
 
-  function shownotiftion() {
+  function shownotification() {
     setShowNotification(true);
     setTimeout(() => {
       setShowNotification(false);
@@ -29,38 +37,43 @@ export default function ViewEditPage() {
   }
 
   useEffect(() => {
-    getWordInFolder();
-  }, []);
+    if (token) {
+      getWordInFolder();
+    }
+  }, [token]);
 
   const getWordInFolder = () => {
     axios
-      .get(`https://test.ranuvijay.me/pancha/word-in-each-folder?id=${FolderId}`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
+      .get(
+        `https://testapi.nhustle.in/pancha/word-in-each-folder?id=${FolderId}`,
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      )
       .then((d) => {
         setWords(d.data);
       })
       .catch(() => {
         setNotificationTitle("Error !!");
-        setNotificationBody("Failded to get words for this folder.");
+        setNotificationBody("Failed to get words for this folder.");
         setNotificationType("error");
-        shownotiftion();
+        shownotification();
       });
   };
 
   const handleRemoveWord = () => {
     if (!selectedItemId) {
       setNotificationTitle("Error !!");
-      setNotificationBody("Select word to remove.");
+      setNotificationBody("Select a word to remove.");
       setNotificationType("error");
-      shownotiftion();
+      shownotification();
       return;
     }
     axios
       .delete(
-        `https://test.ranuvijay.me/pancha/words-in-folder/${selectedItemId}`,
+        `https://testapi.nhustle.in/pancha/words-in-folder/${selectedItemId}`,
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -72,19 +85,19 @@ export default function ViewEditPage() {
         setNotificationTitle("Success !!");
         setNotificationBody("Word removed from the folder.");
         setNotificationType("success");
-        shownotiftion();
+        shownotification();
       })
       .catch((e) => {
         setNotificationTitle("Error !!");
-        setNotificationBody("Failded to remove the word, try again.");
+        setNotificationBody("Failed to remove the word, please try again.");
         setNotificationType("error");
-        shownotiftion();
+        shownotification();
       });
   };
 
   const handleRemoveFolder = () => {
     axios
-      .delete(`https://test.ranuvijay.me/pancha/folder/${FolderId}/`, {
+      .delete(`https://testapi.nhustle.in/pancha/folder/${FolderId}/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -94,17 +107,54 @@ export default function ViewEditPage() {
       })
       .catch((e) => {
         setNotificationTitle("Error !!");
-        setNotificationBody("Failded to delete this folder, try again.");
+        setNotificationBody("Failed to delete this folder, please try again.");
         setNotificationType("error");
-        shownotiftion();
+        shownotification();
       });
   };
 
   const handleAddWord = () => {
     if (newWord) {
+      //
     }
   };
 
+  const handleSearch = (e) => {
+    const inputValue = e?.target?.value;
+    setInputWord(inputValue);
+
+    if (inputValue) {
+      axios
+        .get(
+          `https://testapi.nhustle.in/pancha/search-word?word=${inputValue}`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          }
+        )
+        .then((d) => {
+          // console.log(apiWords);
+          setApiWords(d.data);
+          setShowRedirectButton(d.data.length === 0);
+        })
+        .catch((err) => {
+          setNotificationTitle("Error !!");
+          setNotificationBody("Something went wrong.");
+          setNotificationType("error");
+          shownotification();
+        });
+    } else {
+      setApiWords([]);
+      setShowRedirectButton(false);
+    }
+  };
+
+  const handleChange = (event, newValue) => {
+    setSelectedWord(newValue);
+  };
+  // console.log(selectedItemId);
+  console.log(showRedirectButton);
   return (
     <>
       <div
@@ -137,7 +187,7 @@ export default function ViewEditPage() {
           </ul>
         </div>
         {model ? (
-          <div className="w-full fixed top-[50px] bottom-[50px] bg-[#18171741] flex items-center justify-center">
+          <div className="w-full z-10 fixed top-[50px] bottom-[50px] bg-[#18171741] flex items-center justify-center">
             <div className="w-[80%] md:w-[50%] lg:w-[35%] h-[300px] relative shadow-md rounded-md bg-white opacity-100 flex flex-col items-center justify-center">
               <div
                 onClick={() => setModel(false)}
@@ -147,14 +197,34 @@ export default function ViewEditPage() {
               </div>
               <form className="w-full flex flex-col items-center justify-center">
                 <div className="w-[80%]">
-                  <label className="text-sm">New Word Name</label>
-                  <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
-                    <input
-                      onChange={(e) => setNewWord(e.target.value)}
-                      placeholder="Add New Word"
-                      className="text-sm h-10 border-none w-full outline-[.5px] outline-blue-400 px-2 rounded-md"
-                    />
-                  </div>
+                  <p className="text-sm my-3">New Word Name</p>
+                  <Autocomplete
+                    open={inputWord ? true : false}
+                    loading={apiWords.length > 0 ? true : false}
+                    value={selectedWord}
+                    onChange={handleChange}
+                    options={apiWords}
+                    getOptionLabel={(option) => option.name}
+                    style={{ width: 250 }}
+                    renderInput={(params) =>
+                      showRedirectButton ? (
+                        <div>
+                          <p>This Words is Not Found</p>
+                          <Button
+                            onClick={() => navigate("/settings/feedback")}
+                            className="w-full py-2 rounded-md bg-blue-400 text-white"
+                          >
+                            Feedback
+                          </Button>
+                        </div>
+                      ) : (
+                        <TextField {...params} label="Type a Word" />
+                      )
+                    }
+                    onInputChange={(event, newInputValue) => {
+                      handleSearch({ target: { value: newInputValue } });
+                    }}
+                  />
                 </div>
                 <button
                   onClick={handleAddWord}
@@ -169,24 +239,58 @@ export default function ViewEditPage() {
           ""
         )}
         <div className="w-[80%] md:w-[50%] lg:w-[35%]  mt-4 flex flex-col items-start justify-start gap-3 mb-[70px]">
-          <button
+          {/* <button
             onClick={() => setModel(true)}
             className="bg-black w-[150px] text-white rounded-md py-2 px-4"
           >
             Add Word
-          </button>
-          <button
+          </button> */}
+          <Button
+            style={{
+              width:"8rem",
+              textTransform: "none",
+              padding: "6px 16px",
+            }}
+            onClick={() => setModel(true)}
+            variant="contained"
+          >
+            Add Word
+          </Button>
+
+          {/* <button
             onClick={handleRemoveWord}
             className="bg-black  w-[150px] text-white rounded-md py-2 px-4"
           >
             Remove Word
-          </button>
-          <button
+          </button> */}
+          <Button
+            style={{
+              width:"8rem",
+              textTransform: "none",
+              padding: "6px 16px",
+            }}
+            onClick={handleRemoveWord}
+            variant="contained"
+          >
+            Remove Word
+          </Button>
+          {/* <button
             onClick={handleRemoveFolder}
             className="bg-[#E2202C]  w-[150px] text-white rounded-md py-2 px-4"
           >
             Delete Folder
-          </button>
+          </button> */}
+          <Button
+            style={{
+              width:"8rem",
+              textTransform: "none",
+              padding: "6px 16px",
+            }}
+            onClick={handleRemoveFolder}
+            variant="contained"
+          >
+            Delete Folder
+          </Button>
         </div>
       </div>
     </>

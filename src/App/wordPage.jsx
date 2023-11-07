@@ -3,6 +3,7 @@ import ButtonComponent from "../Components/buttonComponent";
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import Loading from "../Components/loading";
+import { Button } from "@mui/material";
 
 function WordPage() {
   const navigate = useNavigate();
@@ -133,11 +134,21 @@ function WordPage() {
             Text description of ASL sign
           </p>
 
-          <ButtonComponent
+          {/* <ButtonComponent
             onClick={() => navigate(`/add-to-folder/${wordId}`)}
             text="white"
             btnName="Add to Folder"
-          />
+          /> */}
+          <Button
+            style={{
+              textTransform: "none",
+              padding: "6px 16px",
+            }}
+            onClick={() => navigate(`/add-to-folder/${wordId}`)}
+            variant="contained"
+          >
+            Add to Folder
+          </Button>
         </div>
       )}
     </>

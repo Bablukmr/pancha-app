@@ -5,6 +5,7 @@ import ButtonComponent from "../Components/buttonComponent";
 import { useParams } from "react-router-dom";
 import ListLoading from "../Components/listLoading";
 import NotificationBox from "../Components/notificationbox";
+import { Button } from "@mui/material";
 
 export default function UserFolderPage() {
   const { wordId } = useParams();
@@ -96,7 +97,7 @@ export default function UserFolderPage() {
         />
       </div>
 
-      <div className="w-full h-[50vh] flex flex-col items-center justify-center">
+      <div className="w-full  flex flex-col items-center justify-center">
         <p className="my-3 ">Select Folder</p>
 
         {userFolder.length === 0 ? (
@@ -109,8 +110,8 @@ export default function UserFolderPage() {
         ) : (
           ""
         )}
-        <div className="min-h-[200px] w-[80%] mb-6 border border-[#f0f0f0]">
-          <ul className="w-full  my-4 max-h-[250px] overflow-auto flex flex-col items-start ">
+        <div className="min-h-[200px] w-[80%] mb-6 border border-[#f0f0f0] rounded-md">
+          <ul className="w-full  my-2 max-h-[250px] overflow-auto flex flex-col items-start ">
             {userFolder.map((keyword) => (
               <li
                 onClick={() => {
@@ -127,12 +128,15 @@ export default function UserFolderPage() {
           </ul>
         </div>
         {userFolder.length !== 0 && (
-          <ButtonComponent
-            onClick={handleClick}
-            btnName="Add"
-            width="[150px]"
-            text="white"
-          />
+           <Button
+           style={{
+             width: "110px",
+             textTransform: "none",
+             padding: "6px 16px",
+           }}
+           onClick={handleClick}
+           variant="contained"
+         >Add</Button>
         )}
       </div>
     </>
