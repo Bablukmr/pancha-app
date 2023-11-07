@@ -30,22 +30,22 @@ export default function UserFolderPage() {
   }, [token]);
 
   const getUserFolder = () => {
-    if (token) {
-      axios
-        .get("https://test.ranuvijay.me/pancha/user-folder", {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        })
-        .then((d) => {
-          setUserFolder(d?.data?.reverse());
-        })
-        .catch((err) => {
-          setNotificationTitle("Error !!");
-          setNotificationBody("Failed to get user folders, try again.");
-          setNotificationType("error");
-          shownotiftion();
-        });
+    if(token){
+    axios
+      .get("http://localhost:8000/pancha/user-folder", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((d) => {
+        setUserFolder(d?.data?.reverse());
+      })
+      .catch((err) => {
+        setNotificationTitle("Error !!");
+        setNotificationBody("Failed to get user folders, try again.");
+        setNotificationType("error");
+        shownotiftion();
+      });
     }
   };
 
@@ -58,7 +58,7 @@ export default function UserFolderPage() {
     } else {
       axios
         .post(
-          "https://test.ranuvijay.me/pancha/words-in-folder/",
+          "http://localhost:8000/pancha/words-in-folder/",
           {
             folder: selectedItemId,
             word: wordId,
