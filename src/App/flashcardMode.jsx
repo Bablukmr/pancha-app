@@ -166,12 +166,31 @@ function FlashcardMode() {
   };
 
   return (
-    <div className="w-full  h-[calc(100vh-100px)] pb-4 md:pb-6 flex flex-col items-center tify-center">
+    <div className="w-full bg-[green] h-[calc(100vh-100px)] pb-4 md:pb-6 flex flex-col items-center tify-center">
       <div className=" text-center w-full">
         <h1 className="text-2xl font-semibold">{name}</h1>
       </div>
+
+      <div className="w-[80%] mt-10  md:w-[50%] lg:w-[45%] xl:w-[40%] ">
+        <label className="">choose the different folder</label>
+        <div className="border-[#7c7c7f] mt-2 rounded-md border border-solid flex items-center px-2">
+          <select
+            // value={selectedFolder}
+            onChange={handleFolderChange}
+            placeholder="10-3-23"
+            className=" text-sm h-10 bg-white  border-none w-full outline-none px-2"
+          >
+            {allFolders?.map((d) => (
+              <option key={d.id} className="w-[200px]">
+                {d.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       <div
-        className="mt-20 px-1 ms:px-4
+        className="mt-14 px-1 ms:px-4
             w-[96%] md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col gap-y-5 md:gap-y-6 lg:gap-y-8 
                rounded-md items-center justify-center"
       >
