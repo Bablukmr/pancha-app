@@ -7,6 +7,7 @@ import NotificationBox from "../Components/notificationbox";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
+import ButtonComponent from "../Components/buttonComponent";
 
 export default function ViewEditPage() {
   const navigate = useNavigate();
@@ -195,7 +196,7 @@ export default function ViewEditPage() {
               >
                 <AiOutlineClose />
               </div>
-              <form className="w-full flex flex-col items-center justify-center">
+              <form className="w-full flex flex-col gap-6 items-center justify-center">
                 <div className="w-[80%]">
                   <p className="text-sm my-3">New Word Name</p>
                   <Autocomplete
@@ -205,7 +206,7 @@ export default function ViewEditPage() {
                     onChange={handleChange}
                     options={apiWords}
                     getOptionLabel={(option) => option.name}
-                    style={{ width: 250 }}
+                    style={{ width: "100%" }}
                     renderInput={(params) =>
                       showRedirectButton ? (
                         <div>
@@ -226,12 +227,20 @@ export default function ViewEditPage() {
                     }}
                   />
                 </div>
-                <button
+                {/* <button
                   onClick={handleAddWord}
                   className="w-[80%]  mt-6 text-center py-2 rounded-md bg-blue-400 text-white"
                 >
                   Add New Word
-                </button>
+                </button> */}
+
+                <ButtonComponent
+                  btnName="Add Word"
+                  padding={"12px "}
+                  width="80%"
+                  text="white"
+                  onClick={handleAddWord}
+                />
               </form>
             </div>
           </div>
@@ -245,9 +254,9 @@ export default function ViewEditPage() {
           >
             Add Word
           </button> */}
-          <Button
+          {/* <Button
             style={{
-              width:"8rem",
+              width: "8rem",
               textTransform: "none",
               padding: "6px 16px",
             }}
@@ -255,15 +264,16 @@ export default function ViewEditPage() {
             variant="contained"
           >
             Add Word
-          </Button>
+          </Button> */}
+          <ButtonComponent
+            btnName="Add Word"
+            padding={"6px "}
+            width="120px"
+            text="white"
+            onClick={() => setModel(true)}
+          />
 
-          {/* <button
-            onClick={handleRemoveWord}
-            className="bg-black  w-[150px] text-white rounded-md py-2 px-4"
-          >
-            Remove Word
-          </button> */}
-          <Button
+          {/* <Button
             style={{
               width:"8rem",
               textTransform: "none",
@@ -273,14 +283,16 @@ export default function ViewEditPage() {
             variant="contained"
           >
             Remove Word
-          </Button>
-          {/* <button
-            onClick={handleRemoveFolder}
-            className="bg-[#E2202C]  w-[150px] text-white rounded-md py-2 px-4"
-          >
-            Delete Folder
-          </button> */}
-          <Button
+          </Button> */}
+          <ButtonComponent
+            btnName=" Remove Word"
+            padding={"6px "}
+            width="120px"
+            text="white"
+            onClick={handleRemoveWord}
+          />
+
+          {/* <Button
             style={{
               width:"8rem",
               textTransform: "none",
@@ -290,7 +302,14 @@ export default function ViewEditPage() {
             variant="contained"
           >
             Delete Folder
-          </Button>
+          </Button> */}
+          <ButtonComponent
+            btnName=" Delete Folder"
+            padding={"6px "}
+            width="120px"
+            text="white"
+            onClick={handleRemoveFolder}
+          />
         </div>
       </div>
     </>

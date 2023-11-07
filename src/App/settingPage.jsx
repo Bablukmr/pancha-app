@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ListLoading from "../Components/listLoading";
 import axios from "axios";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 
 function SettingPage() {
@@ -121,8 +121,8 @@ function SettingPage() {
 
         <div className="flex flex-col py-2 border-b-2 border-black">
           <p className="my-2">Change my password</p>
-          <form className="w-full flex flex-col items-center justify-center p-2 gap-y-3">
-            <div className="w-full">
+          <form className="w-full flex flex-col items-center justify-center p-2 gap-y-5">
+            {/* <div className="w-full">
               <label className="text-sm">Old Password</label>
               <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center ">
                 <input
@@ -131,8 +131,16 @@ function SettingPage() {
                   className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
                 />
               </div>
-            </div>
-            <div className="w-full">
+            </div> */}
+            <TextField
+              size="small"
+              id="outlined-basic"
+              label="Old Password"
+              variant="outlined"
+              style={{ width: "100%" }}
+            />
+
+            {/* <div className="w-full">
               <label className="text-sm">New Password</label>
               <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
                 <input
@@ -141,8 +149,15 @@ function SettingPage() {
                   className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
                 />
               </div>
-            </div>
-            <div className="w-full">
+            </div> */}
+            <TextField
+              size="small"
+              id="outlined-basic"
+              label="New Password"
+              variant="outlined"
+              style={{ width: "100%" }}
+            />
+            {/* <div className="w-full">
               <label className="text-sm">Confirm New Password</label>
               <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
                 <input
@@ -151,7 +166,14 @@ function SettingPage() {
                   className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
                 />
               </div>
-            </div>
+            </div> */}
+               <TextField
+              size="small"
+              id="outlined-basic"
+              label="Confirm New Password"
+              variant="outlined"
+              style={{ width: "100%" }}
+            />
 
             <div className="w-full mt-3 flex flex-col items-start justify-center gap-2">
               {/* <button
@@ -162,48 +184,72 @@ function SettingPage() {
               >
                 Change Password
               </button> */}
-              <Button
-              style={{textTransform:"none" , padding: "6px 16px" }}
+              {/* <Button
+                style={{ textTransform: "none", padding: "6px 16px" }}
                 onClick={(e) => {
                   e.preventDefault(), window.confirm("Change Password");
                 }}
                 variant="contained"
               >
                 Change Password
-              </Button>
+              </Button> */}
+              <ButtonComponent
+                btnName="Change Password"
+                padding={"6px "}
+                loading={true}
+                width="140px"
+                text="white"
+                onClick={(e) => {
+                  e.preventDefault(), window.confirm("Change Password");
+                }}
+              />
             </div>
           </form>
         </div>
         <div className="w-full mb-[60px] px-2 flex flex-col justify-between items-start gap-4 mt-6">
-          {/* <ButtonComponent
-            onClick={() => navigate("/settings/feedback")}
-            bg="black"
-            text="white"
-            btnName="Provide Feedback"
-          /> */}
-
-          <Button
-          style={{textTransform:"none" , padding: "6px 16px" }}
+          {/* <Button
+            style={{ textTransform: "none", padding: "6px 16px" }}
             onClick={() => navigate("/settings/feedback")}
             variant="contained"
           >
             Provide Feedback
-          </Button>
+          </Button> */}
 
-          {/* <ButtonComponent
-            onClick={handleLogout}
-            bg="black"
+          <ButtonComponent
+            btnName="Provide Feedback"
+            padding={"6px "}
+           
+            width="140px"
             text="white"
-            btnName="Logout"
-          /> */}
-          <Button
+            onClick={() => navigate("/settings/feedback")}
+          />
+
+          <ButtonComponent
+            btnName="Create New User"
+            padding={"6px "}
+           
+            width="140px"
+            text="white"
+            onClick={() => navigate("/new-user")}
+          />
+
+          {/* <Button
           style={{textTransform:"none" , padding: "6px 16px" }}
             onClick={handleLogout}
             endIcon={<LogoutIcon />}
             variant="contained"
           >
             Logout
-          </Button>
+          </Button> */}
+          <ButtonComponent
+            btnName="Logout"
+            padding={"6px "}
+            startIcon={<LogoutIcon />}
+            loading={true}
+            width="100px"
+            text="white"
+            onClick={handleLogout}
+          />
         </div>
       </div>
     </div>

@@ -6,7 +6,8 @@ import ListLoading from "../Components/listLoading";
 import NotificationBox from "../Components/notificationbox";
 import { useSelector } from "react-redux";
 import { Button, CircularProgress } from "@mui/material";
-import { AiFillFolderOpen,AiFillFolderAdd } from "react-icons/ai";
+import { AiFillFolderOpen, AiFillFolderAdd } from "react-icons/ai";
+import ButtonComponent from "../Components/buttonComponent";
 
 function LibraryPage() {
   const token = useSelector((state) => state.AuthReducer.token);
@@ -26,7 +27,7 @@ function LibraryPage() {
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationBody, setNotificationBody] = useState(null);
   const [selectedFolder, setSelectedFolder] = useState(null);
-  
+
   useEffect(() => {
     axios
       .get("https://testapi.nhustle.in/pancha/public-folder", {
@@ -53,6 +54,7 @@ function LibraryPage() {
 
   const getUserFolder = () => {
     setUserLoading(true);
+    if(token){
     axios
       .get("https://testapi.nhustle.in/pancha/user-folder", {
         headers: {
@@ -73,6 +75,7 @@ function LibraryPage() {
         setNotificationType("error");
         shownotiftion();
       });
+    }
   };
 
   const handleViewEdit = () => {
@@ -141,7 +144,6 @@ function LibraryPage() {
     setModel(false);
   };
 
-
   return (
     <>
       <div
@@ -180,15 +182,11 @@ function LibraryPage() {
                     }}
                     key={d.id}
                     className={`h-[40px] w-full flex items-center justify-start gap-5 hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 border-b-2 border-[#f2f2f2] cursor-pointer ${
-                      d.id === selectedFolder
-                        ? "bg-slate-600 text-white"
-                        : ""
+                      d.id === selectedFolder ? "bg-slate-600 text-white" : ""
                     }`}
                   >
                     <AiFillFolderOpen className="text-xl font-extrabold" />
-                    <li className={`w-full h-full`}>
-                      {d.name}
-                    </li>
+                    <li className={`w-full h-full`}>{d.name}</li>
                   </div>
                 ))}
               </ul>
@@ -218,15 +216,11 @@ function LibraryPage() {
                     }}
                     key={d.id}
                     className={`h-[40px] w-full flex items-center justify-start gap-5 hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 border-b-2 border-[#f2f2f2] cursor-pointer ${
-                      d.id === selectedFolder
-                        ? "bg-slate-600 text-white"
-                        : ""
+                      d.id === selectedFolder ? "bg-slate-600 text-white" : ""
                     }`}
                   >
                     <AiFillFolderOpen className="text-xl font-extrabold" />
-                    <li className={`w-full h-full`}>
-                      {d.name}
-                    </li>
+                    <li className={`w-full h-full`}>{d.name}</li>
                   </div>
                 ))}
               </ul>
@@ -254,7 +248,7 @@ function LibraryPage() {
                     />
                   </div>
 
-                  <Button
+                  {/* <Button
                     disabled={loading}
                     style={{
                       width: "100%",
@@ -275,7 +269,25 @@ function LibraryPage() {
                     }
                   >
                     Add New Folder
-                  </Button>
+                  </Button> */}
+                  <ButtonComponent
+                    btnName="View/Edit Folder"
+                    disabled={loading}
+                    padding={"8px "}
+                    width="100%"
+                    text="white"
+                    startIcon={
+                      loading ? (
+                        <CircularProgress
+                          style={{ color: "#A6A6A6" }}
+                          size="1.5rem"
+                        />
+                      ) : (
+                        ""
+                      )
+                    }
+                    onClick={handleAddFolder}
+                  />
                 </div>
                 {/* <button
                   disabled={loading}
@@ -291,13 +303,7 @@ function LibraryPage() {
           ""
         )}
         <div className="w-[80%] md:w-[50%] lg:w-[35%]  mt-4 flex flex-col items-start justify-start gap-3 mb-[70px]">
-          {/* <button
-            onClick={() => setModel(true)}
-            className="bg-[#A0E200] text-white rounded-md py-2 px-4"
-          >
-            Add New Folder
-          </button> */}
-          <Button
+          {/* <Button
             style={{
               textTransform: "none",
               padding: "6px 16px",
@@ -306,42 +312,34 @@ function LibraryPage() {
             variant="contained"
           >
             Add New Folder
-          </Button>
-          {/* <button
-            onClick={handleViewEdit}
-            className="bg-[#E2202C] text-white rounded-md py-2 px-4"
-          >
-            View/Edit Folder
-          </button> */}
-
-          <Button
-            style={{
-              textTransform: "none",
-              padding: "6px 16px",
-            }}
-            onClick={handleViewEdit}
-            variant="contained"
-          >
-            View/Edit Folder
-          </Button>
-          {/* <ButtonComponent
-            onClick={() => {
-              if (!selectedFolderId) {
-                setNotificationTitle("Error !!");
-                setNotificationBody("Please select folder.");
-                setNotificationType("error");
-                shownotiftion();
-              } else {
-                navigate(
-                  `/flashcard/${selectedFolderName}/${selectedFolderId}`
-                );
-              }
-            }}
-            bg="white"
+          </Button> */}
+          <ButtonComponent
+            btnName="Add New Folder"
+            padding={"6px "}
+            width="135px"
             text="white"
-            btnName="View Folder in Flashcard Mode"
-          /> */}
+            onClick={() => setModel(true)}
+          />
+          {/* 
           <Button
+            style={{
+              textTransform: "none",
+              padding: "6px 16px",
+            }}
+            onClick={handleViewEdit}
+            variant="contained"
+          >
+            View/Edit Folder
+          </Button> */}
+          <ButtonComponent
+            btnName="View/Edit Folder"
+            padding={"6px "}
+            width="135px"
+            text="white"
+            onClick={handleViewEdit}
+          />
+
+          {/* <Button
             style={{
               textTransform: "none",
               padding: "6px 16px",
@@ -361,7 +359,26 @@ function LibraryPage() {
             variant="contained"
           >
             View Folder in Flashcard Mode
-          </Button>
+          </Button> */}
+          <ButtonComponent
+            btnName="View Folder in Flashcard Mode"
+            padding={"6px "}
+            loading={true}
+            width="230px"
+            text="white"
+            onClick={() => {
+              if (!selectedFolderId) {
+                setNotificationTitle("Error !!");
+                setNotificationBody("Please select folder.");
+                setNotificationType("error");
+                shownotiftion();
+              } else {
+                navigate(
+                  `/flashcard/${selectedFolderName}/${selectedFolderId}`
+                );
+              }
+            }}
+          />
         </div>
       </div>
     </>

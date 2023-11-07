@@ -3,9 +3,10 @@ import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NotificationBox from "../Components/notificationbox";
-import { Button, CircularProgress } from "@mui/material";
+import { Button, CircularProgress, TextField, Typography } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
+import ButtonComponent from "../Components/buttonComponent";
 
 function ProvideFeedbackPage() {
   const [newWord, setNewWord] = useState("");
@@ -110,8 +111,15 @@ function ProvideFeedbackPage() {
         />
       </div>
       <div className="w-full flex flex-col items-center justify-center">
+        <Typography
+          variant="h6"
+          component="h6"
+          className="text-center text-blue-600"
+        >
+          Feedback
+        </Typography>
         <form className="w-[80%] md:w-[50%] lg:w-[35%] mt-[50px] flex gap-3 flex-col items-center justify-center">
-          <div className="w-full">
+          {/* <div className="w-full">
             <label className="text-sm">
               Suggest new word for the dictionary
             </label>
@@ -123,12 +131,21 @@ function ProvideFeedbackPage() {
                 className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
               />
             </div>
-          </div>
-          <div className="w-full">
+          </div> */}
+          <TextField
+            value={newWord}
+            onChange={(e) => setNewWord(e.target.value)}
+            id="outlined-basic"
+            label="Suggest new word for the dictionary"
+            variant="outlined"
+            style={{ width: "100%" }}
+          />
+
+          <div className="w-full text-sm mb-3">
             <p>Comments? Questions? Testimonials? </p>
             <p>Please write subject and message below </p>
           </div>
-          <div className="w-full">
+          {/* <div className="w-full">
             <label className="text-sm">Subject</label>
             <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
               <input
@@ -137,8 +154,17 @@ function ProvideFeedbackPage() {
                 className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
               />
             </div>
-          </div>
-          <div className="w-full">
+          </div> */}
+          <TextField
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
+            id="outlined-basic"
+            label="Subject"
+            variant="outlined"
+            style={{ width: "100%" }}
+          />
+
+          {/* <div className="w-full">
             <label className="text-sm">Message</label>
             <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
               <textarea
@@ -147,7 +173,16 @@ function ProvideFeedbackPage() {
                 className="text-sm h-[100px] border-none w-full outline-blue-400 p-2 rounded-md"
               />
             </div>
-          </div>
+          </div> */}
+          <TextField
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            id="outlined-basic"
+            label="Message"
+            multiline
+            minRows={4}
+            style={{ width: "100%",marginTop:"15px" }}
+          />
           <div className="w-full my-2">
             {/* <button
               disabled={submitLoading}
@@ -156,7 +191,7 @@ function ProvideFeedbackPage() {
             >
               {submitLoading ? "Submit..." : "Submit"}
             </button> */}
-            <Button
+            {/* <Button
               disabled={submitLoading}
               onClick={handleSubmit}
               style={{ textTransform: "none", padding: "6px 26px" }}
@@ -173,7 +208,26 @@ function ProvideFeedbackPage() {
               }
             >
               Send
-            </Button>
+            </Button> */}
+            <ButtonComponent
+              disabled={submitLoading}
+              btnName=" Send"
+              padding={"6px 26px"}
+              startIcon={
+                submitLoading ? (
+                  <CircularProgress
+                    style={{ color: "#A6A6A6" }}
+                    size="1.5rem"
+                  />
+                ) : (
+                  <SendIcon />
+                )
+              }
+              loading={true}
+              width="100px"
+              text="white"
+              onClick={handleSubmit}
+            />
           </div>
         </form>
       </div>

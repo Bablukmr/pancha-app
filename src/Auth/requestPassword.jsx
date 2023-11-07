@@ -1,5 +1,6 @@
 import { Button, FormControl, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import ButtonComponent from "../Components/buttonComponent";
 
 function RequestPassword() {
   const navigate = useNavigate();
@@ -9,17 +10,20 @@ function RequestPassword() {
     navigate("/auth");
   };
 
-//bg-gradient-to-b from-blue-200 to-blue-400
+  //bg-gradient-to-b from-blue-200 to-blue-400
 
   return (
     <div className="w-full h-screen flex flex-col items-center justify-center ">
       <h1 className="text-2xl my-4 absolute top-[60px]">LOGO</h1>
       <div className="w-[90%] md:w-[50%] lg:w-[35%] bg-white p-4 rounded-lg shadow-lg">
-        <Typography variant="h6" component="h6" className="text-center my-11 text-blue-600">
+        <Typography
+          variant="h6"
+          component="h6"
+          className="text-center my-11 text-blue-600"
+        >
           Password Reset
         </Typography>
         <FormControl className="w-full flex flex-col items-center justify-center gap-6">
-
           <TextField
             type="email"
             label="Email-Id"
@@ -27,7 +31,7 @@ function RequestPassword() {
             style={{ width: "100%" }}
           />
 
-          <Button
+          {/* <Button
             onClick={handleRequest}
             style={{
               width: "100%",
@@ -39,7 +43,15 @@ function RequestPassword() {
             variant="contained"
           >
             Request Password
-          </Button>
+          </Button> */}
+          <ButtonComponent
+            btnName=" Request Password"
+            padding={"10px "}
+            loading={true}
+            width="100%"
+            text="white"
+            onClick={handleRequest}
+          />
         </FormControl>
       </div>
     </div>

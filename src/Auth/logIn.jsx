@@ -9,6 +9,7 @@ import {
   FormControl,
   TextField,
 } from "@mui/material";
+import ButtonComponent from "../Components/buttonComponent";
 
 function Login() {
   const dispatch = useDispatch();
@@ -103,7 +104,6 @@ function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
-             
               id="outlined-basic"
               label="Username"
               variant="outlined"
@@ -127,7 +127,7 @@ function Login() {
               Forgot credentials?
             </Link>
 
-            <Button
+            {/* <Button
               disabled={LoginLoading}
               onClick={handleLogin}
               style={{
@@ -144,7 +144,26 @@ function Login() {
               ) : (
                 "Login"
               )}
-            </Button>
+            </Button> */}
+            <ButtonComponent
+              padding={"10px 26px"}
+              loading={true}
+              startIcon={
+                LoginLoading ? (
+                  <CircularProgress
+                    style={{ color: "#A6A6A6" }}
+                    size="1.5rem"
+                  />
+                ) : (
+                  ""
+                )
+              }
+              width="100%"
+              btnName="Login"
+              disabled={LoginLoading}
+              text="white"
+              onClick={handleLogin}
+            />
 
             <p className="mt-2">
               Don't have an account?{" "}

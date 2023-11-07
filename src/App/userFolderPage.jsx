@@ -26,9 +26,10 @@ export default function UserFolderPage() {
 
   useEffect(() => {
     getUserFolder();
-  }, []);
+  }, [token]);
 
   const getUserFolder = () => {
+    if(token){
     axios
       .get("https://test.ranuvijay.me/pancha/user-folder", {
         headers: {
@@ -44,6 +45,7 @@ export default function UserFolderPage() {
         setNotificationType("error");
         shownotiftion();
       });
+    }
   };
 
   const handleClick = () => {
@@ -113,6 +115,7 @@ export default function UserFolderPage() {
         <div className="min-h-[200px] w-[80%] mb-6 border border-[#f0f0f0] rounded-md">
           <ul className="w-full  my-2 max-h-[250px] overflow-auto flex flex-col items-start ">
             {userFolder.map((keyword) => (
+              // <div></div>
               <li
                 onClick={() => {
                   setSelectedItemId(keyword.id);
@@ -124,6 +127,7 @@ export default function UserFolderPage() {
               >
                 {keyword.name}
               </li>
+              
             ))}
           </ul>
         </div>

@@ -6,11 +6,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Notificationbox from "../Components/notificationbox";
 import ListLoading from "../Components/listLoading";
+import { useNavigate } from "react-router-dom";
 
 function DictionaryPage() {
   const token = useSelector((state) => state.AuthReducer.token);
   const [words, setWords] = useState([]);
-
+  const navigate = useNavigate();
   const [showNotification, setShowNotification] = useState(false);
   const [notificationType, setNotificationType] = useState(null);
   const [notificationTitle, setNotificationTitle] = useState(null);
@@ -25,23 +26,35 @@ function DictionaryPage() {
 
   useEffect(() => {
     // console.log("WWEEWE",token);
-    axios
-      .get("https://testapi.nhustle.in/pancha/words/", {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .then((res) => {
-        setWords(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        setNotificationTitle("Error !!");
-        setNotificationBody("Something went wrong fetching words.");
-        setNotificationType("error");
-        shownotiftion();
-      });
+    if (token) {
+      axios
+        .get("https://testapi.nhustle.in/pancha/words/", {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then((res) => {
+          // setWords(res.data);
+          const myData = res.data?
+            .sort(function (a, b) {
+              if (a?.name?.toLowerCase() < b.name.toLowerCase()) return -1;
+              if (a?.name?.toLowerCase() > b.name.toLowerCase()) return 1;
+              return 0;
+            })
+            
+            setWords(myData)
+         
+          console.log(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+          setNotificationTitle("Error !!");
+          setNotificationBody("Something went wrong fetching words.");
+          setNotificationType("error");
+          shownotiftion();
+        });
+    }
   }, [token]);
 
   return (
@@ -59,20 +72,31 @@ function DictionaryPage() {
         />
       </div>
       <div className="w-full flex flex-col items-center justify-center">
-        <h2 className="w-full mt-4 mb-6 text-center text-xl">Words</h2>
+        <h2 className="w-full h-[50px] bg-white fixed z-10 top-[40px] flex items-center justify-center text-center text-xl">
+          Words
+        </h2>
 
         {loading ? (
-          <div className="w-[80%] md:w-[50%] lg:w-[35%] h-[65vh] flex items-center ">
+          <div className="w-[100%] md:w-[50%] lg:w-[35%] h-[calc(100vh-100px)] flex items-center ">
             <ListLoading />
           </div>
         ) : (
-          <List className="w-[80%] md:w-[50%] lg:w-[35%] h-[65vh] overflow-auto">
-            {words.map((val) => (
-              <ListItem key={val.id} component="div">
-                <ListItemText primary={val.name} />
-              </ListItem>
-            ))}
-          </List>
+          <div className="w-[100%]  md:w-[50%]  lg:w-[35%] mt-8">
+            <List className="   overflow-auto">
+              {words.map((val) => (
+                // <div key={val.id} className="flex flex-col border-b-2 ">
+                <ListItem key={val.id} component="div" className="border-b-2 ">
+                  <ListItemText
+                    primary={val.name}
+                    className=""
+                    onClick={() => navigate(`/word/${val.name}/${val.id}`)}
+                  />
+                </ListItem>
+
+                //  </div>
+              ))}
+            </List>
+          </div>
         )}
       </div>
     </>
