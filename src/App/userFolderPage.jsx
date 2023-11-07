@@ -30,7 +30,7 @@ export default function UserFolderPage() {
 
   const getUserFolder = () => {
     axios
-      .get("https://test.ranuvijay.me/pancha/user-folder", {
+      .get("http://localhost:8000/pancha/user-folder", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -55,7 +55,7 @@ export default function UserFolderPage() {
     } else {
       axios
         .post(
-          "https://test.ranuvijay.me/pancha/words-in-folder/",
+          "http://localhost:8000/pancha/words-in-folder/",
           {
             folder: selectedItemId,
             word: wordId,

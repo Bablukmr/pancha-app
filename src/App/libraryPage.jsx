@@ -6,7 +6,7 @@ import ListLoading from "../Components/listLoading";
 import NotificationBox from "../Components/notificationbox";
 import { useSelector } from "react-redux";
 import { Button, CircularProgress } from "@mui/material";
-import { AiFillFolderOpen,AiFillFolderAdd } from "react-icons/ai";
+import { AiFillFolderOpen, AiFillFolderAdd } from "react-icons/ai";
 
 function LibraryPage() {
   const token = useSelector((state) => state.AuthReducer.token);
@@ -26,35 +26,39 @@ function LibraryPage() {
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationBody, setNotificationBody] = useState(null);
   const [selectedFolder, setSelectedFolder] = useState(null);
-  
-  useEffect(() => {
-    axios
-      .get("https://testapi.nhustle.in/pancha/public-folder", {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .then((res) => {
-        setPublicFolder(res.data);
-        setPublicLoading(false);
-      })
-      .catch((err) => {
-        setPublicLoading(false);
-        setNotificationTitle("Error !!");
-        setNotificationBody("Something went wrong fetching public folders.");
-        setNotificationType("error");
-        shownotiftion();
-      });
-  }, []);
 
   useEffect(() => {
-    getUserFolder();
-  }, []);
+    if (token) {
+      axios
+        .get("http://localhost:8000/pancha/public-folder", {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then((res) => {
+          setPublicFolder(res.data);
+          setPublicLoading(false);
+        })
+        .catch((err) => {
+          setPublicLoading(false);
+          setNotificationTitle("Error !!");
+          setNotificationBody("Something went wrong fetching public folders.");
+          setNotificationType("error");
+          shownotiftion();
+        });
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      getUserFolder();
+    }
+  }, [token]);
 
   const getUserFolder = () => {
     setUserLoading(true);
     axios
-      .get("https://testapi.nhustle.in/pancha/user-folder", {
+      .get("http://localhost:8000/pancha/user-folder", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -105,7 +109,7 @@ function LibraryPage() {
     setLoading(true);
     axios
       .post(
-        "https://testapi.nhustle.in/pancha/folder/",
+        "http://localhost:8000/pancha/folder/",
         {
           name: newFolder,
           pulic_folder: false,
@@ -140,7 +144,6 @@ function LibraryPage() {
     setNewFolder("");
     setModel(false);
   };
-
 
   return (
     <>
@@ -180,15 +183,11 @@ function LibraryPage() {
                     }}
                     key={d.id}
                     className={`h-[40px] w-full flex items-center justify-start gap-5 hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 border-b-2 border-[#f2f2f2] cursor-pointer ${
-                      d.id === selectedFolder
-                        ? "bg-slate-600 text-white"
-                        : ""
+                      d.id === selectedFolder ? "bg-slate-600 text-white" : ""
                     }`}
                   >
                     <AiFillFolderOpen className="text-xl font-extrabold" />
-                    <li className={`w-full h-full`}>
-                      {d.name}
-                    </li>
+                    <li className={`w-full h-full`}>{d.name}</li>
                   </div>
                 ))}
               </ul>
@@ -218,15 +217,11 @@ function LibraryPage() {
                     }}
                     key={d.id}
                     className={`h-[40px] w-full flex items-center justify-start gap-5 hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 border-b-2 border-[#f2f2f2] cursor-pointer ${
-                      d.id === selectedFolder
-                        ? "bg-slate-600 text-white"
-                        : ""
+                      d.id === selectedFolder ? "bg-slate-600 text-white" : ""
                     }`}
                   >
                     <AiFillFolderOpen className="text-xl font-extrabold" />
-                    <li className={`w-full h-full`}>
-                      {d.name}
-                    </li>
+                    <li className={`w-full h-full`}>{d.name}</li>
                   </div>
                 ))}
               </ul>

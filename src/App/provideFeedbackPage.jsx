@@ -60,7 +60,7 @@ function ProvideFeedbackPage() {
     setSubmitLoading(true);
     axios
       .post(
-        "https://testapi.nhustle.in/pancha/feedback/",
+        "http://localhost:8000/pancha/feedback/",
         {
           word: newWord,
           subject: subject,
