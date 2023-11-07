@@ -3,6 +3,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NotificationBox from "../Components/notificationbox";
+import { Button, CircularProgress } from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import { LoadingButton } from "@mui/lab";
 
 function ProvideFeedbackPage() {
   const [newWord, setNewWord] = useState("");
@@ -57,7 +60,7 @@ function ProvideFeedbackPage() {
     setSubmitLoading(true);
     axios
       .post(
-        "https://test.ranuvijay.me/pancha/feedback/",
+        "https://testapi.nhustle.in/pancha/feedback/",
         {
           word: newWord,
           subject: subject,
@@ -146,13 +149,31 @@ function ProvideFeedbackPage() {
             </div>
           </div>
           <div className="w-full my-2">
-            <button
+            {/* <button
               disabled={submitLoading}
               onClick={handleSubmit}
               className="bg-black text-white rounded-md px-10 py-2 cursor-pointer"
             >
               {submitLoading ? "Submit..." : "Submit"}
-            </button>
+            </button> */}
+            <Button
+              disabled={submitLoading}
+              onClick={handleSubmit}
+              style={{ textTransform: "none", padding: "6px 26px" }}
+              variant="contained"
+              endIcon={
+                submitLoading ? (
+                  <CircularProgress
+                    style={{ color: "#A6A6A6" }}
+                    size="1.5rem"
+                  />
+                ) : (
+                  <SendIcon />
+                )
+              }
+            >
+              Send
+            </Button>
           </div>
         </form>
       </div>

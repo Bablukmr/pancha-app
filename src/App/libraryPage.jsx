@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import ButtonComponent from "../Components/buttonComponent";
 import { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import axios from "axios";
 import ListLoading from "../Components/listLoading";
 import NotificationBox from "../Components/notificationbox";
 import { useSelector } from "react-redux";
+import { Button, CircularProgress } from "@mui/material";
+import { AiFillFolderOpen,AiFillFolderAdd } from "react-icons/ai";
 
 function LibraryPage() {
   const token = useSelector((state) => state.AuthReducer.token);
@@ -24,10 +25,11 @@ function LibraryPage() {
   const [notificationType, setNotificationType] = useState(null);
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationBody, setNotificationBody] = useState(null);
-
+  const [selectedFolder, setSelectedFolder] = useState(null);
+  
   useEffect(() => {
     axios
-      .get("https://test.ranuvijay.me/pancha/public-folder", {
+      .get("https://testapi.nhustle.in/pancha/public-folder", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -52,7 +54,7 @@ function LibraryPage() {
   const getUserFolder = () => {
     setUserLoading(true);
     axios
-      .get("https://test.ranuvijay.me/pancha/user-folder", {
+      .get("https://testapi.nhustle.in/pancha/user-folder", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -103,7 +105,7 @@ function LibraryPage() {
     setLoading(true);
     axios
       .post(
-        "https://test.ranuvijay.me/pancha/folder/",
+        "https://testapi.nhustle.in/pancha/folder/",
         {
           name: newFolder,
           pulic_folder: false,
@@ -139,6 +141,7 @@ function LibraryPage() {
     setModel(false);
   };
 
+
   return (
     <>
       <div
@@ -167,20 +170,26 @@ function LibraryPage() {
                 <ListLoading />
               </div>
             ) : (
-              <ul className="w-full min-h-[120px] max-h-[150px]  overflow-y-scroll flex flex-col items-start  ">
+              <ul className="w-full min-h-[120px] max-h-[160px] text-base overflow-y-scroll flex flex-col items-start">
                 {publicFolder.map((d) => (
-                  <li
+                  <div
                     onClick={() => {
+                      setSelectedFolder(d.id);
                       setSelectedFolderName(d.name);
                       setSelectedFolderId(d.id);
                     }}
                     key={d.id}
-                    className={`h-[40px] hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 w-full border-b-2 border-[#f2f2f2] cursor-pointer ${
-                      d.id === selectedFolderId ? "bg-slate-600 text-white" : ""
-                    } `}
+                    className={`h-[40px] w-full flex items-center justify-start gap-5 hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 border-b-2 border-[#f2f2f2] cursor-pointer ${
+                      d.id === selectedFolder
+                        ? "bg-slate-600 text-white"
+                        : ""
+                    }`}
                   >
-                    {d.name}
-                  </li>
+                    <AiFillFolderOpen className="text-xl font-extrabold" />
+                    <li className={`w-full h-full`}>
+                      {d.name}
+                    </li>
+                  </div>
                 ))}
               </ul>
             )}
@@ -199,27 +208,33 @@ function LibraryPage() {
                 <ListLoading />
               </div>
             ) : (
-              <ul className="w-full min-h-[120px] max-h-[150px]  overflow-y-scroll flex flex-col items-start ">
+              <ul className="w-full min-h-[120px] max-h-[160px] text-base overflow-y-scroll flex flex-col items-start">
                 {userFolder.map((d) => (
-                  <li
+                  <div
                     onClick={() => {
+                      setSelectedFolder(d.id);
                       setSelectedFolderName(d.name);
                       setSelectedFolderId(d.id);
                     }}
                     key={d.id}
-                    className={`h-[40px] hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 w-full border-b-2 border-[#f2f2f2] cursor-pointer ${
-                      d.id === selectedFolderId ? "bg-slate-600 text-white" : ""
-                    } `}
+                    className={`h-[40px] w-full flex items-center justify-start gap-5 hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 border-b-2 border-[#f2f2f2] cursor-pointer ${
+                      d.id === selectedFolder
+                        ? "bg-slate-600 text-white"
+                        : ""
+                    }`}
                   >
-                    {d.name}
-                  </li>
+                    <AiFillFolderOpen className="text-xl font-extrabold" />
+                    <li className={`w-full h-full`}>
+                      {d.name}
+                    </li>
+                  </div>
                 ))}
               </ul>
             )}
           </div>
         </div>
         {model ? (
-          <div className="w-full fixed top-[50px] bottom-[50px] bg-[#18171741] flex items-center justify-center">
+          <div className="w-full fixed z-10 top-[50px] bottom-[50px] bg-[#18171741] flex items-center justify-center">
             <div className="w-[80%] md:w-[50%] lg:w-[35%] h-[300px] relative shadow-md rounded-md bg-white opacity-100 flex flex-col items-center justify-center">
               <div
                 onClick={closeModel}
@@ -228,7 +243,7 @@ function LibraryPage() {
                 <AiOutlineClose />
               </div>
               <form className="w-full flex flex-col items-center justify-center">
-                <div className="w-[80%]">
+                <div className="w-[80%] flex flex-col gap-5">
                   <label className="text-sm">New Folder Name</label>
                   <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
                     <input
@@ -238,14 +253,37 @@ function LibraryPage() {
                       className="text-sm h-10 border-none w-full outline-[.5px] outline-blue-400 px-2 rounded-md"
                     />
                   </div>
+
+                  <Button
+                    disabled={loading}
+                    style={{
+                      width: "100%",
+                      textTransform: "none",
+                      padding: "8px 16px",
+                    }}
+                    onClick={handleAddFolder}
+                    variant="contained"
+                    endIcon={
+                      loading ? (
+                        <CircularProgress
+                          style={{ color: "#A6A6A6" }}
+                          size="1.5rem"
+                        />
+                      ) : (
+                        ""
+                      )
+                    }
+                  >
+                    Add New Folder
+                  </Button>
                 </div>
-                <button
+                {/* <button
                   disabled={loading}
                   onClick={handleAddFolder}
                   className="w-[80%]  mt-6 text-center py-2 rounded-md bg-blue-400 text-white"
                 >
                   {loading ? "Added.." : "Add New Folder"}
-                </button>
+                </button> */}
               </form>
             </div>
           </div>
@@ -253,19 +291,40 @@ function LibraryPage() {
           ""
         )}
         <div className="w-[80%] md:w-[50%] lg:w-[35%]  mt-4 flex flex-col items-start justify-start gap-3 mb-[70px]">
-          <button
+          {/* <button
             onClick={() => setModel(true)}
             className="bg-[#A0E200] text-white rounded-md py-2 px-4"
           >
             Add New Folder
-          </button>
-          <button
+          </button> */}
+          <Button
+            style={{
+              textTransform: "none",
+              padding: "6px 16px",
+            }}
+            onClick={() => setModel(true)}
+            variant="contained"
+          >
+            Add New Folder
+          </Button>
+          {/* <button
             onClick={handleViewEdit}
             className="bg-[#E2202C] text-white rounded-md py-2 px-4"
           >
             View/Edit Folder
-          </button>
-          <ButtonComponent
+          </button> */}
+
+          <Button
+            style={{
+              textTransform: "none",
+              padding: "6px 16px",
+            }}
+            onClick={handleViewEdit}
+            variant="contained"
+          >
+            View/Edit Folder
+          </Button>
+          {/* <ButtonComponent
             onClick={() => {
               if (!selectedFolderId) {
                 setNotificationTitle("Error !!");
@@ -281,7 +340,28 @@ function LibraryPage() {
             bg="white"
             text="white"
             btnName="View Folder in Flashcard Mode"
-          />
+          /> */}
+          <Button
+            style={{
+              textTransform: "none",
+              padding: "6px 16px",
+            }}
+            onClick={() => {
+              if (!selectedFolderId) {
+                setNotificationTitle("Error !!");
+                setNotificationBody("Please select folder.");
+                setNotificationType("error");
+                shownotiftion();
+              } else {
+                navigate(
+                  `/flashcard/${selectedFolderName}/${selectedFolderId}`
+                );
+              }
+            }}
+            variant="contained"
+          >
+            View Folder in Flashcard Mode
+          </Button>
         </div>
       </div>
     </>
