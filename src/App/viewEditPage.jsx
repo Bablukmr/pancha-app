@@ -46,7 +46,7 @@ export default function ViewEditPage() {
   const getWordInFolder = () => {
     axios
       .get(
-        `https://testapi.nhustle.in/pancha/word-in-each-folder?id=${FolderId}`,
+        `http://localhost:8000/pancha/word-in-each-folder?id=${FolderId}`,
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -74,7 +74,7 @@ export default function ViewEditPage() {
     }
     axios
       .delete(
-        `https://testapi.nhustle.in/pancha/words-in-folder/${selectedItemId}`,
+        `http://localhost:8000/pancha/words-in-folder/${selectedItemId}`,
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -98,7 +98,7 @@ export default function ViewEditPage() {
 
   const handleRemoveFolder = () => {
     axios
-      .delete(`https://testapi.nhustle.in/pancha/folder/${FolderId}/`, {
+      .delete(`http://localhost:8000/pancha/folder/${FolderId}/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -127,7 +127,7 @@ export default function ViewEditPage() {
     if (inputValue) {
       axios
         .get(
-          `https://testapi.nhustle.in/pancha/search-word?word=${inputValue}`,
+          `http://localhost:8000/pancha/search-word?word=${inputValue}`,
           {
             headers: {
               Authorization: `Token ${token}`,
