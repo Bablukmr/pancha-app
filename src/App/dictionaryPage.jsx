@@ -28,23 +28,23 @@ function DictionaryPage() {
     // console.log("WWEEWE",token);
     if (token) {
       axios
-        .get("https://testapi.nhustle.in/pancha/words/", {
+        .get("http://localhost:8000/pancha/words/", {
           headers: {
             Authorization: `Token ${token}`,
           },
         })
         .then((res) => {
-          // setWords(res.data);
-          const myData = res.data?
-            .sort(function (a, b) {
+          try {
+            const myData = res.data?.sort(function (a, b) {
               if (a?.name?.toLowerCase() < b.name.toLowerCase()) return -1;
               if (a?.name?.toLowerCase() > b.name.toLowerCase()) return 1;
               return 0;
-            })
-            
-            setWords(myData)
-         
-          console.log(res.data);
+            });
+            setWords(myData);
+          } catch {
+            setWords([]);
+          }
+
           setLoading(false);
         })
         .catch((err) => {
@@ -84,16 +84,17 @@ function DictionaryPage() {
           <div className="w-[100%]  md:w-[50%]  lg:w-[35%] mt-8">
             <List className="   overflow-auto">
               {words.map((val) => (
-                // <div key={val.id} className="flex flex-col border-b-2 ">
-                <ListItem key={val.id} component="div" className="border-b-2 ">
+                <ListItem
+                  key={val.id}
+                  component="div"
+                  className="border-b-2 cursor-pointer my-1 py-0 "
+                >
                   <ListItemText
                     primary={val.name}
                     className=""
                     onClick={() => navigate(`/word/${val.name}/${val.id}`)}
                   />
                 </ListItem>
-
-                //  </div>
               ))}
             </List>
           </div>

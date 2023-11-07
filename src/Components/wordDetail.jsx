@@ -1,4 +1,5 @@
 export default function WordDetail({ data }) {
+  // console.log("oooooooo", data);
   return (
     <div className="w-[200px] flex flex-col items-center justify-center">
       <p>{data?.word_in_lang}</p>

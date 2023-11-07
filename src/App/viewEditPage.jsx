@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
 import ButtonComponent from "../Components/buttonComponent";
+import { Link } from "react-router-dom";
 
 export default function ViewEditPage() {
   const navigate = useNavigate();
@@ -15,20 +16,26 @@ export default function ViewEditPage() {
   const FolderName = params?.name;
   const FolderId = params?.id;
 
+  const { folderType } = useParams();
+
+  console.log("yuuuuuuu", folderType);
+
   const token = useSelector((state) => state.AuthReducer.token);
-  console.log("token", token);
-  const [selectedItemId, setSelectedItemId] = useState(null);
   const [model, setModel] = useState(false);
-  const [newWord, setNewWord] = useState("");
   const [words, setWords] = useState([]);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationType, setNotificationType] = useState(null);
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationBody, setNotificationBody] = useState(null);
+
+  const [open, setOpen] = useState(false);
+
   const [apiWords, setApiWords] = useState([]);
   const [selectedWord, setSelectedWord] = useState(null);
+  const [selectedItemId, setSelectedItemId] = useState(null);
+
   const [inputWord, setInputWord] = useState("");
-  const [showRedirectButton, setShowRedirectButton] = useState(false);
+  const [loadingSearch, setLoadingSearch] = useState(false);
 
   function shownotification() {
     setShowNotification(true);
@@ -45,14 +52,11 @@ export default function ViewEditPage() {
 
   const getWordInFolder = () => {
     axios
-      .get(
-        `http://localhost:8000/pancha/word-in-each-folder?id=${FolderId}`,
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        }
-      )
+      .get(`http://localhost:8000/pancha/word-in-each-folder?id=${FolderId}`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
       .then((d) => {
         setWords(d.data);
       })
@@ -115,19 +119,19 @@ export default function ViewEditPage() {
   };
 
   const handleAddWord = () => {
-    if (newWord) {
-      //
-    }
-  };
-
-  const handleSearch = (e) => {
-    const inputValue = e?.target?.value;
-    setInputWord(inputValue);
-
-    if (inputValue) {
+    if (!selectedWord) {
+      setNotificationTitle("Error !!");
+      setNotificationBody("Select a word to add.");
+      setNotificationType("error");
+      shownotification();
+    } else {
       axios
-        .get(
-          `http://localhost:8000/pancha/search-word?word=${inputValue}`,
+        .post(
+          "http://localhost:8000/pancha/words-in-folder/",
+          {
+            folder: FolderId,
+            word: selectedWord?.id,
+          },
           {
             headers: {
               Authorization: `Token ${token}`,
@@ -135,11 +139,42 @@ export default function ViewEditPage() {
           }
         )
         .then((d) => {
-          // console.log(apiWords);
+          setModel(false);
+          getWordInFolder();
+          setNotificationTitle("Error !!");
+          setNotificationBody("Word added to selected folder.");
+          setNotificationType("success");
+          shownotification();
+        })
+        .catch(() => {
+          setNotificationTitle("Error !!");
+          setNotificationBody("Something went wrong, try again.");
+          setNotificationType("error");
+          shownotification();
+        });
+    }
+  };
+
+  const handleSearch = (e) => {
+    const inputValue = e?.target?.value;
+    setInputWord(inputValue);
+
+    setOpen(true);
+
+    if (inputValue) {
+      setLoadingSearch(true);
+      axios
+        .get(`http://localhost:8000/pancha/search-word?word=${inputValue}`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then((d) => {
           setApiWords(d.data);
-          setShowRedirectButton(d.data.length === 0);
+          setLoadingSearch(false);
         })
         .catch((err) => {
+          setLoadingSearch(false);
           setNotificationTitle("Error !!");
           setNotificationBody("Something went wrong.");
           setNotificationType("error");
@@ -147,15 +182,16 @@ export default function ViewEditPage() {
         });
     } else {
       setApiWords([]);
-      setShowRedirectButton(false);
+      setInputWord("");
+      setOpen(false);
     }
   };
 
   const handleChange = (event, newValue) => {
     setSelectedWord(newValue);
+    setOpen(false);
   };
-  // console.log(selectedItemId);
-  console.log(showRedirectButton);
+
   return (
     <>
       <div
@@ -200,39 +236,32 @@ export default function ViewEditPage() {
                 <div className="w-[80%]">
                   <p className="text-sm my-3">New Word Name</p>
                   <Autocomplete
-                    open={inputWord ? true : false}
-                    loading={apiWords.length > 0 ? true : false}
+                    open={open}
+                    // open={inputWord ? true : false}
+                    loading={loadingSearch}
                     value={selectedWord}
                     onChange={handleChange}
                     options={apiWords}
                     getOptionLabel={(option) => option.name}
                     style={{ width: "100%" }}
-                    renderInput={(params) =>
-                      showRedirectButton ? (
-                        <div>
-                          <p>This Words is Not Found</p>
-                          <Button
-                            onClick={() => navigate("/settings/feedback")}
-                            className="w-full py-2 rounded-md bg-blue-400 text-white"
-                          >
-                            Feedback
-                          </Button>
-                        </div>
-                      ) : (
-                        <TextField {...params} label="Type a Word" />
-                      )
+                    noOptionsText={
+                      <Link to={`/settings/feedback?word=${inputWord}`}>
+                        {
+                          <p>
+                            No word found, suggest <b> {inputWord} </b> to add
+                            to dictionary.
+                          </p>
+                        }
+                      </Link>
                     }
+                    renderInput={(params) => (
+                      <TextField {...params} label="Type a Word" />
+                    )}
                     onInputChange={(event, newInputValue) => {
                       handleSearch({ target: { value: newInputValue } });
                     }}
                   />
                 </div>
-                {/* <button
-                  onClick={handleAddWord}
-                  className="w-[80%]  mt-6 text-center py-2 rounded-md bg-blue-400 text-white"
-                >
-                  Add New Word
-                </button> */}
 
                 <ButtonComponent
                   btnName="Add Word"
@@ -248,63 +277,27 @@ export default function ViewEditPage() {
           ""
         )}
         <div className="w-[80%] md:w-[50%] lg:w-[35%]  mt-4 flex flex-col items-start justify-start gap-3 mb-[70px]">
-          {/* <button
-            onClick={() => setModel(true)}
-            className="bg-black w-[150px] text-white rounded-md py-2 px-4"
-          >
-            Add Word
-          </button> */}
-          {/* <Button
-            style={{
-              width: "8rem",
-              textTransform: "none",
-              padding: "6px 16px",
-            }}
-            onClick={() => setModel(true)}
-            variant="contained"
-          >
-            Add Word
-          </Button> */}
           <ButtonComponent
             btnName="Add Word"
+            buttonType="success"
             padding={"6px "}
             width="120px"
             text="white"
             onClick={() => setModel(true)}
           />
 
-          {/* <Button
-            style={{
-              width:"8rem",
-              textTransform: "none",
-              padding: "6px 16px",
-            }}
-            onClick={handleRemoveWord}
-            variant="contained"
-          >
-            Remove Word
-          </Button> */}
           <ButtonComponent
             btnName=" Remove Word"
+            buttonType="error"
             padding={"6px "}
             width="120px"
             text="white"
             onClick={handleRemoveWord}
           />
 
-          {/* <Button
-            style={{
-              width:"8rem",
-              textTransform: "none",
-              padding: "6px 16px",
-            }}
-            onClick={handleRemoveFolder}
-            variant="contained"
-          >
-            Delete Folder
-          </Button> */}
           <ButtonComponent
             btnName=" Delete Folder"
+            buttonType="error"
             padding={"6px "}
             width="120px"
             text="white"

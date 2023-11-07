@@ -78,14 +78,14 @@ function WordPage() {
       {loading ? (
         <Loading />
       ) : (
-        <div className="w-full h-[calc(100vh-100px)] my-10 flex flex-col items-center">
+        <div className="w-full bg-[green] h-[calc(100vh-100px)] my-10 flex flex-col items-center">
           <div className=" text-center w-full">
             <h1 className="text-2xl font-semibold">{name}</h1>
           </div>
           <div
             className="mt-10 px-1 ms:px-4
             w-[96%] md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col gap-y-5 md:gap-y-6 lg:gap-y-8 
-        rounded-md items-center justify-center"
+               bg-[red]   rounded-md items-center justify-center"
           >
             <WordDetail data={englishData} />
 
@@ -94,7 +94,7 @@ function WordPage() {
 
               <div className="w-[200px] flex flex-col gap-y-2 items-center justify-center">
                 {video ? (
-                  <div className="w-[200px] rounded-md h-[100px] flex flex-col items-center justify-center">
+                  <div className="w-[200px] h-[100px] flex flex-col items-center justify-center">
                     <div className="w-[80%]  border-2 ">
                       <video
                         src={wordData?.video}
@@ -107,11 +107,11 @@ function WordPage() {
                     </div>
                   </div>
                 ) : (
-                  <div className="w-[200px] rounded-md h-[100px]">
+                  <div className="w-[200px] h-[100px] flex flex-col items-center justify-center">
                     <img
                       src={wordData?.img}
                       alt={`${wordData?.img}`}
-                      className="w-full h-full"
+                      className="h-full w-full"
                     />
                   </div>
                 )}

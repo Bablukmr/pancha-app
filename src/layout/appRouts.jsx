@@ -19,7 +19,7 @@ function AppRouts() {
       <Route path="/add-to-folder/:wordId" element={<UserFolderPage />} />
       <Route path="/dictionary" element={<DictionaryPage />} />
       <Route path="/library" element={<LibraryPage />} />
-      <Route path="/library/view-edit/:id/:name" element={<ViewEditPage />} />
+      <Route path="/library/view-edit/:id/:name/:folderType" element={<ViewEditPage />} />
       <Route path="/flashcard/:name/:id" element={<FlashcardMode />} />
       <Route path="/settings" element={<SettingPage />} />
       <Route path="/new-user" element={<NewUserPage />} />

@@ -8,13 +8,13 @@ import { useSelector } from "react-redux";
 import { Button, CircularProgress } from "@mui/material";
 import { AiFillFolderOpen, AiFillFolderAdd } from "react-icons/ai";
 import ButtonComponent from "../Components/buttonComponent";
+import { Login } from "@mui/icons-material";
 
 function LibraryPage() {
   const token = useSelector((state) => state.AuthReducer.token);
   const navigate = useNavigate();
 
   const [selectedFolderName, setSelectedFolderName] = useState("");
-  const [selectedFolderId, setSelectedFolderId] = useState(null);
   const [publicLoadind, setPublicLoading] = useState(true);
   const [UserLoadind, setUserLoading] = useState(true);
   const [publicFolder, setPublicFolder] = useState([]);
@@ -26,55 +26,65 @@ function LibraryPage() {
   const [notificationType, setNotificationType] = useState(null);
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationBody, setNotificationBody] = useState(null);
-  const [selectedFolder, setSelectedFolder] = useState(null);
+
+  const [selectedFolderId, setSelectedFolderId] = useState(null);
+
+  const [folderType, setFolderType] = useState("");
 
   useEffect(() => {
-    axios
-      .get("https://testapi.nhustle.in/pancha/public-folder", {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .then((res) => {
-        setPublicFolder(res.data);
-        setPublicLoading(false);
-      })
-      .catch((err) => {
-        setPublicLoading(false);
-        setNotificationTitle("Error !!");
-        setNotificationBody("Something went wrong fetching public folders.");
-        setNotificationType("error");
-        shownotiftion();
-      });
-  }, []);
+    console.log("folderType", folderType);
+  });
 
   useEffect(() => {
-    getUserFolder();
-  }, []);
+    if (token) {
+      axios
+        .get("http://localhost:8000/pancha/public-folder", {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then((res) => {
+          setPublicFolder(res.data);
+          setPublicLoading(false);
+        })
+        .catch((err) => {
+          setPublicLoading(false);
+          setNotificationTitle("Error !!");
+          setNotificationBody("Something went wrong fetching public folders.");
+          setNotificationType("error");
+          shownotiftion();
+        });
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) {
+      getUserFolder();
+    }
+  }, [token]);
 
   const getUserFolder = () => {
     setUserLoading(true);
-    if(token){
-    axios
-      .get("https://testapi.nhustle.in/pancha/user-folder", {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
+    if (token) {
+      axios
+        .get("http://localhost:8000/pancha/user-folder", {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
 
-      .then((res) => {
-        const data = res.data;
-        // console.log(data);
-        setUserFolder(data?.reverse());
-        setUserLoading(false);
-      })
-      .catch((err) => {
-        setUserLoading(false);
-        setNotificationTitle("Error !!");
-        setNotificationBody("Something went wrong fetching user folders.");
-        setNotificationType("error");
-        shownotiftion();
-      });
+        .then((res) => {
+          const data = res.data;
+          setUserFolder(data?.reverse());
+          setUserLoading(false);
+        })
+        .catch((err) => {
+          setUserLoading(false);
+          setNotificationTitle("Error !!");
+          setNotificationBody("Something went wrong fetching user folders.");
+          setNotificationType("error");
+          shownotiftion();
+        });
     }
   };
 
@@ -86,7 +96,9 @@ function LibraryPage() {
       shownotiftion();
       return;
     }
-    navigate(`/library/view-edit/${selectedFolderId}/${selectedFolderName}`);
+    navigate(
+      `/library/view-edit/${selectedFolderId}/${selectedFolderName}/${folderType}`
+    );
   };
 
   const shownotiftion = () => {
@@ -108,7 +120,7 @@ function LibraryPage() {
     setLoading(true);
     axios
       .post(
-        "https://testapi.nhustle.in/pancha/folder/",
+        "http://localhost:8000/pancha/folder/",
         {
           name: newFolder,
           pulic_folder: false,
@@ -176,13 +188,13 @@ function LibraryPage() {
                 {publicFolder.map((d) => (
                   <div
                     onClick={() => {
-                      setSelectedFolder(d.id);
                       setSelectedFolderName(d.name);
                       setSelectedFolderId(d.id);
+                      setFolderType("curated");
                     }}
                     key={d.id}
                     className={`h-[40px] w-full flex items-center justify-start gap-5 hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 border-b-2 border-[#f2f2f2] cursor-pointer ${
-                      d.id === selectedFolder ? "bg-slate-600 text-white" : ""
+                      d.id === selectedFolderId ? "bg-slate-600 text-white" : ""
                     }`}
                   >
                     <AiFillFolderOpen className="text-xl font-extrabold" />
@@ -210,13 +222,13 @@ function LibraryPage() {
                 {userFolder.map((d) => (
                   <div
                     onClick={() => {
-                      setSelectedFolder(d.id);
                       setSelectedFolderName(d.name);
                       setSelectedFolderId(d.id);
+                      setFolderType("users");
                     }}
                     key={d.id}
                     className={`h-[40px] w-full flex items-center justify-start gap-5 hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 border-b-2 border-[#f2f2f2] cursor-pointer ${
-                      d.id === selectedFolder ? "bg-slate-600 text-white" : ""
+                      d.id === selectedFolderId ? "bg-slate-600 text-white" : ""
                     }`}
                   >
                     <AiFillFolderOpen className="text-xl font-extrabold" />
@@ -248,30 +260,8 @@ function LibraryPage() {
                     />
                   </div>
 
-                  {/* <Button
-                    disabled={loading}
-                    style={{
-                      width: "100%",
-                      textTransform: "none",
-                      padding: "8px 16px",
-                    }}
-                    onClick={handleAddFolder}
-                    variant="contained"
-                    endIcon={
-                      loading ? (
-                        <CircularProgress
-                          style={{ color: "#A6A6A6" }}
-                          size="1.5rem"
-                        />
-                      ) : (
-                        ""
-                      )
-                    }
-                  >
-                    Add New Folder
-                  </Button> */}
                   <ButtonComponent
-                    btnName="View/Edit Folder"
+                    btnName="Add Folder"
                     disabled={loading}
                     padding={"8px "}
                     width="100%"
@@ -289,13 +279,6 @@ function LibraryPage() {
                     onClick={handleAddFolder}
                   />
                 </div>
-                {/* <button
-                  disabled={loading}
-                  onClick={handleAddFolder}
-                  className="w-[80%]  mt-6 text-center py-2 rounded-md bg-blue-400 text-white"
-                >
-                  {loading ? "Added.." : "Add New Folder"}
-                </button> */}
               </form>
             </div>
           </div>
@@ -303,63 +286,24 @@ function LibraryPage() {
           ""
         )}
         <div className="w-[80%] md:w-[50%] lg:w-[35%]  mt-4 flex flex-col items-start justify-start gap-3 mb-[70px]">
-          {/* <Button
-            style={{
-              textTransform: "none",
-              padding: "6px 16px",
-            }}
-            onClick={() => setModel(true)}
-            variant="contained"
-          >
-            Add New Folder
-          </Button> */}
           <ButtonComponent
             btnName="Add New Folder"
+            buttonType="success"
             padding={"6px "}
             width="135px"
             text="white"
             onClick={() => setModel(true)}
           />
-          {/* 
-          <Button
-            style={{
-              textTransform: "none",
-              padding: "6px 16px",
-            }}
-            onClick={handleViewEdit}
-            variant="contained"
-          >
-            View/Edit Folder
-          </Button> */}
+
           <ButtonComponent
             btnName="View/Edit Folder"
-            padding={"6px "}
+            buttonType="success"
+            padding="6px"
             width="135px"
             text="white"
             onClick={handleViewEdit}
           />
 
-          {/* <Button
-            style={{
-              textTransform: "none",
-              padding: "6px 16px",
-            }}
-            onClick={() => {
-              if (!selectedFolderId) {
-                setNotificationTitle("Error !!");
-                setNotificationBody("Please select folder.");
-                setNotificationType("error");
-                shownotiftion();
-              } else {
-                navigate(
-                  `/flashcard/${selectedFolderName}/${selectedFolderId}`
-                );
-              }
-            }}
-            variant="contained"
-          >
-            View Folder in Flashcard Mode
-          </Button> */}
           <ButtonComponent
             btnName="View Folder in Flashcard Mode"
             padding={"6px "}

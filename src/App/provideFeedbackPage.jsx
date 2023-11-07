@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import NotificationBox from "../Components/notificationbox";
@@ -13,6 +13,19 @@ function ProvideFeedbackPage() {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
+
+  const [searchParams] = useSearchParams();
+
+  const word = searchParams.get("word"); // "testCode"
+
+  console.log("from from", word);
+
+  useEffect(() => {
+    if (word) {
+      setNewWord(word);
+      setSubject("Suggestion to add this word to dictionary");
+    }
+  }, [word]);
 
   const navigate = useNavigate();
 
@@ -33,7 +46,6 @@ function ProvideFeedbackPage() {
     e.preventDefault();
     console.log({ newWord, subject, message });
     if (!newWord) {
-      // alert("plese enter newWord");
       setNotificationTitle("Error !!");
       setNotificationBody("New  Word Missing");
       setNotificationType("error");
@@ -42,7 +54,6 @@ function ProvideFeedbackPage() {
       return;
     }
     if (!subject) {
-      // alert("plese enter subject");
       setNotificationTitle("Error !!");
       setNotificationBody("Subject Missing");
       setNotificationType("error");
@@ -51,7 +62,6 @@ function ProvideFeedbackPage() {
       return;
     }
     if (!message) {
-      // alert("plese enter message");
       setNotificationTitle("Error !!");
       setNotificationBody("Message Missing");
       setNotificationType("error");
@@ -74,7 +84,6 @@ function ProvideFeedbackPage() {
         }
       )
       .then((d) => {
-        console.log(d);
         setSubmitLoading(false);
         setNewWord("");
         setSubject("");
@@ -85,15 +94,12 @@ function ProvideFeedbackPage() {
         shownotiftion();
       })
       .catch((e) => {
-        console.log("error", e);
         setNotificationTitle("Error !!");
         setNotificationBody("Something went wrong");
         setNotificationType("error");
         shownotiftion();
         setSubmitLoading(false);
       });
-
-    // navigate("/settings")
   };
 
   return (
@@ -119,19 +125,6 @@ function ProvideFeedbackPage() {
           Feedback
         </Typography>
         <form className="w-[80%] md:w-[50%] lg:w-[35%] mt-[50px] flex gap-3 flex-col items-center justify-center">
-          {/* <div className="w-full">
-            <label className="text-sm">
-              Suggest new word for the dictionary
-            </label>
-            <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
-              <input
-                value={newWord}
-                onChange={(e) => setNewWord(e.target.value)}
-                placeholder="pre-populated with word from search"
-                className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
-              />
-            </div>
-          </div> */}
           <TextField
             value={newWord}
             onChange={(e) => setNewWord(e.target.value)}
@@ -145,16 +138,7 @@ function ProvideFeedbackPage() {
             <p>Comments? Questions? Testimonials? </p>
             <p>Please write subject and message below </p>
           </div>
-          {/* <div className="w-full">
-            <label className="text-sm">Subject</label>
-            <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
-              <input
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
-              />
-            </div>
-          </div> */}
+
           <TextField
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
@@ -164,16 +148,6 @@ function ProvideFeedbackPage() {
             style={{ width: "100%" }}
           />
 
-          {/* <div className="w-full">
-            <label className="text-sm">Message</label>
-            <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
-              <textarea
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="text-sm h-[100px] border-none w-full outline-blue-400 p-2 rounded-md"
-              />
-            </div>
-          </div> */}
           <TextField
             value={message}
             onChange={(e) => setMessage(e.target.value)}
@@ -181,34 +155,9 @@ function ProvideFeedbackPage() {
             label="Message"
             multiline
             minRows={4}
-            style={{ width: "100%",marginTop:"15px" }}
+            style={{ width: "100%", marginTop: "15px" }}
           />
           <div className="w-full my-2">
-            {/* <button
-              disabled={submitLoading}
-              onClick={handleSubmit}
-              className="bg-black text-white rounded-md px-10 py-2 cursor-pointer"
-            >
-              {submitLoading ? "Submit..." : "Submit"}
-            </button> */}
-            {/* <Button
-              disabled={submitLoading}
-              onClick={handleSubmit}
-              style={{ textTransform: "none", padding: "6px 26px" }}
-              variant="contained"
-              endIcon={
-                submitLoading ? (
-                  <CircularProgress
-                    style={{ color: "#A6A6A6" }}
-                    size="1.5rem"
-                  />
-                ) : (
-                  <SendIcon />
-                )
-              }
-            >
-              Send
-            </Button> */}
             <ButtonComponent
               disabled={submitLoading}
               btnName=" Send"

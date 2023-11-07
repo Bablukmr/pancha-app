@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux'; 
-import axios from 'axios';
-import NotificationBox from '../Components/notificationbox';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Autocomplete from '@mui/material/Autocomplete';
-import SearchIcon from '@mui/icons-material/Search';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import NotificationBox from "../Components/notificationbox";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
+import Autocomplete from "@mui/material/Autocomplete";
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function Search() {
   const navigate = useNavigate();
@@ -39,16 +39,16 @@ export default function Search() {
         .then((response) => {
           const data = response.data;
           if (data.length === 0) {
-            setWordData([{ name: 'Word not found', id: 0 }]);
+            setWordData([{ name: "Word not found", id: 0 }]);
           } else {
             setWordData(data);
           }
           setSearchValue(false);
         })
         .catch((err) => {
-          setNotificationTitle('Error !!');
-          setNotificationBody('Something went wrong.');
-          setNotificationType('error');
+          setNotificationTitle("Error !!");
+          setNotificationBody("Something went wrong.");
+          setNotificationType("error");
           shownotification();
           setSearchValue(false);
         });
@@ -62,7 +62,7 @@ export default function Search() {
     <>
       <div
         className={`fixed top-6 right-0 shadow-lg z-50 w-80 rounded-2xl transition-transform duration-300 transform ${
-          showNotification ? 'translate-x-0' : 'translate-x-full'
+          showNotification ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <NotificationBox
@@ -76,7 +76,7 @@ export default function Search() {
       <div className="w-full absolute top-[100px] flex flex-col items-center justify-center">
         <h1 className="mb-10 text-xl">Search</h1>
         <div className="w-[80%] z-10 md:w-[50%] lg:w-[35%] flex flex-col items-center justify-center">
-          <Stack spacing={2} sx={{ width: '100%' }}>
+          <Stack spacing={2} sx={{ width: "100%" }}>
             <Autocomplete
               loading={searchValue}
               freeSolo
@@ -92,7 +92,7 @@ export default function Search() {
                   label="Type here to search word"
                   InputProps={{
                     ...params.InputProps,
-                    type: 'search',
+                    type: "search",
                     sx: {
                       height: 52,
                     },
@@ -107,22 +107,23 @@ export default function Search() {
                   (word) => word.name === value
                 );
                 if (selectedWord) {
-                  if (selectedWord.name === 'Word not found') {
+                  if (selectedWord.name === "Word not found") {
                     return;
-                  } else navigate(`/word/${selectedWord.name}/${selectedWord.id}`);
+                  } else
+                    navigate(`/word/${selectedWord.name}/${selectedWord.id}`);
                 }
               }}
               PaperProps={{
                 style: {
                   maxHeight: 200,
-                  overflowY: 'auto',
+                  overflowY: "auto",
                 },
               }}
-              renderOption={(props, option) => (
-                <li {...props}>
-                  <SearchIcon color="disabled" fontSize="small" style={{marginRight: "20px"}} /> {option}
-                </li>
-              )}
+              // // renderOption={(props, option) => (
+              //   // <li {...props}>
+              //     // {/* <SearchIcon color="disabled" fontSize="small" style={{marginRight: "20px"}} /> {option} */}
+              //   // </li>
+              // )}
             />
           </Stack>
         </div>
