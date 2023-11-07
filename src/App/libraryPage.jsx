@@ -7,6 +7,7 @@ import NotificationBox from "../Components/notificationbox";
 import { useSelector } from "react-redux";
 import { Button, CircularProgress } from "@mui/material";
 import { AiFillFolderOpen, AiFillFolderAdd } from "react-icons/ai";
+import ButtonComponent from "../Components/buttonComponent";
 
 function LibraryPage() {
   const token = useSelector((state) => state.AuthReducer.token);
@@ -28,37 +29,34 @@ function LibraryPage() {
   const [selectedFolder, setSelectedFolder] = useState(null);
 
   useEffect(() => {
-    if (token) {
-      axios
-        .get("http://localhost:8000/pancha/public-folder", {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        })
-        .then((res) => {
-          setPublicFolder(res.data);
-          setPublicLoading(false);
-        })
-        .catch((err) => {
-          setPublicLoading(false);
-          setNotificationTitle("Error !!");
-          setNotificationBody("Something went wrong fetching public folders.");
-          setNotificationType("error");
-          shownotiftion();
-        });
-    }
-  }, [token]);
+    axios
+      .get("https://testapi.nhustle.in/pancha/public-folder", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((res) => {
+        setPublicFolder(res.data);
+        setPublicLoading(false);
+      })
+      .catch((err) => {
+        setPublicLoading(false);
+        setNotificationTitle("Error !!");
+        setNotificationBody("Something went wrong fetching public folders.");
+        setNotificationType("error");
+        shownotiftion();
+      });
+  }, []);
 
   useEffect(() => {
-    if (token) {
-      getUserFolder();
-    }
-  }, [token]);
+    getUserFolder();
+  }, []);
 
   const getUserFolder = () => {
     setUserLoading(true);
+    if(token){
     axios
-      .get("http://localhost:8000/pancha/user-folder", {
+      .get("https://testapi.nhustle.in/pancha/user-folder", {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -77,6 +75,7 @@ function LibraryPage() {
         setNotificationType("error");
         shownotiftion();
       });
+    }
   };
 
   const handleViewEdit = () => {
@@ -109,7 +108,7 @@ function LibraryPage() {
     setLoading(true);
     axios
       .post(
-        "http://localhost:8000/pancha/folder/",
+        "https://testapi.nhustle.in/pancha/folder/",
         {
           name: newFolder,
           pulic_folder: false,
@@ -249,7 +248,7 @@ function LibraryPage() {
                     />
                   </div>
 
-                  <Button
+                  {/* <Button
                     disabled={loading}
                     style={{
                       width: "100%",
@@ -270,7 +269,25 @@ function LibraryPage() {
                     }
                   >
                     Add New Folder
-                  </Button>
+                  </Button> */}
+                  <ButtonComponent
+                    btnName="View/Edit Folder"
+                    disabled={loading}
+                    padding={"8px "}
+                    width="100%"
+                    text="white"
+                    startIcon={
+                      loading ? (
+                        <CircularProgress
+                          style={{ color: "#A6A6A6" }}
+                          size="1.5rem"
+                        />
+                      ) : (
+                        ""
+                      )
+                    }
+                    onClick={handleAddFolder}
+                  />
                 </div>
                 {/* <button
                   disabled={loading}
@@ -286,13 +303,7 @@ function LibraryPage() {
           ""
         )}
         <div className="w-[80%] md:w-[50%] lg:w-[35%]  mt-4 flex flex-col items-start justify-start gap-3 mb-[70px]">
-          {/* <button
-            onClick={() => setModel(true)}
-            className="bg-[#A0E200] text-white rounded-md py-2 px-4"
-          >
-            Add New Folder
-          </button> */}
-          <Button
+          {/* <Button
             style={{
               textTransform: "none",
               padding: "6px 16px",
@@ -301,42 +312,34 @@ function LibraryPage() {
             variant="contained"
           >
             Add New Folder
-          </Button>
-          {/* <button
-            onClick={handleViewEdit}
-            className="bg-[#E2202C] text-white rounded-md py-2 px-4"
-          >
-            View/Edit Folder
-          </button> */}
-
-          <Button
-            style={{
-              textTransform: "none",
-              padding: "6px 16px",
-            }}
-            onClick={handleViewEdit}
-            variant="contained"
-          >
-            View/Edit Folder
-          </Button>
-          {/* <ButtonComponent
-            onClick={() => {
-              if (!selectedFolderId) {
-                setNotificationTitle("Error !!");
-                setNotificationBody("Please select folder.");
-                setNotificationType("error");
-                shownotiftion();
-              } else {
-                navigate(
-                  `/flashcard/${selectedFolderName}/${selectedFolderId}`
-                );
-              }
-            }}
-            bg="white"
+          </Button> */}
+          <ButtonComponent
+            btnName="Add New Folder"
+            padding={"6px "}
+            width="135px"
             text="white"
-            btnName="View Folder in Flashcard Mode"
-          /> */}
+            onClick={() => setModel(true)}
+          />
+          {/* 
           <Button
+            style={{
+              textTransform: "none",
+              padding: "6px 16px",
+            }}
+            onClick={handleViewEdit}
+            variant="contained"
+          >
+            View/Edit Folder
+          </Button> */}
+          <ButtonComponent
+            btnName="View/Edit Folder"
+            padding={"6px "}
+            width="135px"
+            text="white"
+            onClick={handleViewEdit}
+          />
+
+          {/* <Button
             style={{
               textTransform: "none",
               padding: "6px 16px",
@@ -356,7 +359,26 @@ function LibraryPage() {
             variant="contained"
           >
             View Folder in Flashcard Mode
-          </Button>
+          </Button> */}
+          <ButtonComponent
+            btnName="View Folder in Flashcard Mode"
+            padding={"6px "}
+            loading={true}
+            width="230px"
+            text="white"
+            onClick={() => {
+              if (!selectedFolderId) {
+                setNotificationTitle("Error !!");
+                setNotificationBody("Please select folder.");
+                setNotificationType("error");
+                shownotiftion();
+              } else {
+                navigate(
+                  `/flashcard/${selectedFolderName}/${selectedFolderId}`
+                );
+              }
+            }}
+          />
         </div>
       </div>
     </>

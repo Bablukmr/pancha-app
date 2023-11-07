@@ -9,6 +9,7 @@ import FlashcardMode from "../App/flashcardMode";
 import ViewEditPage from "../App/viewEditPage";
 import ProvideFeedbackPage from "../App/provideFeedbackPage";
 import UserFolderPage from "../App/userFolderPage";
+import NewUserPage from "../App/newUserPage";
 
 function AppRouts() {
   return (
@@ -21,6 +22,7 @@ function AppRouts() {
       <Route path="/library/view-edit/:id/:name" element={<ViewEditPage />} />
       <Route path="/flashcard/:name/:id" element={<FlashcardMode />} />
       <Route path="/settings" element={<SettingPage />} />
+      <Route path="/new-user" element={<NewUserPage />} />
       <Route path="/settings/feedback" element={<ProvideFeedbackPage />} />
       <Route path="/*" element={<NotFound />} />
     </Routes>
