@@ -13,16 +13,20 @@ function RequestPassword() {
   //bg-gradient-to-b from-blue-200 to-blue-400
 
   return (
-    <div className="w-full h-screen flex flex-col items-center justify-center ">
+    <div className="w-full  h-screen flex flex-col items-center justify-center ">
       <h1 className="text-2xl my-4 absolute top-[60px]">LOGO</h1>
       <div className="w-[90%] md:w-[50%] lg:w-[35%] bg-white p-4 rounded-lg shadow-lg">
-        <Typography
+      
+      {/* <div className="my-3">
+        
+         <Typography
           variant="h6"
           component="h6"
-          className="text-center my-11 text-blue-600"
+          className="text-center text-blue-600"
         >
           Password Reset
         </Typography>
+        </div>  */}
         <FormControl className="w-full flex flex-col items-center justify-center gap-6">
           <TextField
             type="email"
