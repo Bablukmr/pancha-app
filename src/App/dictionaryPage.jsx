@@ -26,7 +26,7 @@ function DictionaryPage() {
   useEffect(() => {
     // console.log("WWEEWE",token);
     axios
-      .get("https://testapi.nhustle.in/pancha/words/", {
+      .get("http://localhost:8000/pancha/words/", {
         headers: {
           Authorization: `Token ${token}`,
         },
