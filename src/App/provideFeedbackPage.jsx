@@ -18,8 +18,6 @@ function ProvideFeedbackPage() {
 
   const word = searchParams.get("word"); // "testCode"
 
-  console.log("from from", word);
-
   useEffect(() => {
     if (word) {
       setNewWord(word);
@@ -44,7 +42,6 @@ function ProvideFeedbackPage() {
   const token = useSelector((state) => state.AuthReducer.token);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ newWord, subject, message });
     if (!newWord) {
       setNotificationTitle("Error !!");
       setNotificationBody("New  Word Missing");
@@ -71,7 +68,7 @@ function ProvideFeedbackPage() {
     setSubmitLoading(true);
     axios
       .post(
-        "http://localhost:8000/pancha/feedback/",
+        "https://testapi.nhustle.in/pancha/feedback/",
         {
           word: newWord,
           subject: subject,

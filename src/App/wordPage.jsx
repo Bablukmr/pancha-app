@@ -30,14 +30,13 @@ function WordPage() {
   useEffect(() => {
     if (token) {
       axios
-        .get(`http://localhost:8000/pancha/word-detail?id=${wordId}`, {
+        .get(`https://testapi.nhustle.in/pancha/word-detail?id=${wordId}`, {
           headers: {
             Authorization: `Token ${token}`,
           },
         })
         .then((d) => {
           setApiData(d.data);
-          console.log("tyttttttt", d.data);
         });
     }
   }, [token]);
@@ -45,14 +44,13 @@ function WordPage() {
   useEffect(() => {
     if (token) {
       axios
-        .get(`http://localhost:8000/pancha/words-complete/${wordId}/`, {
+        .get(`https://testapi.nhustle.in/pancha/words-complete/${wordId}/`, {
           headers: {
             Authorization: `Token ${token}`,
           },
         })
         .then((d) => {
           setWordData(d.data);
-          console.log("tyttttttt", d.data);
         });
     }
   }, [token]);
@@ -78,14 +76,14 @@ function WordPage() {
       {loading ? (
         <Loading />
       ) : (
-        <div className="w-full bg-[green] h-[calc(100vh-100px)] my-10 flex flex-col items-center">
+        <div className="w-full h-[calc(100vh-100px)] my-10 flex flex-col items-center">
           <div className=" text-center w-full">
             <h1 className="text-2xl font-semibold">{name}</h1>
           </div>
           <div
             className="mt-10 px-1 ms:px-4
             w-[96%] md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col gap-y-5 md:gap-y-6 lg:gap-y-8 
-               bg-[red]   rounded-md items-center justify-center"
+            rounded-md items-center justify-center"
           >
             <WordDetail data={englishData} />
 

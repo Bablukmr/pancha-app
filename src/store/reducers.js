@@ -7,17 +7,17 @@ const initialAuthState = {
   loadingLogin: false,
   loginError: false,
   // userId: null,
-  // userData: {},
-  // globals: null,
-  // favouriteMenus: null,
-  // urlToGo: null,
-  // messages: [],
-  // newMessage: null,
-  // session: null,
+  userData: {},
 };
 
 const AuthReducer = (state = initialAuthState, { type, payload }) => {
   switch (type) {
+    case types.USER_DATA:
+      return {
+        ...state,
+        userData: payload.userData,
+      };
+
     case types.USER_DETAIL:
       return {
         ...state,
@@ -30,8 +30,6 @@ const AuthReducer = (state = initialAuthState, { type, payload }) => {
       return state;
   }
 };
-
-
 
 // const initialState = {
 //   idValue: 1, // Initial ID

@@ -18,8 +18,6 @@ export default function ViewEditPage() {
 
   const { folderType } = useParams();
 
-  console.log("yuuuuuuu", folderType);
-
   const token = useSelector((state) => state.AuthReducer.token);
   const [model, setModel] = useState(false);
   const [words, setWords] = useState([]);
@@ -52,7 +50,7 @@ export default function ViewEditPage() {
 
   const getWordInFolder = () => {
     axios
-      .get(`http://localhost:8000/pancha/word-in-each-folder?id=${FolderId}`, {
+      .get(`https://testapi.nhustle.in/pancha/word-in-each-folder?id=${FolderId}`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -78,7 +76,7 @@ export default function ViewEditPage() {
     }
     axios
       .delete(
-        `http://localhost:8000/pancha/words-in-folder/${selectedItemId}`,
+        `https://testapi.nhustle.in/pancha/words-in-folder/${selectedItemId}`,
         {
           headers: {
             Authorization: `Token ${token}`,
@@ -102,7 +100,7 @@ export default function ViewEditPage() {
 
   const handleRemoveFolder = () => {
     axios
-      .delete(`http://localhost:8000/pancha/folder/${FolderId}/`, {
+      .delete(`https://testapi.nhustle.in/pancha/folder/${FolderId}/`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -127,7 +125,7 @@ export default function ViewEditPage() {
     } else {
       axios
         .post(
-          "http://localhost:8000/pancha/words-in-folder/",
+          "https://testapi.nhustle.in/pancha/words-in-folder/",
           {
             folder: FolderId,
             word: selectedWord?.id,
@@ -164,7 +162,7 @@ export default function ViewEditPage() {
     if (inputValue) {
       setLoadingSearch(true);
       axios
-        .get(`http://localhost:8000/pancha/search-word?word=${inputValue}`, {
+        .get(`https://testapi.nhustle.in/pancha/search-word?word=${inputValue}`, {
           headers: {
             Authorization: `Token ${token}`,
           },

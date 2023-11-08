@@ -17,9 +17,6 @@ function FlashcardMode() {
 
   const { name, id } = useParams();
 
-  // console.log(name);
-  // console.log(id);
-
   const token = useSelector((state) => state.AuthReducer.token);
   const [allFolders, setAllFolder] = useState([]);
   const [videoBox, setVideoBox] = useState(false);
@@ -49,37 +46,67 @@ function FlashcardMode() {
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:8000/pancha/folder/", {
+        .get("https://testapi.nhustle.in/pancha/folder/", {
           headers: {
             Authorization: `Token ${token}`,
           },
         })
         .then((d) => {
-          // console.log("dddddddd", d.data);
           setAllFolder(d.data);
         });
     }
   }, [token]);
 
   useEffect(() => {
-    if (token) getWordsInFolder();
-  }, [token]);
+    if (token) getWordsInFolder(id);
+  }, [token, id]);
 
-  const getWordsInFolder = () => {
+  const handleFolderChange = (e) => {
+    let g = allFolders.filter((d) => d.name === e.target.value);
+    if (Array.isArray(g)) {
+      let ghj = g[0]?.id;
+
+      getWordsInFolder(ghj);
+    }
+    // setSelectedFolder(e.target.value);
+    // navigate(`/library/${e.target.value}`);
+  };
+
+  const getWordsInFolder = (idd) => {
+    setWordIndex(null);
     axios
-      .get(`http://localhost:8000/pancha/word-in-each-folder?id=${id}`, {
+      .get(`https://testapi.nhustle.in/pancha/word-in-each-folder?id=${idd}`, {
         headers: {
           Authorization: `Token ${token}`,
         },
       })
       .then((d) => {
-        console.log("wordlist", d.data);
         setWordsInFolder(d.data);
         if (Array.isArray(d.data)) {
           if (d.data.length > 0) {
             setWordIndex("0");
             // setCurrentWordId(d.data[0]?.word);
+          } else {
+            setWordIndex(null);
+            setCurrentWordId(null);
+            setWordData(null);
+            setWordDetail(null);
+
+            setSpanishData(null);
+            setFrenchData(null);
+            setChineseData(null);
+            setEnglishData(null);
           }
+        } else {
+          setWordIndex(null);
+          setCurrentWordId(null);
+          setWordData(null);
+          setWordDetail(null);
+
+          setSpanishData(null);
+          setFrenchData(null);
+          setChineseData(null);
+          setEnglishData(null);
         }
       });
   };
@@ -91,29 +118,33 @@ function FlashcardMode() {
   }, [wordIndex]);
 
   useEffect(() => {
-    if (currentWordId) console.log("currentWordId", currentWordId);
+    // if (currentWordId) console.log("currentWordId", currentWordId);
 
     if (currentWordId) {
       axios
-        .get(`http://localhost:8000/pancha/word-detail?id=${currentWordId}`, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        })
+        .get(
+          `https://testapi.nhustle.in/pancha/word-detail?id=${currentWordId}`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          }
+        )
         .then((d) => {
-          console.log("aaaaaaaaaa", d.data);
           setWordDetail(d.data);
         });
 
       axios
-        .get(`http://localhost:8000/pancha/words-complete/${currentWordId}/`, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        })
+        .get(
+          `https://testapi.nhustle.in/pancha/words-complete/${currentWordId}/`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          }
+        )
         .then((d) => {
           setWordData(d.data);
-          console.log("bbbbbbbb", d.data);
         });
     }
   }, [currentWordId]);
@@ -139,7 +170,6 @@ function FlashcardMode() {
       let gg = wordsInFolder.length - 1;
       setWordIndex(JSON.stringify(gg));
     } else {
-      console.log("gghhhhh");
       let ff = parseInt(wordIndex) - 1;
       setWordIndex(JSON.stringify(ff));
     }
@@ -166,7 +196,7 @@ function FlashcardMode() {
   };
 
   return (
-    <div className="w-full bg-[green] h-[calc(100vh-100px)] pb-4 md:pb-6 flex flex-col items-center tify-center">
+    <div className="w-full h-[calc(100vh-100px)] pb-4 md:pb-6 flex flex-col items-center tify-center">
       <div className=" text-center w-full">
         <h1 className="text-2xl font-semibold">{name}</h1>
       </div>
@@ -189,89 +219,101 @@ function FlashcardMode() {
         </div>
       </div>
 
-      <div
-        className="mt-14 px-1 ms:px-4
+      {!wordData ? (
+        <p className="mt-10">No Data</p>
+      ) : (
+        <>
+          <div
+            className="mt-14 px-1 ms:px-4
             w-[96%] md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col gap-y-5 md:gap-y-6 lg:gap-y-8 
                rounded-md items-center justify-center"
-      >
-        <WordDetail data={englishData} />
+          >
+            <WordDetail data={englishData} />
 
-        <div className="w-full flex items-center justify-center gap-2 md:gap-x-8 lg:gap-x-12">
-          <WordDetail data={frenchData} />
+            <div className="w-full flex items-center justify-center gap-2 md:gap-x-8 lg:gap-x-12">
+              <WordDetail data={frenchData} />
 
-          <div className="w-[200px] flex flex-col gap-y-2 items-center justify-center">
-            {video ? (
-              <div className="w-[200px] rounded-md h-[100px] flex flex-col items-center justify-center">
-                <div className="w-[80%]  border-2 ">
-                  <video
-                    src={wordData?.video}
-                    muted
-                    controls
-                    autoPlay
-                    loop
-                    className="w-full h-full outline-none"
-                  />
+              <div className="w-[200px] flex flex-col gap-y-2 items-center justify-center">
+                {video ? (
+                  <div className="w-[200px] rounded-md h-[100px] flex flex-col items-center justify-center">
+                    <div className="w-[80%]  border-2 ">
+                      <video
+                        src={wordData?.video}
+                        muted
+                        controls
+                        autoPlay
+                        loop
+                        className="w-full h-full outline-none"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-[200px]  h-[100px] flex flex-col items-center justify-center">
+                    <img
+                      src={wordData?.img}
+                      alt={`${wordData?.img}`}
+                      className="h-full w-full"
+                    />
+                  </div>
+                )}
+                <div className="flex gap-2">
+                  <p
+                    onClick={() => setVideo(true)}
+                    className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
+                      video ? "bg-black" : ""
+                    }`}
+                  ></p>
+                  <p
+                    onClick={() => setVideo(false)}
+                    className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
+                      video ? "" : "bg-black"
+                    }`}
+                  ></p>
                 </div>
               </div>
-            ) : (
-              <div className="w-[200px]  h-[100px] flex flex-col items-center justify-center">
-                <img
-                  src={wordData?.img}
-                  alt={`${wordData?.img}`}
-                  className="h-full w-full"
+
+              <WordDetail data={chineseData} />
+            </div>
+
+            {videoBox ? (
+              <div className="w-[96%] rounded-t-md md:w-[75%] lg:w-[65%] xl:w-[50%] fixed flex flex-col items-center justify-center">
+                <div className="h-[30px] md:h-[40px] rounded-t-md pr-4 w-full bg-[#bfbfbf] flex justify-end items-center">
+                  <AiOutlineClose
+                    // onClick={() => setVideoBox(false)}
+                    className="cursor-pointer"
+                  />
+                </div>
+                <video
+                  src="/play_video.mp4"
+                  controls
+                  autoPlay
+                  className="w-full h-full"
                 />
               </div>
+            ) : (
+              ""
             )}
-            <div className="flex gap-2">
-              <p
-                onClick={() => setVideo(true)}
-                className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
-                  video ? "bg-black" : ""
-                }`}
-              ></p>
-              <p
-                onClick={() => setVideo(false)}
-                className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
-                  video ? "" : "bg-black"
-                }`}
-              ></p>
-            </div>
+
+            <WordDetail data={spanishData} />
           </div>
 
-          <WordDetail data={chineseData} />
-        </div>
-
-        {videoBox ? (
-          <div className="w-[96%] rounded-t-md md:w-[75%] lg:w-[65%] xl:w-[50%] fixed flex flex-col items-center justify-center">
-            <div className="h-[30px] md:h-[40px] rounded-t-md pr-4 w-full bg-[#bfbfbf] flex justify-end items-center">
-              <AiOutlineClose
-                // onClick={() => setVideoBox(false)}
-                className="cursor-pointer"
-              />
-            </div>
-            <video
-              src="/play_video.mp4"
-              controls
-              autoPlay
-              className="w-full h-full"
-            />
-          </div>
-        ) : (
-          ""
-        )}
-
-        <WordDetail data={spanishData} />
-      </div>
-
-      <div
-        className="w-[96%] mt-10 pb-10  md:w-[75%] lg:w-[65%] xl:w-[50%] flex 
+          <div
+            className="w-[96%] mt-10 pb-10  md:w-[75%] lg:w-[65%] xl:w-[50%] flex 
          items-center justify-around text-3xl md:text-4xl text-[#917d7d] "
-      >
-        <HiArrowSmLeft onClick={handlePrevious} className="cursor-pointer" />
-        <HiOutlineRefresh onClick={handleSerial} className="cursor-pointer" />
-        <LiaRandomSolid onClick={handleRandom} className="cursor-pointer" />
-        <HiArrowSmRight onClick={handleNext} className="cursor-pointer" />
-      </div>
+          >
+            <HiArrowSmLeft
+              onClick={handlePrevious}
+              className="cursor-pointer"
+            />
+            <HiOutlineRefresh
+              onClick={handleSerial}
+              className="cursor-pointer"
+            />
+            <LiaRandomSolid onClick={handleRandom} className="cursor-pointer" />
+            <HiArrowSmRight onClick={handleNext} className="cursor-pointer" />
+          </div>
+        </>
+      )}
     </div>
   );
 }

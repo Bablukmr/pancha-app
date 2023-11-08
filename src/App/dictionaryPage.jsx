@@ -25,10 +25,9 @@ function DictionaryPage() {
   };
 
   useEffect(() => {
-    // console.log("WWEEWE",token);
     if (token) {
       axios
-        .get("http://localhost:8000/pancha/words/", {
+        .get("https://testapi.nhustle.in/pancha/words/", {
           headers: {
             Authorization: `Token ${token}`,
           },

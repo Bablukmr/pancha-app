@@ -31,14 +31,15 @@ function LibraryPage() {
 
   const [folderType, setFolderType] = useState("");
 
-  useEffect(() => {
-    console.log("folderType", folderType);
-  });
+  const userData = useSelector((state) => state.AuthReducer.userData);
+
+  const userId = userData?.id;
+
 
   useEffect(() => {
     if (token) {
       axios
-        .get("http://localhost:8000/pancha/public-folder", {
+        .get("https://testapi.nhustle.in/pancha/public-folder", {
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -58,34 +59,32 @@ function LibraryPage() {
   }, [token]);
 
   useEffect(() => {
-    if (token) {
+    if (token && userId) {
       getUserFolder();
     }
-  }, [token]);
+  }, [token, userId]);
 
   const getUserFolder = () => {
     setUserLoading(true);
-    if (token) {
-      axios
-        .get("http://localhost:8000/pancha/user-folder", {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        })
+    axios
+      .get(`https://testapi.nhustle.in/pancha/user-folder?id=${userId}`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
 
-        .then((res) => {
-          const data = res.data;
-          setUserFolder(data?.reverse());
-          setUserLoading(false);
-        })
-        .catch((err) => {
-          setUserLoading(false);
-          setNotificationTitle("Error !!");
-          setNotificationBody("Something went wrong fetching user folders.");
-          setNotificationType("error");
-          shownotiftion();
-        });
-    }
+      .then((res) => {
+        const data = res.data;
+        setUserFolder(data?.reverse());
+        setUserLoading(false);
+      })
+      .catch((err) => {
+        setUserLoading(false);
+        setNotificationTitle("Error !!");
+        setNotificationBody("Something went wrong fetching user folders.");
+        setNotificationType("error");
+        shownotiftion();
+      });
   };
 
   const handleViewEdit = () => {
@@ -120,11 +119,11 @@ function LibraryPage() {
     setLoading(true);
     axios
       .post(
-        "http://localhost:8000/pancha/folder/",
+        "https://testapi.nhustle.in/pancha/folder/",
         {
           name: newFolder,
           pulic_folder: false,
-          user: 2,
+          user: userId,
         },
         {
           headers: {

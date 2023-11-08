@@ -31,7 +31,7 @@ export default function Search() {
     }
     if (value) {
       axios
-        .get(`http://localhost:8000/pancha/search-word?word=${value}`, {
+        .get(`https://testapi.nhustle.in/pancha/search-word?word=${value}`, {
           headers: {
             Authorization: `Token ${token}`,
           },
