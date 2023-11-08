@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 export default function Header(props) {
   const { setSetting, setting } = props;
 
-  console.log("setting", setting);
   const navigate = useNavigate();
 
   return (

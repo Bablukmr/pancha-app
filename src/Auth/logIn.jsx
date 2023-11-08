@@ -19,7 +19,6 @@ function Login() {
   const token = useSelector((state) => state.AuthReducer.token);
   const LoginLoading = useSelector((state) => state.AuthReducer.loadingLogin);
   const loginError = useSelector((state) => state.AuthReducer.loginError);
-  // console.log(loginError);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -115,7 +114,7 @@ function Login() {
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               id="outlined-basic"
-              label="Username"
+              label="Email"
               variant="outlined"
               style={{ width: "100%" }}
             />
@@ -157,12 +156,12 @@ function Login() {
               onClick={handleLogin}
             />
 
-            <p className="mt-2 text-sm">
+            <small className="mt-2">
               Don't have an account?{" "}
               <Link to="signup" className="text-blue-400 underline ml-1">
                 Sign up
               </Link>
-            </p>
+            </small>
           </FormControl>
         </div>
       </div>

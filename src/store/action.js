@@ -62,13 +62,14 @@ export const userLogIn = (email, password) => {
       },
     });
     axios
-      .post("http://localhost:8000/dj-rest-auth/login/", {
+      .post("https://testapi.nhustle.in/dj-rest-auth/login/", {
         email: email,
         password: password,
       })
       .then((d) => {
-        console.log(d.status);
         localStorage.setItem("token", d.data.key);
+        dispatch(getUserData(d.data.key));
+
         dispatch({
           type: types.USER_DETAIL,
           payload: {
@@ -83,8 +84,6 @@ export const userLogIn = (email, password) => {
         //   message: "Error !!",
         //   description: "Wrong Credentials.",
         // });
-
-        console.log("errorrrrrrr");
         dispatch({
           type: types.USER_DETAIL,
           payload: {
@@ -97,28 +96,29 @@ export const userLogIn = (email, password) => {
   };
 };
 
-// export const getUserData = (token) => {
-//   return (dispatch) => {
-//     axios
-//       .get("http://localhost:8000/dj-rest-auth/user/", {
-//         headers: {
-//           Authorization: `Token ${token}`,
-//         },
-//       })
-//       .then((res) => {
-//         // console.log('res', res);
-//         dispatch({
-//           type: types.USER_DATA,
-//           payload: {
-//             userData: res.data,
-//           },
-//         });
-//       })
-//       .catch((e) => {
-//         notification["error"]({
-//           message: "Error !!",
-//           description: "Something went wrong fetching user data.",
-//         });
-//       });
-//   };
-// };
+export const getUserData = (token) => {
+  // alert("hittttttttttttttt");
+  return (dispatch) => {
+    axios
+      .get("https://testapi.nhustle.in/users/loggedInUser/", {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((res) => {
+        // alert("hi");
+        dispatch({
+          type: types.USER_DATA,
+          payload: {
+            userData: res?.data[0],
+          },
+        });
+      })
+      .catch((e) => {
+        notification["error"]({
+          message: "Error !!",
+          description: "Something went wrong fetching user data.",
+        });
+      });
+  };
+};

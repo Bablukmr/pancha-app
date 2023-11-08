@@ -30,22 +30,22 @@ export default function UserFolderPage() {
   }, [token]);
 
   const getUserFolder = () => {
-    if(token){
-    axios
-      .get("http://localhost:8000/pancha/user-folder", {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .then((d) => {
-        setUserFolder(d?.data?.reverse());
-      })
-      .catch((err) => {
-        setNotificationTitle("Error !!");
-        setNotificationBody("Failed to get user folders, try again.");
-        setNotificationType("error");
-        shownotiftion();
-      });
+    if (token) {
+      axios
+        .get("https://testapi.nhustle.in/pancha/user-folder", {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then((d) => {
+          setUserFolder(d?.data?.reverse());
+        })
+        .catch((err) => {
+          setNotificationTitle("Error !!");
+          setNotificationBody("Failed to get user folders, try again.");
+          setNotificationType("error");
+          shownotiftion();
+        });
     }
   };
 
@@ -58,7 +58,7 @@ export default function UserFolderPage() {
     } else {
       axios
         .post(
-          "http://localhost:8000/pancha/words-in-folder/",
+          "https://testapi.nhustle.in/pancha/words-in-folder/",
           {
             folder: selectedItemId,
             word: wordId,
@@ -113,6 +113,7 @@ export default function UserFolderPage() {
         ) : (
           ""
         )}
+
         {userFolder.length !== 0 && (
           <div className="min-h-[120px] w-[80%] md:w-[50%] lg:w-[35%]  mb-6 border border-black rounded-md">
             <ul className="w-full  my-2 max-h-[160px] overflow-auto flex flex-col  rounded-md p-1 items-start ">
@@ -143,25 +144,36 @@ export default function UserFolderPage() {
             </ul>
           </div>
         )}
+
+        {/* <div className="min-h-[200px] w-[80%] mb-6 border border-[#f0f0f0] rounded-md">
+          <ul className="w-full  my-2 max-h-[250px] overflow-auto flex flex-col items-start ">
+            {userFolder.map((keyword) => (
+              <li
+                onClick={() => {
+                  setSelectedItemId(keyword.id);
+                }}
+                key={keyword.id}
+                className={`h-[40px] hover:bg-slate-600 hover:text-white focus:ring-violet-300 rounded-sm font-medium px-4 py-2 w-full border-b-2 border-[#f2f2f2] cursor-pointer ${
+                  keyword.id === selectedItemId ? "bg-slate-600 text-white" : ""
+                } `}
+              >
+                {keyword.name}
+              </li>
+            ))}
+          </ul>
+        </div> */}
         {userFolder.length !== 0 && (
-          // <Button
-          //   style={{
-          //     width: "110px",
-          //     textTransform: "none",
-          //     padding: "6px 16px",
-          //   }}
-          //   onClick={handleClick}
-          //   variant="contained"
-          // >
-          //   Add
-          // </Button>
-          <ButtonComponent
-            btnName="Add"
-            padding={"6px "}
-            width="100px"
-            text="white"
+          <Button
+            style={{
+              width: "110px",
+              textTransform: "none",
+              padding: "6px 16px",
+            }}
             onClick={handleClick}
-          />
+            variant="contained"
+          >
+            Add
+          </Button>
         )}
       </div>
     </>

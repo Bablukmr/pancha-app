@@ -1,7 +1,9 @@
+import React from "react";
+
 import ButtonComponent from "../Components/buttonComponent";
 import { TextField, Typography } from "@mui/material";
 
-function BusinessSignUp() {
+export default function BusinessSignUp() {
   return (
     <div className="w-full  h-screen flex flex-col items-center justify-center">
       <h1 className="text-2xl my-4 absolute top-[60px]">LOGO</h1>
@@ -12,7 +14,7 @@ function BusinessSignUp() {
             component="h6"
             className="text-center  text-blue-600"
           >
-            Signup as a Business/School
+            Signup as a School
           </Typography>
         </div>
 
@@ -58,5 +60,3 @@ function BusinessSignUp() {
     </div>
   );
 }
-
-export default BusinessSignUp;
