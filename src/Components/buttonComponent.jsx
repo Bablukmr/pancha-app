@@ -9,16 +9,18 @@ function ButtonComponent({
   onClick,
   startIcon,
   padding,
+  buttonType,
 }) {
   return (
     <Button
       disabled={disabled}
       onClick={onClick}
+      color={buttonType}
       style={{
         width: `${width}`,
         textTransform: "none",
         padding: `${padding}`,
-        backgroundColor: "#0073e6",
+        // backgroundColor: "#0073e6",
         color: `${text}`,
       }}
       variant="contained"

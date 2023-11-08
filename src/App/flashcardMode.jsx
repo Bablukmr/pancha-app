@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   HiArrowSmLeft,
@@ -6,163 +6,314 @@ import {
   HiOutlineRefresh,
 } from "react-icons/hi";
 import { LiaRandomSolid } from "react-icons/lia";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import WordDetail from "../Components/wordDetail";
 
 function FlashcardMode() {
   const navigate = useNavigate();
   const params = useParams();
   const FolderName = params?.name;
 
-  const PublicList = ["Fruits", "Games", "Books"];
-  const UserList = ["Study", "Yoga", "States"];
-  const allFolders = [...PublicList, ...UserList];
-  const [selectedFolder, setSelectedFolder] = useState(FolderName);
+  const { name, id } = useParams();
+
+  const token = useSelector((state) => state.AuthReducer.token);
+  const [allFolders, setAllFolder] = useState([]);
+  const [videoBox, setVideoBox] = useState(false);
+  const [wordIndex, setWordIndex] = useState(null);
+
+  // const [selectedFolder, setSelectedFolder] = useState("");
+  // const [selectedFolderId, setSelectedFolderId] = useState("");
+
+  const [wordsInFolder, setWordsInFolder] = useState([]);
+  const [currentWordId, setCurrentWordId] = useState(null);
+
+  const [wordData, setWordData] = useState(null);
+  const [wordDaetail, setWordDetail] = useState(null);
+
+  const [spanishData, setSpanishData] = useState(null);
+  const [frenchData, setFrenchData] = useState(null);
+  const [chineseData, setChineseData] = useState(null);
+  const [englishData, setEnglishData] = useState(null);
+
+  const [video, setVideo] = useState(true);
+
+  // useEffect(() => {
+  //   if (name) setSelectedFolder(name);
+  //   if (id) setSelectedFolderId(id);
+  // }, [name, id]);
+
+  useEffect(() => {
+    if (token) {
+      axios
+        .get("https://testapi.nhustle.in/pancha/folder/", {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then((d) => {
+          setAllFolder(d.data);
+        });
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (token) getWordsInFolder(id);
+  }, [token, id]);
+
   const handleFolderChange = (e) => {
-    setSelectedFolder(e.target.value);
-    navigate(`/library/${e.target.value}`);
+    let g = allFolders.filter((d) => d.name === e.target.value);
+    if (Array.isArray(g)) {
+      let ghj = g[0]?.id;
+
+      getWordsInFolder(ghj);
+    }
+    // setSelectedFolder(e.target.value);
+    // navigate(`/library/${e.target.value}`);
   };
-  const BookArr = [
-    { id: 1, name: "one" },
-    { id: 2, name: "two" },
-    { id: 3, name: "three" },
-    { id: 4, name: "four" },
-    { id: 5, name: "five" },
-    { id: 6, name: "six" },
-  ];
-  const [wordIndex, setWordIndex] = useState(0);
+
+  const getWordsInFolder = (idd) => {
+    setWordIndex(null);
+    axios
+      .get(`https://testapi.nhustle.in/pancha/word-in-each-folder?id=${idd}`, {
+        headers: {
+          Authorization: `Token ${token}`,
+        },
+      })
+      .then((d) => {
+        setWordsInFolder(d.data);
+        if (Array.isArray(d.data)) {
+          if (d.data.length > 0) {
+            setWordIndex("0");
+            // setCurrentWordId(d.data[0]?.word);
+          } else {
+            setWordIndex(null);
+            setCurrentWordId(null);
+            setWordData(null);
+            setWordDetail(null);
+
+            setSpanishData(null);
+            setFrenchData(null);
+            setChineseData(null);
+            setEnglishData(null);
+          }
+        } else {
+          setWordIndex(null);
+          setCurrentWordId(null);
+          setWordData(null);
+          setWordDetail(null);
+
+          setSpanishData(null);
+          setFrenchData(null);
+          setChineseData(null);
+          setEnglishData(null);
+        }
+      });
+  };
+
+  useEffect(() => {
+    if (wordIndex) {
+      setCurrentWordId(wordsInFolder[wordIndex]?.word);
+    }
+  }, [wordIndex]);
+
+  useEffect(() => {
+    // if (currentWordId) console.log("currentWordId", currentWordId);
+
+    if (currentWordId) {
+      axios
+        .get(
+          `https://testapi.nhustle.in/pancha/word-detail?id=${currentWordId}`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          }
+        )
+        .then((d) => {
+          setWordDetail(d.data);
+        });
+
+      axios
+        .get(
+          `https://testapi.nhustle.in/pancha/words-complete/${currentWordId}/`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          }
+        )
+        .then((d) => {
+          setWordData(d.data);
+        });
+    }
+  }, [currentWordId]);
+
+  useEffect(() => {
+    if (wordDaetail) {
+      let spanish = wordDaetail?.filter((d) => d.language_name === "Spanish");
+      setSpanishData(Array.isArray(spanish) ? spanish[0] : {});
+
+      let french = wordDaetail?.filter((d) => d.language_name === "French");
+      setFrenchData(Array.isArray(french) ? french[0] : {});
+
+      let english = wordDaetail?.filter((d) => d.language_name === "English");
+      setEnglishData(Array.isArray(english) ? english[0] : {});
+
+      let chinese = wordDaetail?.filter((d) => d.language_name === "Chinese");
+      setChineseData(Array.isArray(chinese) ? chinese[0] : {});
+    }
+  }, [wordDaetail]);
+
   const handlePrevious = () => {
-    if (wordIndex === 0) {
-      setWordIndex(BookArr.length - 1);
+    if (wordIndex === "0") {
+      let gg = wordsInFolder.length - 1;
+      setWordIndex(JSON.stringify(gg));
     } else {
-      setWordIndex(wordIndex - 1);
+      let ff = parseInt(wordIndex) - 1;
+      setWordIndex(JSON.stringify(ff));
     }
   };
   const handleSerial = () => {
-    if (wordIndex === BookArr.length - 1) {
+    if (wordIndex === wordsInFolder.length - 1) {
       setWordIndex(0);
     } else {
       setWordIndex(wordIndex + 1);
     }
   };
   const handleRandom = () => {
-    const randomIndex = Math.floor(Math.random() * BookArr.length);
-    setWordIndex(randomIndex);
+    const randomIndex = Math.floor(Math.random() * wordsInFolder.length);
+    setWordIndex(JSON.stringify(randomIndex));
   };
   const handleNext = () => {
-    if (wordIndex === BookArr.length - 1) {
-      setWordIndex(0);
+    let gh = wordsInFolder.length - 1;
+    if (wordIndex === JSON.stringify(gh)) {
+      setWordIndex("0");
     } else {
-      setWordIndex(wordIndex + 1);
+      let ff = parseInt(wordIndex) + 1;
+      setWordIndex(JSON.stringify(ff));
     }
   };
 
-  const english = new Audio("/tree_English.m4a");
-  const spanish = new Audio("/tree_spanish.m4a");
-  const chinese = new Audio("/tree_chinese.mp3");
-  const [video, setVideo] = useState(true);
   return (
-    <div className="w-full pb-4 md:pb-6 flex flex-col items-center justify-center">
-      <h1 className="text-xl my-6">Flashcards for {selectedFolder}</h1>
+    <div className="w-full h-[calc(100vh-100px)] pb-4 md:pb-6 flex flex-col items-center tify-center">
+      <div className=" text-center w-full">
+        <h1 className="text-2xl font-semibold">{name}</h1>
+      </div>
 
-      <div className="w-[80%]  md:w-[50%] lg:w-[45%] xl:w-[40%] ">
+      <div className="w-[80%] mt-10  md:w-[50%] lg:w-[45%] xl:w-[40%] ">
         <label className="">choose the different folder</label>
         <div className="border-[#7c7c7f] mt-2 rounded-md border border-solid flex items-center px-2">
           <select
-            value={selectedFolder}
+            // value={selectedFolder}
             onChange={handleFolderChange}
             placeholder="10-3-23"
-            className="text-sm h-10 bg-white  border-none w-full outline-none px-2"
+            className=" text-sm h-10 bg-white  border-none w-full outline-none px-2"
           >
-            {/* <option value="">Select a folder</option> */}
-            {allFolders.map((folder, index) => (
-              <option key={index} value={folder}>
-                {folder}
+            {allFolders?.map((d) => (
+              <option key={d.id} className="w-[200px]">
+                {d.name}
               </option>
             ))}
           </select>
         </div>
       </div>
-      <p className="w-full mt-4 font-bold text-center ">
-        {BookArr[wordIndex].name}
-      </p>
-      <div
-        className="w-[96%] select-none bg-[#fafafa] my-10 py-2 px-1 md:py-6 ms:px-4  md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col 
-      gap-y-5 md:gap-y-6 lg:gap-y-8 rounded-md items-center justify-center"
-      >
-        <div className="w-[200px] flex flex-col items-center justify-center">
-          <p className="p-0 m-0">Word in English</p>
-          <button onClick={() => english.play()} className="cursor-pointer ">
-            🔊
-          </button>
-        </div>
-        <div className="w-full flex items-center justify-center gap-2 md:gap-x-8 lg:gap-x-12">
-          <div className="w-[190px] flex flex-col items-center justify-center">
-            <p className="p-0 m-0 text-center">Word in French </p>
-            <button onClick={() => english.play()} className="cursor-pointer ">
-              🔊
-            </button>
-          </div>
-          {/* <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
-            <p className="p-0 m-0">LOGO</p>
-            <p className="">image of word</p>
-          </div> */}
-          <div className="w-[200px] flex flex-col gap-y-2 items-center justify-center">
-            {video ? (
-              <div className="w-[200px] rounded-md h-[100px] border-2 flex flex-col items-center justify-center">
-                <p className="p-0 m-0">IMAGE of word</p>
-                <img alt="img" />
-              </div>
-            ) : (
-              <div className="w-[200px] rounded-md h-[100px]  flex flex-col items-center justify-center">
-                <div className="w-[80%]  border-2 ">
-                  <video
-                    onClick={() => alert("hi")}
-                    src="/play_video.mp4"
-                    controls
-                    autoPlay
-                    loop
-                    className="w-full h-full outline-none"
-                  />
+
+      {!wordData ? (
+        <p className="mt-10">No Data</p>
+      ) : (
+        <>
+          <div
+            className="mt-14 px-1 ms:px-4
+            w-[96%] md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col gap-y-5 md:gap-y-6 lg:gap-y-8 
+               rounded-md items-center justify-center"
+          >
+            <WordDetail data={englishData} />
+
+            <div className="w-full flex items-center justify-center gap-2 md:gap-x-8 lg:gap-x-12">
+              <WordDetail data={frenchData} />
+
+              <div className="w-[200px] flex flex-col gap-y-2 items-center justify-center">
+                {video ? (
+                  <div className="w-[200px] rounded-md h-[100px] flex flex-col items-center justify-center">
+                    <div className="w-[80%]  border-2 ">
+                      <video
+                        src={wordData?.video}
+                        muted
+                        controls
+                        autoPlay
+                        loop
+                        className="w-full h-full outline-none"
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-[200px]  h-[100px] flex flex-col items-center justify-center">
+                    <img
+                      src={wordData?.img}
+                      alt={`${wordData?.img}`}
+                      className="h-full w-full"
+                    />
+                  </div>
+                )}
+                <div className="flex gap-2">
+                  <p
+                    onClick={() => setVideo(true)}
+                    className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
+                      video ? "bg-black" : ""
+                    }`}
+                  ></p>
+                  <p
+                    onClick={() => setVideo(false)}
+                    className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
+                      video ? "" : "bg-black"
+                    }`}
+                  ></p>
                 </div>
               </div>
+
+              <WordDetail data={chineseData} />
+            </div>
+
+            {videoBox ? (
+              <div className="w-[96%] rounded-t-md md:w-[75%] lg:w-[65%] xl:w-[50%] fixed flex flex-col items-center justify-center">
+                <div className="h-[30px] md:h-[40px] rounded-t-md pr-4 w-full bg-[#bfbfbf] flex justify-end items-center">
+                  <AiOutlineClose
+                    // onClick={() => setVideoBox(false)}
+                    className="cursor-pointer"
+                  />
+                </div>
+                <video
+                  src="/play_video.mp4"
+                  controls
+                  autoPlay
+                  className="w-full h-full"
+                />
+              </div>
+            ) : (
+              ""
             )}
 
-            <div className="flex gap-2">
-              <p
-                onClick={() => setVideo(true)}
-                className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
-                  video ? "bg-black" : ""
-                }`}
-              ></p>
-              <p
-                onClick={() => setVideo(false)}
-                className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
-                  video ? "" : "bg-black"
-                }`}
-              ></p>
-            </div>
+            <WordDetail data={spanishData} />
           </div>
-          <div className="w-[200px] flex flex-col items-center justify-center">
-            <p className="p-0 m-0 text-center">Word in Chinese</p>
-            <button onClick={() => chinese.play()} className="cursor-pointer ">
-              🔊
-            </button>
+
+          <div
+            className="w-[96%] mt-10 pb-10  md:w-[75%] lg:w-[65%] xl:w-[50%] flex 
+         items-center justify-around text-3xl md:text-4xl text-[#917d7d] "
+          >
+            <HiArrowSmLeft
+              onClick={handlePrevious}
+              className="cursor-pointer"
+            />
+            <HiOutlineRefresh
+              onClick={handleSerial}
+              className="cursor-pointer"
+            />
+            <LiaRandomSolid onClick={handleRandom} className="cursor-pointer" />
+            <HiArrowSmRight onClick={handleNext} className="cursor-pointer" />
           </div>
-        </div>
-
-        <div className="w-[200px] flex flex-col items-center justify-center">
-          <p className="p-0 m-0">Word in Spanish</p>
-          <button onClick={() => spanish.play()} className="cursor-pointer ">
-            🔊
-          </button>
-        </div>
-      </div>
-
-      <div className="w-[96%] pb-10  md:w-[75%] lg:w-[65%] xl:w-[50%] flex items-center justify-around text-3xl md:text-4xl text-[#917d7d] ">
-        <HiArrowSmLeft onClick={handlePrevious} className="cursor-pointer" />
-        <HiOutlineRefresh onClick={handleSerial} className="cursor-pointer" />
-        <LiaRandomSolid onClick={handleRandom} className="cursor-pointer" />
-        <HiArrowSmRight onClick={handleNext} className="cursor-pointer" />
-      </div>
+        </>
+      )}
     </div>
   );
 }

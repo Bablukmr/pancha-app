@@ -2,7 +2,7 @@ import AppRouts from "./appRouts";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { userLogin } from "../store/action";
+import { userLogin, getUserData } from "../store/action";
 import Footer from "./footer";
 import Header from "./header";
 
@@ -12,23 +12,16 @@ function AppLayout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  console.log("ttttt", token);
-
   useEffect(() => {
     if (!token) {
       const tokenn = localStorage.getItem("token");
       if (tokenn) {
         dispatch(userLogin(tokenn));
+        dispatch(getUserData(tokenn));
       } else {
         navigate("/auth");
       }
     }
-
-    // const path = localStorage.getItem("path");
-    // console.log(path);
-    // if (token) {
-    //   navigate(`${path}`);
-    // }
   }, [token]);
 
   return (

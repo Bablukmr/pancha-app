@@ -12,27 +12,30 @@ function SettingPage() {
   const token = useSelector((state) => state.AuthReducer.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const userData = useSelector((state) => state.AuthReducer.userData);
+  const userId = userData?.id;
+
   const [langLoading, setLangLoading] = useState(true);
   const handleLogout = () => {
     dispatch(userLogout());
   };
 
   useEffect(() => {
-    getCheck();
-  }, []);
+    if (token) getCheck();
+  }, [token]);
 
   const [availableLanguages, setavailableLanguages] = useState([]);
 
   const getCheck = () => {
     axios
-      .get("http://localhost:8000/pancha/language", {
+      .get("https://testapi.nhustle.in/pancha/language", {
         headers: {
           Authorization: `Token ${token}`,
         },
       })
       .then((res) => {
         const data = res.data;
-        console.log("data", data);
         setavailableLanguages(data);
         setLangLoading(false);
       })
@@ -42,14 +45,13 @@ function SettingPage() {
   };
 
   const handleLanguageChange = (languages) => {
-    console.log("check", languages.active);
     if (languages.active) {
       axios
         .post(
-          "http://localhost:8000/pancha/user-language/",
+          "https://testapi.nhustle.in/pancha/user-language/",
           {
             language: languages.id,
-            user: 2,
+            user: userId,
           },
           {
             headers: {
@@ -67,7 +69,7 @@ function SettingPage() {
     } else {
       axios
         .delete(
-          `http://localhost:8000/pancha/user-language/${languages.idd}/`,
+          `https://testapi.nhustle.in/pancha/user-language/${languages.idd}/`,
           {
             headers: {
               Authorization: `Token ${token}`,
@@ -76,7 +78,6 @@ function SettingPage() {
         )
         .then((res) => {
           const data = res.data;
-          console.log(data);
           getCheck();
         })
         .catch((err) => {
@@ -122,16 +123,6 @@ function SettingPage() {
         <div className="flex flex-col py-2 border-b-2 border-black">
           <p className="my-2">Change my password</p>
           <form className="w-full flex flex-col items-center justify-center p-2 gap-y-5">
-            {/* <div className="w-full">
-              <label className="text-sm">Old Password</label>
-              <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center ">
-                <input
-                  type="password"
-                  placeholder="****** Old Password"
-                  className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
-                />
-              </div>
-            </div> */}
             <TextField
               size="small"
               id="outlined-basic"
@@ -140,16 +131,6 @@ function SettingPage() {
               style={{ width: "100%" }}
             />
 
-            {/* <div className="w-full">
-              <label className="text-sm">New Password</label>
-              <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
-                <input
-                  type="password"
-                  placeholder="****** New Password"
-                  className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
-                />
-              </div>
-            </div> */}
             <TextField
               size="small"
               id="outlined-basic"
@@ -157,17 +138,8 @@ function SettingPage() {
               variant="outlined"
               style={{ width: "100%" }}
             />
-            {/* <div className="w-full">
-              <label className="text-sm">Confirm New Password</label>
-              <div className="border-[#A2A2A7] mt-2 rounded-md border border-solid flex items-center">
-                <input
-                  type="password"
-                  placeholder="****** Confirm New Password"
-                  className="text-sm h-10 border-none w-full outline-blue-400 px-2 rounded-md"
-                />
-              </div>
-            </div> */}
-               <TextField
+
+            <TextField
               size="small"
               id="outlined-basic"
               label="Confirm New Password"
@@ -176,23 +148,6 @@ function SettingPage() {
             />
 
             <div className="w-full mt-3 flex flex-col items-start justify-center gap-2">
-              {/* <button
-                onClick={(e) => {
-                  e.preventDefault(), window.confirm("Change Password");
-                }}
-                className="text-center py-2 px-4 rounded-md bg-blue-400 text-white"
-              >
-                Change Password
-              </button> */}
-              {/* <Button
-                style={{ textTransform: "none", padding: "6px 16px" }}
-                onClick={(e) => {
-                  e.preventDefault(), window.confirm("Change Password");
-                }}
-                variant="contained"
-              >
-                Change Password
-              </Button> */}
               <ButtonComponent
                 btnName="Change Password"
                 padding={"6px "}
@@ -207,18 +162,9 @@ function SettingPage() {
           </form>
         </div>
         <div className="w-full mb-[60px] px-2 flex flex-col justify-between items-start gap-4 mt-6">
-          {/* <Button
-            style={{ textTransform: "none", padding: "6px 16px" }}
-            onClick={() => navigate("/settings/feedback")}
-            variant="contained"
-          >
-            Provide Feedback
-          </Button> */}
-
           <ButtonComponent
             btnName="Provide Feedback"
             padding={"6px "}
-           
             width="140px"
             text="white"
             onClick={() => navigate("/settings/feedback")}
@@ -227,20 +173,11 @@ function SettingPage() {
           <ButtonComponent
             btnName="Create New User"
             padding={"6px "}
-           
             width="140px"
             text="white"
             onClick={() => navigate("/new-user")}
           />
 
-          {/* <Button
-          style={{textTransform:"none" , padding: "6px 16px" }}
-            onClick={handleLogout}
-            endIcon={<LogoutIcon />}
-            variant="contained"
-          >
-            Logout
-          </Button> */}
           <ButtonComponent
             btnName="Logout"
             padding={"6px "}
