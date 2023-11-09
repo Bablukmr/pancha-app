@@ -89,6 +89,9 @@ function ProvideFeedbackPage() {
         setNotificationBody("FeedBack Submitted");
         setNotificationType("success");
         shownotiftion();
+        setTimeout(() => {
+          navigate("/");
+        }, 800);
       })
       .catch((e) => {
         setNotificationTitle("Error !!");

@@ -28,7 +28,7 @@ function LibraryPage() {
   const [notificationBody, setNotificationBody] = useState(null);
 
   const [selectedFolderId, setSelectedFolderId] = useState(null);
-
+  const [loading, setLoading] = useState(false);
   const [folderType, setFolderType] = useState("");
 
   const userData = useSelector((state) => state.AuthReducer.userData);
@@ -106,7 +106,7 @@ function LibraryPage() {
       setShowNotification(false);
     }, 2000);
   };
-  const [loading, setLoading] = useState(false);
+ 
   const handleAddFolder = (e) => {
     e.preventDefault();
     if (!newFolder) {

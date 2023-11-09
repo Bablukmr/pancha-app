@@ -90,6 +90,7 @@ function DictionaryPage() {
                 >
                   <ListItemText
                     primary={val.name}
+                    // primary={val.name.charAt(0).toUpperCase() + val.name.substr(1).toLowerCase()}
                     className=""
                     onClick={() => navigate(`/word/${val.name}/${val.id}`)}
                   />

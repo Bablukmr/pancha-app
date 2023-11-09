@@ -9,6 +9,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Button } from "@mui/material";
 import ButtonComponent from "../Components/buttonComponent";
 import { Link } from "react-router-dom";
+import {FiArrowLeft} from "react-icons/fi"
 
 export default function ViewEditPage() {
   const navigate = useNavigate();
@@ -31,9 +32,12 @@ export default function ViewEditPage() {
   const [apiWords, setApiWords] = useState([]);
   const [selectedWord, setSelectedWord] = useState(null);
   const [selectedItemId, setSelectedItemId] = useState(null);
-
   const [inputWord, setInputWord] = useState("");
   const [loadingSearch, setLoadingSearch] = useState(false);
+
+  const [showPopup, setShowPopup] = useState(false);
+  // const [wordNotFound, setWordNotFound] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState("");
 
   function shownotification() {
     setShowNotification(true);
@@ -50,11 +54,14 @@ export default function ViewEditPage() {
 
   const getWordInFolder = () => {
     axios
-      .get(`https://testapi.nhustle.in/pancha/word-in-each-folder?id=${FolderId}`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
+      .get(
+        `https://testapi.nhustle.in/pancha/word-in-each-folder?id=${FolderId}`,
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      )
       .then((d) => {
         setWords(d.data);
       })
@@ -139,14 +146,14 @@ export default function ViewEditPage() {
         .then((d) => {
           setModel(false);
           getWordInFolder();
-          setNotificationTitle("Error !!");
+          setNotificationTitle("Success !!");
           setNotificationBody("Word added to selected folder.");
           setNotificationType("success");
           shownotification();
         })
         .catch(() => {
           setNotificationTitle("Error !!");
-          setNotificationBody("Something went wrong, try again.");
+          setNotificationBody("This Word Already Exist in your folder");
           setNotificationType("error");
           shownotification();
         });
@@ -162,12 +169,20 @@ export default function ViewEditPage() {
     if (inputValue) {
       setLoadingSearch(true);
       axios
-        .get(`https://testapi.nhustle.in/pancha/search-word?word=${inputValue}`, {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
-        })
+        .get(
+          `https://testapi.nhustle.in/pancha/search-word?word=${inputValue}`,
+          {
+            headers: {
+              Authorization: `Token ${token}`,
+            },
+          }
+        )
         .then((d) => {
+          if (d.data.length === 0) {
+            // setWordNotFound(true);
+            setShowPopup(true);
+            setRedirectUrl(`/settings/feedback?word=${inputValue}`);
+          }
           setApiWords(d.data);
           setLoadingSearch(false);
         })
@@ -190,6 +205,11 @@ export default function ViewEditPage() {
     setOpen(false);
   };
 
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    // setWordNotFound(false);
+  };
+
   return (
     <>
       <div
@@ -205,6 +225,11 @@ export default function ViewEditPage() {
         />
       </div>
       <div className="w-full pb-4 md:pb-6 flex flex-col items-center justify-center">
+       <div 
+       onClick={()=>navigate("/library")}
+       className="text-xl cursor-pointer absolute top-[80px] left-[10%]">
+        <FiArrowLeft/>
+       </div>
         <h1 className="text-xl my-6">{FolderName}</h1>
         <div className="w-[80%]  md:w-[50%] lg:w-[35%] border border-[#725555] rounded-md mb-6 p-2 ">
           <ul className="w-full max-h-[150px] h-[200px] overflow-y-scroll flex flex-col items-start">
@@ -235,23 +260,23 @@ export default function ViewEditPage() {
                   <p className="text-sm my-3">New Word Name</p>
                   <Autocomplete
                     open={open}
-                    // open={inputWord ? true : false}
                     loading={loadingSearch}
                     value={selectedWord}
                     onChange={handleChange}
                     options={apiWords}
                     getOptionLabel={(option) => option.name}
                     style={{ width: "100%" }}
-                    noOptionsText={
-                      <Link to={`/settings/feedback?word=${inputWord}`}>
-                        {
-                          <p>
-                            No word found, suggest <b> {inputWord} </b> to add
-                            to dictionary.
-                          </p>
-                        }
-                      </Link>
-                    }
+                    noOptionsText="No Words Found"
+                    // noOptionsText={
+                    //   <Link to={`/settings/feedback?word=${inputWord}`}>
+                    //     {
+                    //       <p>
+                    //         No word found, suggest <b> {inputWord} </b> to add
+                    //         to dictionary.
+                    //       </p>
+                    //     }
+                    //   </Link>
+                    // }
                     renderInput={(params) => (
                       <TextField {...params} label="Type a Word" />
                     )}
@@ -274,6 +299,41 @@ export default function ViewEditPage() {
         ) : (
           ""
         )}
+
+        <div
+          className={`fixed top-6 right-0 shadow-lg z-50 w-full rounded-2xl transition-transform duration-300 transform ${
+            showPopup ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="w-[80%] md:w-[50%] fixed top-0 right-[10px] lg:w-[35%] bg-white p-4 rounded-lg">
+            <p className="w-full text-left">
+              Word Not Found Would you like to request to add it to future
+              updates?
+            </p>
+            <div className="mt-4 mb-2 flex w-full gap-3 ">
+              <ButtonComponent
+                btnName="Yes"
+                buttonType="success"
+                padding={"3px "}
+                width="80px"
+                text="white"
+                onClick={() => {
+                  navigate(redirectUrl);
+                }}
+              />
+
+              <ButtonComponent
+                btnName="No"
+                buttonType="error"
+                padding={"3px "}
+                width="80px"
+                text="white"
+                onClick={handleClosePopup}
+              />
+            </div>
+          </div>
+        </div>
+
         <div className="w-[80%] md:w-[50%] lg:w-[35%]  mt-4 flex flex-col items-start justify-start gap-3 mb-[70px]">
           <ButtonComponent
             btnName="Add Word"
@@ -285,7 +345,7 @@ export default function ViewEditPage() {
           />
 
           <ButtonComponent
-            btnName=" Remove Word"
+            btnName="Remove Word"
             buttonType="error"
             padding={"6px "}
             width="120px"
@@ -294,7 +354,7 @@ export default function ViewEditPage() {
           />
 
           <ButtonComponent
-            btnName=" Delete Folder"
+            btnName="Delete Folder"
             buttonType="error"
             padding={"6px "}
             width="120px"
