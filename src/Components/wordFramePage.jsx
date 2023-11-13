@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import WordDetail from "./wordDetail";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -8,6 +8,7 @@ import "swiper/css/scrollbar";
 import { Pagination } from "swiper/modules";
 
 function WordFramePage({
+  name,
   englishData,
   frenchData,
   videoData,
@@ -15,9 +16,30 @@ function WordFramePage({
   imgName,
   chineseData,
   spanishData,
-  showVideoFirst
-//   descriptionData,
+  showVideoFirst,
+  //   descriptionData,
 }) {
+
+  // useEffect(() => {
+  //   handleLoadedMetadata();
+  // }, []);
+
+  const videoRef = useRef(null);
+  const handleLoadedMetadata = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    console.log(video.duration);
+    console.log("reqTime", video?.duration * 1000 + 1000);
+
+    // let videos = document.getElementById("video_background");
+
+    video.addEventListener("canplay", function () {
+      setInterval(function () {
+        video.play();
+      }, video.duration * 1000 + 1000);
+    });
+  };
+
   return (
     <div className="w-full flex flex-col items-center">
       <div className=" text-center w-full">
@@ -34,61 +56,69 @@ function WordFramePage({
           <WordDetail data={frenchData} />
 
           <div className="w-[200px] md:w-[300px] xl:w-[350px] h-[100px] md:h-[150px] xl:h-[200px] ">
-  <Swiper
-    modules={[Pagination]}
-    spaceBetween={50}
-    slidesPerView={1}
-    pagination={{
-      clickable: true,
-    }}
-    onSwiper={(swiper) => console.log(swiper)}
-    onSlideChange={() => console.log("slide change")}
-  >
-    {showVideoFirst ? (
-      <>
-        <SwiperSlide>
-          <video
-            src={videoData}
-            muted
-            controls
-            autoPlay
-            loop
-            className="w-full h-full outline-none"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            src={imgUrl}
-            alt={`${imgName}`}
-            className="h-full w-full"
-          />
-        </SwiperSlide>
-      </>
-    ) : (
-      <>
-        <SwiperSlide>
-          <img
-            src={imgUrl}
-            alt={`${imgName}`}
-            className="h-full w-full"
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <video
-            src={videoData}
-            muted
-            controls
-            autoPlay
-            loop
-            className="w-full h-full outline-none"
-          />
-        </SwiperSlide>
-      </>
-    )}
-  </Swiper>
-  <div className="swiper-pagination absolute bottom-4 left-0 right-0"></div>
-</div>
-
+            <Swiper
+              modules={[Pagination]}
+              spaceBetween={50}
+              slidesPerView={1}
+              pagination={{
+                clickable: true,
+              }}
+              onSwiper={(swiper) => console.log(swiper)}
+              onSlideChange={() => console.log("slide change")}
+            >
+              {showVideoFirst ? (
+                <>
+                  <SwiperSlide>
+                    <video
+                      // id="video_background"
+                      ref={videoRef}
+                      onLoadedMetadata={handleLoadedMetadata}
+                      // poster="images/dmm_background.jpg"
+                      // controls="controls"
+                      preload="true"
+                      muted
+                      autoPlay
+                      // loop
+                    >
+                      <source src={videoData} />
+                    </video>
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <img
+                      src={imgUrl}
+                      alt={`${imgName}`}
+                      className="h-full w-full"
+                    />
+                  </SwiperSlide>
+                </>
+              ) : (
+                <>
+                  <SwiperSlide>
+                    <img
+                      src={imgUrl}
+                      alt={`${imgName}`}
+                      className="h-full w-full"
+                    />
+                  </SwiperSlide>
+                  <SwiperSlide>
+                    <video
+                      // id="video_background"
+                      ref={videoRef}
+                      onLoadedMetadata={handleLoadedMetadata}
+                      // poster="images/dmm_background.jpg"
+                      controls="controls"
+                      preload="true"
+                      muted
+                      // loop
+                    >
+                      <source src={videoData} />
+                    </video>
+                  </SwiperSlide>
+                </>
+              )}
+            </Swiper>
+            <div className="swiper-pagination absolute bottom-4 left-0 right-0"></div>
+          </div>
 
           <WordDetail data={chineseData} />
         </div>

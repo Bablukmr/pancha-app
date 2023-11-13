@@ -99,6 +99,11 @@ function WordPage() {
     }
   }, [apiData]);
 
+  const splitIndex = wordData?.sign_desc?.indexOf("Memory tip:");
+  console.log(splitIndex);
+  console.log("11111111", wordData?.sign_desc.slice(0, splitIndex));
+  console.log("222222", wordData?.sign_desc.slice(splitIndex));
+
   return (
     <>
       <div
@@ -133,9 +138,11 @@ function WordPage() {
             // descriptionData={wordData?.sign_desc}
           />
           <div className="w-full flex flex-col  pb-[15px] items-center justify-center ">
-            <p className="border my-8 border-black px-8 py-3 w-[96%] md:w-[75%] lg:w-[65%] xl:w-[50%]  ">
-              {wordData?.sign_desc}
-            </p>
+            <div className="border my-8 border-black px-8 py-3 w-[96%] md:w-[75%] lg:w-[65%] xl:w-[50%]  ">
+              {/* {wordData?.sign_desc} */}
+              <p>{wordData?.sign_desc.slice(0, splitIndex)}</p>
+              <p className="mt-4">{wordData?.sign_desc.slice(splitIndex)}</p>
+            </div>
             <Button
               style={{
                 textTransform: "none",
