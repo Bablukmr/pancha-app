@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Autocomplete from "@mui/material/Autocomplete";
 import SearchIcon from "@mui/icons-material/Search";
+import ButtonComponent from "../Components/buttonComponent";
 
 export default function Search() {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ export default function Search() {
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationBody, setNotificationBody] = useState(null);
   const [searchValue, setSearchValue] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState("");
 
   const shownotification = () => {
     setShowNotification(true);
@@ -39,7 +42,9 @@ export default function Search() {
         .then((response) => {
           const data = response.data;
           if (data.length === 0) {
+            setShowPopup(true);
             setWordData([{ name: "Word not found", id: 0 }]);
+            setRedirectUrl(`/settings/feedback?word=${value}`);
           } else {
             setWordData(data);
           }
@@ -58,6 +63,10 @@ export default function Search() {
     }
   };
 
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    // setWordNotFound(false);
+  };
   return (
     <>
       <div
@@ -126,6 +135,40 @@ export default function Search() {
               // )}
             />
           </Stack>
+        </div>
+
+        <div
+          className={`fixed top-6 right-0 shadow-lg z-50 w-full rounded-2xl transition-transform duration-300 transform ${
+            showPopup ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          <div className="w-[80%] md:w-[50%] fixed top-0 right-[10px] lg:w-[35%] bg-white p-4 rounded-lg">
+            <p className="w-full text-left">
+              Word Not Found Would you like to request to add it to future
+              updates?
+            </p>
+            <div className="mt-4 mb-2 flex w-full gap-3 ">
+              <ButtonComponent
+                btnName="Yes"
+                buttonType="success"
+                padding={"3px "}
+                width="80px"
+                text="white"
+                onClick={() => {
+                  navigate(redirectUrl);
+                }}
+              />
+
+              <ButtonComponent
+                btnName="No"
+                buttonType="error"
+                padding={"3px "}
+                width="80px"
+                text="white"
+                onClick={handleClosePopup}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </>
