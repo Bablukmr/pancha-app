@@ -6,11 +6,12 @@ const SuccessIcon = () => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="#1cbe59"
-    style={{
-      width: "35px",
-      height: "35px",
-      marginTop: "6px",
-    }}
+    className="w-5 h-5 "
+    // style={{
+    //   width: "35px",
+    //   height: "35px",
+    //   marginTop: "6px",
+    // }}
   >
     <path
       strokeLinecap="round"
@@ -26,11 +27,12 @@ const ErrorIcon = () => (
     viewBox="0 0 24 24"
     strokeWidth={1.5}
     stroke="#f75023"
-    style={{
-      width: "35px",
-      height: "35px",
-      marginTop: "6px",
-    }}
+    className="w-5 h-5"
+    // style={{
+    //   width: "35px",
+    //   height: "35px",
+    //   marginTop: "6px",
+    // }}
   >
     <path
       strokeLinecap="round"
@@ -43,64 +45,23 @@ const ErrorIcon = () => (
 function NotificationBox(props) {
   const { title, body, setShowNotification, type } = props;
   return (
-    <div
-      style={{
-        backgroundColor: "#fff",
-        borderRadius: "10px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "start",
-        padding: " 10px 10px",
-      }}
-    >
-      <div style={{ width: "15%" }}>
+    <div className="bg-indigo-800 text-white py-2 px-4 rounded-[3px] flex gap-x-3 justify-around items-center">
+      <div
+        className="w-[10%] "
+        // style={{ width: "15%" }}
+      >
         {type === "success" ? (
           <SuccessIcon />
         ) : (
           type === "error" && <ErrorIcon />
         )}
       </div>
-      <div
-        style={{
-          width: "84%",
-          display: "flex",
-          flexDirection: "column",
-          margin: "10px",
-        }}
+      <p
+        className="p-0 m-0 text-sm"
+        //  style={{ paddingTop: "6px" }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <h3 style={{ fontSize: "22px" }}>{title}</h3>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1}
-            stroke="currentColor"
-            className="w-4 h-4 cursor-pointer"
-            style={{
-              width: "20px",
-              height: "20px",
-              cursor: "pointer",
-            }}
-            onClick={() => {
-              setShowNotification(false);
-            }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </div>
-
-        <p style={{ paddingTop: "6px" }}>{body}</p>
-      </div>
+        {body}
+      </p>
     </div>
   );
 }
