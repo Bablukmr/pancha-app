@@ -94,6 +94,8 @@ function SignUp() {
       });
   };
   //h-[700px] md:h-[650px]  2xl:h-[700px]
+  //h-[800px] lg:h-[750px] xl:h-[700px]
+  
   return (
     <>
       <div
@@ -109,7 +111,7 @@ function SignUp() {
         />
       </div>
 
-      <div className="w-full h-screen flex flex-col items-center justify-center bg-[redd]">
+      <div className="w-full h-[800px] lg:h-[750px] xl:h-[700px] flex flex-col items-center justify-center bg-[redd]">
         <div className="h-[70px] mt-[50px] lg:mt-[100px] xl:mt-[50px] ">
           <img src="/panchamethod_logo.png" alt="logo" className="max-h-full" />
         </div>

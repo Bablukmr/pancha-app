@@ -111,7 +111,7 @@ function Login() {
           type={notificationType}
         />
       </div>
-      <div className="w-full h-screen flex flex-col justify-center items-center bg-[reda]">
+      <div className="w-full h-[800px] lg:h-[500px] xl:h-[700px] flex flex-col justify-center items-center bg-[reda]">
         <div className="h-[70px] mt-[50px] lg:mt-[100px] xl:mt-[50px]">
           <img src="/panchamethod_logo.png" alt="logo" className="max-h-full" />
         </div>

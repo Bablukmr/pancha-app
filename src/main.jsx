@@ -9,9 +9,9 @@ import Notification from './Components/notification.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* <App /> */}
+    <App />
     {/* <SideMenu/> */}
     {/* <TablePage/> */}
-    <Notification/>
+    {/* <Notification/> */}
   </React.StrictMode>,
 )

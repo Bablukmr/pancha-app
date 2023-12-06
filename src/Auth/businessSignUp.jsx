@@ -120,7 +120,7 @@ export default function BusinessSignUp() {
       {loading ? (
         <Loading />
       ) : (
-        <div className="w-full  h-screen flex flex-col items-center bg-[redd]">
+        <div className="w-full h-[800px] lg:h-[750px] xl:h-[700px] flex flex-col items-center bg-[redd]">
           <div className="h-[70px] mt-[50px] lg:mt-[100px] xl:mt-[50px]">
             <img
               src="/panchamethod_logo.png"

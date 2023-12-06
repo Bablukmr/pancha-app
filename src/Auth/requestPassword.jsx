@@ -13,7 +13,7 @@ function RequestPassword() {
   //bg-gradient-to-b from-blue-200 to-blue-400
 
   return (
-    <div className="w-full  h-screen flex flex-col items-center justify-center bg-[redd] ">
+    <div className="w-full h-[800px] lg:h-[750px] xl:h-[700px] flex flex-col items-center justify-center bg-[redd] ">
       {/* <h1 className="text-2xl my-4 absolute top-[60px]">LOGO</h1> */}
       <div className="h-[70px] mt-[50px] lg:mt-[100px] xl:mt-[50px]">
         <img src="/panchamethod_logo.png" alt="logo" className="max-h-full" />
