@@ -35,11 +35,10 @@ function LibraryPage() {
 
   const userId = userData?.id;
 
-
   useEffect(() => {
-    if (token) {
+    if (token && userId) {
       axios
-        .get("https://testapi.nhustle.in/pancha/public-folder", {
+        .get(`https://api.pancha.kids/pancha/public-folder?id=${userId}`, {
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -50,13 +49,13 @@ function LibraryPage() {
         })
         .catch((err) => {
           setPublicLoading(false);
-          setNotificationTitle("Error !!");
+          setNotificationTitle("Error!");
           setNotificationBody("Something went wrong fetching public folders.");
           setNotificationType("error");
           shownotiftion();
         });
     }
-  }, [token]);
+  }, [token, userId]);
 
   useEffect(() => {
     if (token && userId) {
@@ -67,7 +66,7 @@ function LibraryPage() {
   const getUserFolder = () => {
     setUserLoading(true);
     axios
-      .get(`https://testapi.nhustle.in/pancha/user-folder?id=${userId}`, {
+      .get(`https://api.pancha.kids/pancha/user-folder?id=${userId}`, {
         headers: {
           Authorization: `Token ${token}`,
         },
@@ -80,7 +79,7 @@ function LibraryPage() {
       })
       .catch((err) => {
         setUserLoading(false);
-        setNotificationTitle("Error !!");
+        setNotificationTitle("Error!");
         setNotificationBody("Something went wrong fetching user folders.");
         setNotificationType("error");
         shownotiftion();
@@ -89,8 +88,8 @@ function LibraryPage() {
 
   const handleViewEdit = () => {
     if (!selectedFolderId) {
-      setNotificationTitle("Error !!");
-      setNotificationBody("Please select folder.");
+      setNotificationTitle("Error!");
+      setNotificationBody("Please select a folder.");
       setNotificationType("error");
       shownotiftion();
       return;
@@ -110,7 +109,7 @@ function LibraryPage() {
   const handleAddFolder = (e) => {
     e.preventDefault();
     if (!newFolder) {
-      setNotificationTitle("Error !!");
+      setNotificationTitle("Error!");
       setNotificationBody("New folder name missing");
       setNotificationType("error");
       shownotiftion();
@@ -119,7 +118,7 @@ function LibraryPage() {
     setLoading(true);
     axios
       .post(
-        "https://testapi.nhustle.in/pancha/folder/",
+        "https://api.pancha.kids/pancha/folder/",
         {
           name: newFolder,
           pulic_folder: false,
@@ -143,7 +142,7 @@ function LibraryPage() {
       })
       .catch((err) => {
         setLoading(false);
-        setNotificationTitle("Error !!");
+        setNotificationTitle("Error!");
         setNotificationBody("Something went wrong, try again.");
         setNotificationType("error");
         shownotiftion();
@@ -311,8 +310,8 @@ function LibraryPage() {
             text="white"
             onClick={() => {
               if (!selectedFolderId) {
-                setNotificationTitle("Error !!");
-                setNotificationBody("Please select folder.");
+                setNotificationTitle("Error!");
+                setNotificationBody("Please select a folder.");
                 setNotificationType("error");
                 shownotiftion();
               } else {

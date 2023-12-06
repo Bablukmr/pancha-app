@@ -1,18 +1,22 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import NotificationBox from "../Components/notificationbox";
 import { Button, CircularProgress, TextField, Typography } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { LoadingButton } from "@mui/lab";
 import ButtonComponent from "../Components/buttonComponent";
 
+import { setSettings, userLogout } from "../store/action";
+
 function ProvideFeedbackPage() {
   const [newWord, setNewWord] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [submitLoading, setSubmitLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const [searchParams] = useSearchParams();
 
@@ -40,10 +44,11 @@ function ProvideFeedbackPage() {
   };
 
   const token = useSelector((state) => state.AuthReducer.token);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!newWord) {
-      setNotificationTitle("Error !!");
+      setNotificationTitle("Error!");
       setNotificationBody("New  Word Missing");
       setNotificationType("error");
       shownotiftion();
@@ -51,7 +56,7 @@ function ProvideFeedbackPage() {
       return;
     }
     if (!subject) {
-      setNotificationTitle("Error !!");
+      setNotificationTitle("Error!");
       setNotificationBody("Subject Missing");
       setNotificationType("error");
       shownotiftion();
@@ -59,7 +64,7 @@ function ProvideFeedbackPage() {
       return;
     }
     if (!message) {
-      setNotificationTitle("Error !!");
+      setNotificationTitle("Error!");
       setNotificationBody("Message Missing");
       setNotificationType("error");
       shownotiftion();
@@ -68,7 +73,7 @@ function ProvideFeedbackPage() {
     setSubmitLoading(true);
     axios
       .post(
-        "https://testapi.nhustle.in/pancha/feedback/",
+        "https://api.pancha.kids/pancha/feedback/",
         {
           word: newWord,
           subject: subject,
@@ -81,17 +86,22 @@ function ProvideFeedbackPage() {
         }
       )
       .then((d) => {
+        dispatch(setSettings(true));
+
         setSubmitLoading(false);
         setNewWord("");
         setSubject("");
         setMessage("");
-        setNotificationTitle("Success !!");
+        setNotificationTitle("Success!");
         setNotificationBody("FeedBack Submitted");
         setNotificationType("success");
         shownotiftion();
+        setTimeout(() => {
+          navigate("/");
+        }, 800);
       })
       .catch((e) => {
-        setNotificationTitle("Error !!");
+        setNotificationTitle("Error!");
         setNotificationBody("Something went wrong");
         setNotificationType("error");
         shownotiftion();

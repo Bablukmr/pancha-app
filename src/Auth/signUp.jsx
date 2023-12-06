@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Button, CircularProgress, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import ButtonComponent from "../Components/buttonComponent";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import NotificationBox from "../Components/notificationbox";
+import Loading from "../Components/loading";
+import { Typography } from "@mui/material";
 
 function SignUp() {
   const navigate = useNavigate();
@@ -13,12 +15,11 @@ function SignUp() {
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationBody, setNotificationBody] = useState(null);
 
-  const [email, setEmail] = useState(null);
-  const [pass, setPass] = useState(null);
-  const [confirm, setConfirm] = useState(null);
-
-  const [username, setUsername] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [username, setUsername] = useState("");
+  const [loading, setLoading] = useState("");
 
   const shownotiftion = () => {
     setShowNotification(true);
@@ -31,7 +32,7 @@ function SignUp() {
     e.preventDefault();
 
     if (!username) {
-      setNotificationTitle("Error !!");
+      setNotificationTitle("Error!");
       setNotificationBody("Username missing.");
       setNotificationType("error");
       shownotiftion();
@@ -39,7 +40,7 @@ function SignUp() {
     }
 
     if (!email) {
-      setNotificationTitle("Error !!");
+      setNotificationTitle("Error!");
       setNotificationBody("Email missing.");
       setNotificationType("error");
       shownotiftion();
@@ -47,7 +48,7 @@ function SignUp() {
     } else {
       let regexEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
       if (!regexEmail.test(email)) {
-        setNotificationTitle("Error !!");
+        setNotificationTitle("Error!");
         setNotificationBody("Wrong email format.");
         setNotificationType("error");
         shownotiftion();
@@ -55,14 +56,14 @@ function SignUp() {
       }
     }
     if (!pass) {
-      setNotificationTitle("Error !!");
+      setNotificationTitle("Error!");
       setNotificationBody("Password missing.");
       setNotificationType("error");
       shownotiftion();
       return;
     }
     if (!confirm) {
-      setNotificationTitle("Error !!");
+      setNotificationTitle("Error!");
       setNotificationBody("Confirm Password missing.");
       setNotificationType("error");
       shownotiftion();
@@ -71,7 +72,7 @@ function SignUp() {
     setLoading(true);
 
     axios
-      .post(`https://testapi.nhustle.in/dj-rest-auth/registration/`, {
+      .post(`https://api.pancha.kids/users/registerUser/`, {
         email: email,
         username: username,
         password1: pass,
@@ -79,18 +80,56 @@ function SignUp() {
       })
       .then((d) => {
         setLoading(false);
-
-        setNotificationTitle("Success !!");
+        setNotificationTitle("Success!");
         setNotificationBody("User Registered.");
         setNotificationType("success");
         shownotiftion();
+        setTimeout(() => {
+          navigate("/auth");
+        }, 400);
       })
-      .catch(() => {
+      .catch((e) => {
+        if (e?.response?.data) {
+          if (e.response?.data?.email && e.response?.data?.username) {
+            setNotificationTitle("Error!");
+            setNotificationBody(
+              "This email and username is already registered."
+            );
+            setNotificationType("error");
+            shownotiftion();
+          } else if (e.response?.data?.email) {
+            setNotificationTitle("Error!");
+            setNotificationBody("This email is already registered.");
+            setNotificationType("error");
+            shownotiftion();
+          } else if (e.response?.data?.username) {
+            setNotificationTitle("Error!");
+            setNotificationBody("This username is already registered.");
+            setNotificationType("error");
+            shownotiftion();
+          } else if (e.response?.data?.password1) {
+            setNotificationTitle("Error!");
+            setNotificationBody("Password not in correct format.");
+            setNotificationType("error");
+            shownotiftion();
+          } else if (e.response?.data?.non_field_errors) {
+            setNotificationTitle("Error!");
+            setNotificationBody("Password do not match.");
+            setNotificationType("error");
+            shownotiftion();
+          } else {
+            setNotificationTitle("Error!");
+            setNotificationBody("Something went wrong, try again.");
+            setNotificationType("error");
+            shownotiftion();
+          }
+        } else {
+          setNotificationTitle("Error!");
+          setNotificationBody("Something went wrong, try again.");
+          setNotificationType("error");
+          shownotiftion();
+        }
         setLoading(false);
-        setNotificationTitle("Error !!");
-        setNotificationBody("SOmething went wrong, try again.");
-        setNotificationType("error");
-        shownotiftion();
       });
   };
 
@@ -109,77 +148,185 @@ function SignUp() {
         />
       </div>
 
-      <div className="w-full h-screen flex flex-col items-center justify-center">
-        <h1 className="text-2xl my-4 absolute top-[60px]">LOGO</h1>
-        <div className="w-[90%] md:w-[50%] lg:w-[35%] bg-white p-5 rounded-lg shadow-lg">
-          <form className="w-full flex flex-col items-center justify-center gap-3">
-            <TextField
-              type="text"
-              label="User Name"
-              variant="outlined"
-              style={{ width: "100%" }}
-              onChange={(e) => {
-                setUsername(e.target.value);
-              }}
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="w-full h-screen xl:h-[115vh] flex flex-col items-center justify-center bg-[redd]">
+          <div className="h-[70px] mt-[50px] lg:mt-[100px] xl:mt-[50px] ">
+            <img
+              src="/panchamethod_logo.png"
+              alt="logo"
+              className="max-h-full"
             />
-
-            <TextField
-              type="email"
-              label="Email"
-              variant="outlined"
-              style={{ width: "100%" }}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-            <TextField
-              type="password"
-              label="Password"
-              variant="outlined"
-              style={{ width: "100%" }}
-              onChange={(e) => {
-                setPass(e.target.value);
-              }}
-            />
-
-            <TextField
-              type="password"
-              label="Confirm Password"
-              variant="outlined"
-              style={{ width: "100%" }}
-              onChange={(e) => {
-                setConfirm(e.target.value);
-              }}
-            />
-            <div className="w-full mt-2 h-[60px] flex flex-col justify-around">
-              <small className="p-0 m-0  text-start text-sm">
-                Already have an account?{" "}
-                <Link to="/auth" className="text-blue-400 underline">
-                  Login
-                </Link>
-              </small>
-
-              <Link
-                to="/auth/business-signup"
-                className="text-blue-400 underline font-semibold"
+          </div>
+          {/* //absolute top-[120px] */}
+          <div className="flex  flex-col w-full h-full items-center justify-center">
+            <div className="w-[90%] mt-[-60px] xl:mt-[-10px] md:w-[50%] lg:w-[35%]  bg-white p-5 rounded-lg shadow-lg">
+              <div className="w-full  mb-3">
+                <Typography
+                  variant="h6"
+                  component="h6"
+                  className="  text-blue-600"
+                >
+                  Signup
+                </Typography>
+              </div>
+              <form
+                onSubmit={handleSignup}
+                className="w-full mt-6 flex flex-col items-center justify-center gap-y-4"
               >
-                <small>Sign up as a Business / School</small>
-              </Link>
-            </div>
+                <TextField
+                  type="text"
+                  label="User Name"
+                  variant="outlined"
+                  style={{ width: "100%" }}
+                  onChange={(e) => {
+                    setUsername(e.target.value);
+                  }}
+                />
+                <TextField
+                  type="email"
+                  label="Email"
+                  variant="outlined"
+                  style={{ width: "100%" }}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+                <TextField
+                  type="password"
+                  label="Password"
+                  variant="outlined"
+                  style={{ width: "100%" }}
+                  onChange={(e) => {
+                    setPass(e.target.value);
+                  }}
+                />
 
-            <ButtonComponent
-              btnName=" Sign up"
-              padding={"10px "}
-              loading={true}
-              width="100%"
-              text="white"
-              onClick={handleSignup}
-            />
-          </form>
+                <TextField
+                  type="password"
+                  label="Confirm Password"
+                  variant="outlined"
+                  style={{ width: "100%" }}
+                  onChange={(e) => {
+                    setConfirm(e.target.value);
+                  }}
+                />
+                <div className="w-full mt-2 h-[60px] flex flex-col justify-around">
+                  <small className="p-0 m-0  text-start text-sm">
+                    Already have an account?{" "}
+                    <Link to="/auth" className="text-blue-400 underline">
+                      Login
+                    </Link>
+                  </small>
+
+                  <Link
+                    to="/auth/school-signup"
+                    className="text-blue-400 mb-3 underline font-semibold"
+                  >
+                    <small>Sign up as a School</small>
+                  </Link>
+                </div>
+
+                <ButtonComponent
+                  type="submit"
+                  btnName=" Sign up"
+                  padding={"10px "}
+                  loading={true}
+                  width="100%"
+                  text="white"
+                  // onClick={handleSignup}
+                />
+              </form>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }
 
 export default SignUp;
+
+// <div className="w-full h-screen flex flex-col items-center ">
+//   <div className="h-[70px] mt-6">
+//     <img
+//       src="/panchamethod_logo.png"
+//       alt="logo"
+//       className="max-h-full"
+//     />
+//   </div>
+
+//   <div className="flex w-full h-full items-center justify-center">
+//     <div className="w-[90%] md:w-[50%] lg:w-[35%] bg-white mt-6 md:mt-1 rounded-lg shadow-lg">
+//       <form className="w-full flex flex-col items-center justify-center gap-3">
+//         <TextField
+//           type="text"
+//           label="User Name"
+//           variant="outlined"
+//           style={{ width: "100%" }}
+//           onChange={(e) => {
+//             setUsername(e.target.value);
+//           }}
+//           value={username}
+//         />
+
+//         <TextField
+//           type="email"
+//           label="Email"
+//           variant="outlined"
+//           style={{ width: "100%" }}
+//           onChange={(e) => {
+//             setEmail(e.target.value);
+//           }}
+//           value={email}
+//         />
+//         <TextField
+//           type="password"
+//           label="Password"
+//           variant="outlined"
+//           style={{ width: "100%" }}
+//           onChange={(e) => {
+//             setPass(e.target.value);
+//           }}
+//           value={pass}
+//         />
+
+//         <TextField
+//           type="password"
+//           label="Confirm Password"
+//           variant="outlined"
+//           style={{ width: "100%" }}
+//           onChange={(e) => {
+//             setConfirm(e.target.value);
+//           }}
+//           value={confirm}
+//         />
+//         <div className="w-full mt-2 h-[60px] flex flex-col justify-around">
+//           <small className="p-0 m-0  text-start text-sm">
+//             Already have an account?{" "}
+//             <Link to="/auth" className="text-blue-400 underline">
+//               Login
+//             </Link>
+//           </small>
+
+//           <Link
+//             to="/auth/business-signup"
+//             className="text-blue-400 underline font-semibold"
+//           >
+//             <small>Sign up as a Business / School</small>
+//           </Link>
+//         </div>
+
+//         <ButtonComponent
+//           btnName=" Sign up"
+//           padding={"10px "}
+//           loading={true}
+//           width="100%"
+//           text="white"
+//           onClick={handleSignup}
+//         />
+//       </form>
+//     </div>
+//   </div>
+// </div>

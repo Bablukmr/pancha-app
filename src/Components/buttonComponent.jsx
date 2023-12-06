@@ -10,9 +10,11 @@ function ButtonComponent({
   startIcon,
   padding,
   buttonType,
+  type,
 }) {
   return (
     <Button
+      type={type}
       disabled={disabled}
       onClick={onClick}
       color={buttonType}

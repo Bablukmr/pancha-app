@@ -2,12 +2,15 @@ import { IoLibraryOutline } from "react-icons/io5";
 import { AiOutlineSearch } from "react-icons/ai";
 import { SlNotebook } from "react-icons/sl";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSettings } from "../store/action";
 
 export default function Footer(props) {
-  const { setSetting } = props;
+  const dispatch = useDispatch();
+
   return (
     <div
-      onClick={() => setSetting(true)}
+      onClick={() => dispatch(setSettings(true))}
       className="bg-[#4C4C4C]  h-[50px] w-full fixed bottom-0 flex items-center justify-center "
     >
       <Link

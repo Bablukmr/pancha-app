@@ -1,22 +1,23 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { TextField, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import ButtonComponent from "../Components/buttonComponent";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { useState } from "react";
 import NotificationBox from "../Components/notificationbox";
 import Loading from "../Components/loading";
+import { useNavigate } from "react-router-dom";
+import ButtonComponent from "../Components/buttonComponent";
 
-function RequestPassword() {
-  const [email, setEmail] = useState(null);
+export default function ForgetPasswordReset(props) {
+  const { uid, token } = useParams();
+  const [pass, setPass] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const navigate = useNavigate();
-
+  const [confirmPass, setConfirmPass] = useState(null);
   const [showNotification, setShowNotification] = useState(false);
   const [notificationType, setNotificationType] = useState(null);
   const [notificationTitle, setNotificationTitle] = useState(null);
   const [notificationBody, setNotificationBody] = useState(null);
+
+  const navigate = useNavigate();
 
   const shownotification = () => {
     setShowNotification(true);
@@ -25,35 +26,54 @@ function RequestPassword() {
     }, 2000);
   };
 
-  const handleRequest = (e) => {
+  const sendEmail = (e) => {
     e.preventDefault();
 
-    if (!email) {
+    if (!pass) {
       setNotificationTitle("Error!");
-      setNotificationBody("Email missing.");
+      setNotificationBody("Password missing.");
       setNotificationType("error");
       shownotification();
       return;
-    } else {
+    }
+
+    if (!confirmPass) {
+      setNotificationTitle("Error!");
+      setNotificationBody("Confirm password missing.");
+      setNotificationType("error");
+      shownotification();
+      return;
+    }
+
+    if (pass === confirmPass) {
       setLoading(true);
       axios
-        .post("https://api.pancha.kids/dj-rest-auth/password/reset/", {
-          email: email,
+        .post("https://api.pancha.kids/dj-rest-auth/password/reset/confirm/", {
+          uid: uid,
+          token: token,
+          new_password1: pass,
+          new_password2: pass,
         })
         .then(() => {
           setLoading(false);
           setNotificationTitle("Success!");
-          setNotificationBody("Password reset link sent.");
+          setNotificationBody("Password reset done.");
           setNotificationType("success");
           shownotification();
         })
         .catch(() => {
           setLoading(false);
           setNotificationTitle("Error!");
-          setNotificationBody("Something went wrong, try again.");
+          setNotificationBody("Password reset done.");
           setNotificationType("error");
           shownotification();
         });
+    } else {
+      setNotificationTitle("Error!");
+      setNotificationBody("Password do not match.");
+      setNotificationType("error");
+      shownotification();
+      return;
     }
   };
 
@@ -93,31 +113,36 @@ function RequestPassword() {
                   Reset Password
                 </Typography>
               </div>
+
               <form
-                onSubmit={handleRequest}
+                onSubmit={sendEmail}
                 className="w-full mt-6 flex flex-col items-center justify-center gap-4"
               >
                 <TextField
                   type="text"
-                  label="Email-Id"
+                  label="Password"
                   variant="outlined"
                   style={{ width: "100%" }}
                   onChange={(e) => {
-                    setEmail(e.target.value);
+                    setPass(e.target.value);
                   }}
                 />
-                <small className="p-0 m-0 w-full text-start text-sm">
-                  Already have an account?{" "}
-                  <Link to="/auth" className="text-blue-400 underline">
-                    Login
-                  </Link>
-                </small>
+
+                <TextField
+                  type="text"
+                  label="Confirm Password"
+                  variant="outlined"
+                  style={{ width: "100%" }}
+                  onChange={(e) => {
+                    setConfirmPass(e.target.value);
+                  }}
+                />
 
                 <div className="w-full mb-3">
                   <ButtonComponent
                     type="submit"
-                    btnName=" Request Password"
-                    padding={"10px "}
+                    btnName=" Reset Password"
+                    padding="10px"
                     loading={true}
                     width="100%"
                     text="white"
@@ -131,5 +156,3 @@ function RequestPassword() {
     </>
   );
 }
-
-export default RequestPassword;
