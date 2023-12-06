@@ -7,28 +7,39 @@ import { Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import WordDetail from "../Components/wordDetail";
+import NotificationBox from "../Components/notificationbox";
+import WordFramePage from "../Components/wordFramePage";
 
 function WordPage() {
   const navigate = useNavigate();
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationType, setNotificationType] = useState(null);
+  const [notificationTitle, setNotificationTitle] = useState(null);
+  const [notificationBody, setNotificationBody] = useState(null);
 
   const [videoBox, setVideoBox] = useState(false);
   const [video, setVideo] = useState(true);
-  const [loading, setLoading] = useState(false);
-
   const [apiData, setApiData] = useState(null);
-
   const [spanishData, setSpanishData] = useState(null);
   const [frenchData, setFrenchData] = useState(null);
   const [chineseData, setChineseData] = useState(null);
   const [englishData, setEnglishData] = useState(null);
+  const [loading1, setLoading1] = useState(true);
+  const [loading2, setLoading2] = useState(true);
 
   const [wordData, setWordData] = useState(null);
 
   const { name, wordId } = useParams();
   const token = useSelector((state) => state.AuthReducer.token);
-
+  function shownotification() {
+    setShowNotification(true);
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  }
   useEffect(() => {
     if (token) {
+      setLoading1(true);
       axios
         .get(`https://testapi.nhustle.in/pancha/word-detail?id=${wordId}`, {
           headers: {
@@ -37,12 +48,21 @@ function WordPage() {
         })
         .then((d) => {
           setApiData(d.data);
+          setLoading1(false);
+        })
+        .catch((err) => {
+          setLoading1(false);
+          setNotificationTitle("Error !!");
+          setNotificationBody("Something went wrong.");
+          setNotificationType("error");
+          shownotification();
         });
     }
   }, [token]);
 
   useEffect(() => {
     if (token) {
+      setLoading2(true);
       axios
         .get(`https://testapi.nhustle.in/pancha/words-complete/${wordId}/`, {
           headers: {
@@ -51,6 +71,14 @@ function WordPage() {
         })
         .then((d) => {
           setWordData(d.data);
+          setLoading2(false);
+        })
+        .catch((err) => {
+          setLoading2(false);
+          setNotificationTitle("Error !!");
+          setNotificationBody("Something went wrong.");
+          setNotificationType("error");
+          shownotification();
         });
     }
   }, [token]);
@@ -71,93 +99,50 @@ function WordPage() {
     }
   }, [apiData]);
 
+  const splitIndex = wordData?.sign_desc?.indexOf("Memory tip:");
+  console.log(splitIndex);
+  console.log("11111111", wordData?.sign_desc.slice(0, splitIndex));
+  console.log("222222", wordData?.sign_desc.slice(splitIndex));
+
   return (
     <>
-      {loading ? (
+      <div
+        className={`fixed top-6 right-0 shadow-lg z-50 w-80 rounded-2xl transition-transform duration-300 transform ${
+          showNotification ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <NotificationBox
+          title={notificationTitle}
+          body={notificationBody}
+          setShowNotification={setShowNotification}
+          type={notificationType}
+        />
+      </div>
+
+      {loading1 && loading2 ? (
         <Loading />
       ) : (
-        <div className="w-full h-[calc(100vh-100px)] my-10 flex flex-col items-center">
+        <div className="w-full h-[calc(100vh-100px)]">
           <div className=" text-center w-full">
             <h1 className="text-2xl font-semibold">{name}</h1>
           </div>
-          <div
-            className="mt-10 px-1 ms:px-4
-            w-[96%] md:w-[75%] lg:w-[65%] xl:w-[50%] flex flex-col gap-y-5 md:gap-y-6 lg:gap-y-8 
-            rounded-md items-center justify-center"
-          >
-            <WordDetail data={englishData} />
-
-            <div className="w-full flex items-center justify-center gap-2 md:gap-x-8 lg:gap-x-12">
-              <WordDetail data={frenchData} />
-
-              <div className="w-[200px] flex flex-col gap-y-2 items-center justify-center">
-                {video ? (
-                  <div className="w-[200px] h-[100px] flex flex-col items-center justify-center">
-                    <div className="w-[80%]  border-2 ">
-                      <video
-                        src={wordData?.video}
-                        muted
-                        controls
-                        autoPlay
-                        loop
-                        className="w-full h-full outline-none"
-                      />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="w-[200px] h-[100px] flex flex-col items-center justify-center">
-                    <img
-                      src={wordData?.img}
-                      alt={`${wordData?.img}`}
-                      className="h-full w-full"
-                    />
-                  </div>
-                )}
-                <div className="flex gap-2">
-                  <p
-                    onClick={() => setVideo(true)}
-                    className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
-                      video ? "bg-black" : ""
-                    }`}
-                  ></p>
-                  <p
-                    onClick={() => setVideo(false)}
-                    className={`w-3 h-3 border-black border rounded-full cursor-pointer ${
-                      video ? "" : "bg-black"
-                    }`}
-                  ></p>
-                </div>
-              </div>
-
-              <WordDetail data={chineseData} />
+          <WordFramePage
+            englishData={englishData}
+            frenchData={frenchData}
+            videoData={wordData?.video}
+            imgUrl={wordData?.img}
+            imgName={wordData?.name}
+            chineseData={chineseData}
+            spanishData={spanishData}
+            showVideoFirst={true}
+            // descriptionData={wordData?.sign_desc}
+          />
+          <div className="w-full flex flex-col  pb-[15px] items-center justify-center ">
+            <div className="border my-8 border-black px-8 py-3 w-[96%] md:w-[75%] lg:w-[65%] xl:w-[50%]  ">
+              {/* {wordData?.sign_desc} */}
+              <p>{wordData?.sign_desc.slice(0, splitIndex)}</p>
+              <p className="mt-4">{wordData?.sign_desc.slice(splitIndex)}</p>
             </div>
-
-            {videoBox ? (
-              <div className="w-[96%] rounded-t-md md:w-[75%] lg:w-[65%] xl:w-[50%] fixed flex flex-col items-center justify-center">
-                <div className="h-[30px] md:h-[40px] rounded-t-md pr-4 w-full bg-[#bfbfbf] flex justify-end items-center">
-                  <AiOutlineClose
-                    onClick={() => setVideoBox(false)}
-                    className="cursor-pointer"
-                  />
-                </div>
-                <video
-                  src="/play_video.mp4"
-                  controls
-                  autoPlay
-                  className="w-full h-full"
-                />
-              </div>
-            ) : (
-              ""
-            )}
-
-            <WordDetail data={spanishData} />
-          </div>
-
-          <p className="border my-8 border-black px-8 py-3 w-[96%] md:w-[75%] lg:w-[65%] xl:w-[50%]  ">
-            {wordData?.sign_desc}
-          </p>
-          <div className="pb-10">
             <Button
               style={{
                 textTransform: "none",

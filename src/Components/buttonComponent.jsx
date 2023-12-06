@@ -10,9 +10,13 @@ function ButtonComponent({
   startIcon,
   padding,
   buttonType,
+  type
+  // onSubmit
 }) {
   return (
     <Button
+    type={type}
+    // onSubmit={onSubmit}
       disabled={disabled}
       onClick={onClick}
       color={buttonType}
