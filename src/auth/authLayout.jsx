@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import Login from "./login";
 import SignUp from "./signUp";
+import Password from "./password";
 
 function AuthLayout() {
   const [pages, setPages] = useState(true);
+  const [passwordPage, setPasswordPage] = useState(false);
 
   return (
     <div className="w-full h-screen flex flex-col">
@@ -13,7 +15,9 @@ function AuthLayout() {
         </div>
         <div className="h-[60px] mt-[30px] mb-[15px] flex items-center justify-around  bg-slate-100 rounded-xl ">
           <button
-            onClick={() => setPages(true)}
+            onClick={() => {
+              setPages(true), setPasswordPage(false);
+            }}
             className={`${
               pages ? "bg-[#B170B5] text-white" : "bg-white text-[#001531]"
             } w-[45%] h-[80%] rounded-xl font-semibold text-[14px]`}
@@ -21,7 +25,9 @@ function AuthLayout() {
             Login
           </button>
           <button
-            onClick={() => setPages(false)}
+            onClick={() => {
+              setPages(false), setPasswordPage(false);
+            }}
             className={`${
               pages ? "bg-white text-[#001531]" : " bg-[#B170B5] text-white"
             }  w-[45%] h-[80%] rounded-xl font-semibold text-[14px]`}
@@ -31,7 +37,13 @@ function AuthLayout() {
         </div>
       </div>
       <div className="pt-2 flex-1 overflow-y-auto ">
-        {pages ? <Login /> : <SignUp />}
+        {passwordPage ? (
+          <Password setPasswordPage={setPasswordPage} setPages={setPages} />
+        ) : pages ? (
+          <Login setPasswordPage={setPasswordPage} setPages={setPages} />
+        ) : (
+          <SignUp setPasswordPage={setPasswordPage} setPages={setPages} />
+        )}
       </div>
     </div>
   );

@@ -13,8 +13,8 @@ function EmailInput({
       </label>
 
       <div
-        className="border bg-[#fafafa] mt-2 rounded-md border-solid
-          flex items-center px-2"
+        className="border bg-[#F6F6F6] mt-2 rounded-md border-solid
+          flex items-center px-4"
       >
         <div className="text-xl">
           <IconComponent />
@@ -23,7 +23,7 @@ function EmailInput({
         <input
           onChange={onChange}
           type={type}
-          className=" text-sm h-[40px] border-none w-full bg-[#fafafa] outline-none py-4 px-2"
+          className=" text-sm h-[45px] border-none w-full bg-[#F6F6F6] outline-none py-4 px-2"
           placeholder={placeholder}
         />
       </div>
