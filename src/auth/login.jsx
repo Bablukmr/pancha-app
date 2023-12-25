@@ -36,7 +36,7 @@ function Login({setPasswordPage,setPages}) {
           type={"email"}
         />
 
-        <PasswordInput name={"Password"} placeholder={"Password"} />
+        <PasswordInput name={"Password"} placeholder={"Password"} bg="bg-[#F6F6F6]"/>
         <div className="w-full flex  items-center justify-end">
           {/* <Link>Forget Password?</Link> */}
           <p 

@@ -47,8 +47,9 @@ function SignUp({ setPasswordPage, setPages }) {
           placeholder={"email@gmail.com"}
           type={"email"}
         />
-        <PasswordInput name={"Password"} placeholder={"Password"} />
+        <PasswordInput name={"Password"} placeholder={"Password"} bg="bg-[#F6F6F6]"/>
         <PasswordInput
+        bg="bg-[#F6F6F6]"
           name={"Confirm Password"}
           placeholder={"Confirm Password"}
         />

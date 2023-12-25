@@ -2,17 +2,17 @@ import { BiHide, BiSolidShow } from "react-icons/bi";
 import { CiLock } from "react-icons/ci";
 import { useState } from "react";
 
-function PasswordInput({ name, placeholder, onChange, errMsg }) {
+function PasswordInput({ name, placeholder, onChange,bg,textColour, errMsg }) {
   const [password, setPassword] = useState(true);
   return (
     <div className="w-full flex flex-col gap-y-2">
       <label>
-        <small className="text-base font-normal">{name} </small>
+        <small className={`text-base font-normal ${textColour}`}>{name} </small>
       </label>
 
       <div
-        className="border bg-[#F6F6F6] rounded-md border-solid
-            flex items-center px-4"
+        className={`border  ${bg} rounded-md border-solid
+        flex items-center px-4`}
       >
         <div className="text-xl">
           <CiLock />
@@ -21,7 +21,7 @@ function PasswordInput({ name, placeholder, onChange, errMsg }) {
         <input
           onChange={onChange}
           type={password ? "password" : "text"}
-          className=" text-sm h-[45px] border-none w-full bg-[#F6F6F6] outline-none py-4 px-2"
+          className={`text-sm h-[45px] border-none w-full ${bg} outline-none py-4 px-2`}
           placeholder={placeholder}
         />
         <div

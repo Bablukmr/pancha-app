@@ -8,7 +8,7 @@ function AuthLayout() {
   const [passwordPage, setPasswordPage] = useState(false);
 
   return (
-    <div className="w-full h-screen flex flex-col">
+    <div className="w-full bg-white h-screen flex flex-col">
       <div className="w-[90%] ml-[5%] bg-white">
         <div className="h-[50px] mt-[20px] ">
           <img src="/panchamethod_logo.png" alt="logo" className="max-h-full" />
