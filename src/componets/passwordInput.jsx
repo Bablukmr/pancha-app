@@ -2,7 +2,14 @@ import { BiHide, BiSolidShow } from "react-icons/bi";
 import { CiLock } from "react-icons/ci";
 import { useState } from "react";
 
-function PasswordInput({ name, placeholder, onChange,bg,textColour, errMsg }) {
+function PasswordInput({
+  name,
+  placeholder,
+  onChange,
+  bg,
+  textColour,
+  errMsg,
+}) {
   const [password, setPassword] = useState(true);
   return (
     <div className="w-full flex flex-col gap-y-2">
@@ -21,7 +28,7 @@ function PasswordInput({ name, placeholder, onChange,bg,textColour, errMsg }) {
         <input
           onChange={onChange}
           type={password ? "password" : "text"}
-          className={`text-sm h-[45px] border-none w-full ${bg} outline-none py-4 px-2`}
+          className={`text-sm h-[45px] border-none w-full ${bg} placeholder:text-black outline-none py-4 px-2`}
           placeholder={placeholder}
         />
         <div

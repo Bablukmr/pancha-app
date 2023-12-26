@@ -1,21 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { IoMdClose } from "react-icons/io";
-
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  //   border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};
 
 export default function ModelComponets() {
   const [open, setOpen] = React.useState(false);
@@ -28,9 +14,9 @@ export default function ModelComponets() {
         onClick={handleOpen}
         className="flex items-center justify-center cursor-pointer bg-[#1961C5] py-2 px-3 rounded-md text-white w-fit"
       >
-        <img src="/Add.png" alt="" className="h-[25px]" />{" "}
-        <p className="ml-2 font-normal text-base">Add to Folder</p>
+        +<p className="ml-2 font-normal text-base">Add to Folder</p>
       </button>
+
       <Modal
         open={open}
         onClose={handleClose}
@@ -41,29 +27,40 @@ export default function ModelComponets() {
           <>
             <div>
               <div
-                onClick={handleClose}
-                className="flex items-center justify-between bg-b"
+                // onClick={handleClose}
+                className="flex flex-col gap-2 items-start justify-start bg-b"
               >
-                <h1 className="text-xl font-bold">Add New Folder </h1>{" "}
-                <div className="p-2 border rounded-full cursor-pointer">
+                <div
+                  onClick={handleClose}
+                  className="p-2 text-2xl font-bold  cursor-pointer"
+                >
                   <IoMdClose />
                 </div>
+                <h1 className="text-xl font-bold">Add to folder </h1>{" "}
               </div>
-              <h2 className="text-base font-semibold text-[#777E90] my-3">
-                Add new folder to my folders{" "}
-              </h2>
             </div>
-            <form>
-              <div>
-                <label className="font-bold text-sm ">
-                  Enter New Folder Name
-                </label>
-                <div className="w-full border flex items-center justify-center p-1 rounded-md h-[55px] my-2 bg-[#F8F8F8]">
-                  <input
-                    placeholder="Enter New Folder Name"
-                    className="w-full outline-none rounded-md h-[50px] text-base font-medium bg-[#F8F8F8]"
-                  />
+            <form className="mt-4">
+              <div className="w-full flex flex-col gap-y-4">
+                <div className="flex items-center justify-between border rounded-md p-2">
+                  <div className="flex items-center gap-x-3">
+                    <img src="/Apple.png" alt="/" className="h-[30px]" />
+                    <p>fruits</p>
+                  </div>
+                  <button className="bg-[#1961C5] text-white px-4 rounded-md py-2">
+                    Add
+                  </button>
                 </div>
+                <div className="flex items-center justify-between border rounded-md p-2">
+                  <div className="flex items-center gap-x-3">
+                    <img src="/Apple.png" alt="/" className="h-[30px]" />
+                    <p>fruits</p>
+                  </div>
+                  <button className="bg-[#1961C5] text-white px-4 rounded-md py-2">
+                    Add
+                  </button>
+                </div>
+
+
               </div>
 
               <button
@@ -71,7 +68,7 @@ export default function ModelComponets() {
                 className="w-full mt-6 mb-3 flex items-center justify-center cursor-pointer bg-[#1961C5] py-4 rounded-md text-white"
               >
                 <img src="/Add.png" alt="" className="h-[25px]" />{" "}
-                <p className="ml-2 font-normal text-base">Add Folder</p>
+                <p className="ml-2 font-normal text-base">Add to New Folder</p>
               </button>
             </form>
           </>

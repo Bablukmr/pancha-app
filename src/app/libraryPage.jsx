@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { IoMdMore } from "react-icons/io";
+import ModelComponets from "../componets/modelComponets";
 
 function LibraryPage() {
   const [folder, setFolder] = useState(true);
@@ -42,9 +43,11 @@ function LibraryPage() {
       <div className="fixed top-[81px] w-full bg-white">
         <div className="w-[90%] ml-[5%] my-4 flex items-center justify-between ">
           <h1 className="text-lg font-bold">Library Folders</h1>
-          <button className="flex items-center justify-center cursor-pointer bg-[#1961C5] py-2 px-3 rounded-md text-white w-fit">
+
+          {/* <button className="flex items-center justify-center cursor-pointer bg-[#1961C5] py-2 px-3 rounded-md text-white w-fit">
             +<p className="ml-2 font-normal text-base">Add to Folder</p>
-          </button>
+          </button> */}
+          <ModelComponets />
         </div>
         <div className="w-[90%]  ml-[5%] md:w-[30%] md:items-start my-4 flex items-center justify-between ">
           <div
@@ -89,20 +92,20 @@ function LibraryPage() {
               </div>
             ))
           : data2?.map((a) => (
-            <div
-            key={a.id}
-            className="w-[90%] ml-[5%] rounded-md h-[220px] md:h-[150px]  xl:h-[220px] bg-[#E8EFF9] flex flex-col items-center justify-center"
-          >
-            <div className="h-[80%] p-4">
-              <img src={a.img} alt="/" className="cursor-pointer" />
-            </div>
-            <div className="w-full h-[20%] flex items-center justify-between px-4 pb-4 ">
-              <p className="text-base font-semibold">{a.name}</p>
-              <div className="text-xl">
-                <IoMdMore />
+              <div
+                key={a.id}
+                className="w-[90%] ml-[5%] rounded-md h-[220px] md:h-[150px]  xl:h-[220px] bg-[#E8EFF9] flex flex-col items-center justify-center"
+              >
+                <div className="h-[80%] p-4">
+                  <img src={a.img} alt="/" className="cursor-pointer" />
+                </div>
+                <div className="w-full h-[20%] flex items-center justify-between px-4 pb-4 ">
+                  <p className="text-base font-semibold">{a.name}</p>
+                  <div className="text-xl">
+                    <IoMdMore />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
             ))}
       </div>
     </div>

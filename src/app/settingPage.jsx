@@ -5,8 +5,10 @@ import { IoCaretDown, IoCaretUp } from "react-icons/io5";
 import { IoLanguageOutline } from "react-icons/io5";
 import PasswordInput from "../componets/passwordInput";
 import StarRating from "../componets/rating";
+import { useNavigate } from "react-router-dom";
 
-function SettingPage({ setSettingPage, SettingPage }) {
+function SettingPage() {
+  const Navigate = useNavigate();
   const [personalInfoDetails, setPersonalInfoDetails] = useState(true);
   const [languageDetails, setLanguageDetails] = useState(true);
   const [securityDetails, setSecurityDetails] = useState(true);
@@ -26,11 +28,11 @@ function SettingPage({ setSettingPage, SettingPage }) {
     setFeedbackDetails(!feedbackDetails);
   };
   return (
-    <div className="bg-[#F4F4F4]">
+    <div className="bg-[#F4F4F4] h-screen">
       <div className="w-full border-b fixed top-0 bg-white">
         <div className="my-[20px] flex items-center justify-between w-[90%] ml-[5%]">
           <div
-            onClick={() => setSettingPage(true)}
+            onClick={() => Navigate("/")}
             className="h-[40px] cursor-pointer"
           >
             <img src="/Back.png" alt="LOGO" className="max-h-full" />
@@ -40,13 +42,13 @@ function SettingPage({ setSettingPage, SettingPage }) {
           </div>
         </div>
       </div>
-      <div className=" mt-[80px] pb-4 w-[90%] ml-[5%] ">
+      <div className=" pb-4 w-[90%] ml-[5%] ">
         <h1 className="text-lg font-semibold py-4">Settings</h1>
         <div className="w-full flex gap-y-3 flex-col justify-center">
-          <div className=" p-4 rounded-md bg-white flex gap-y-2 flex-col items-center justify-center">
+          <div className="  rounded-md bg-white flex gap-y-2 flex-col items-center justify-center cursor-pointer">
             <div
               onClick={handlePersonalInfoDropdown}
-              className="w-full flex gap-x-2 items-center justify-center "
+              className="w-full flex gap-x-2 items-center justify-center p-4"
             >
               <div className="w-[10%] font-bold text-xl p-1 rounded-full bg-slate-200 flex items-center">
                 <CiUser />
@@ -60,7 +62,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
             </div>
 
             <form
-              className={`w-full mt-2 ${
+              className={`w-full mt-2 p-4 ${
                 personalInfoDetails ? "hidden" : "block"
               } `}
             >
@@ -71,7 +73,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
                 <div className="h-[50px] mt-2 w-full flex rounded-md px-2  items-center justify-center border">
                   <input
                     placeholder="First Name"
-                    className="w-full outline-none border-none h-[46px]"
+                    className="w-full outline-none border-none h-[46px] placeholder:text-black"
                   />
                 </div>
               </div>
@@ -82,7 +84,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
                 <div className="h-[50px] mt-2 w-full flex rounded-md px-2  items-center justify-center border">
                   <input
                     placeholder="Last name"
-                    className="w-full outline-none border-none h-[46px]"
+                    className="w-full outline-none border-none h-[46px] placeholder:text-black"
                   />
                 </div>
               </div>
@@ -94,7 +96,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
                   <input
                     placeholder="Choose"
                     type="select"
-                    className="w-full outline-none border-none h-[46px]"
+                    className="w-full outline-none border-none h-[46px] placeholder:text-black"
                   />
                 </div>
               </div>
@@ -106,7 +108,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
                   <input
                     type="email"
                     placeholder="Email"
-                    className="w-full outline-none border-none h-[46px]"
+                    className="w-full outline-none border-none h-[46px] placeholder:text-black"
                   />
                 </div>
               </div>
@@ -121,10 +123,10 @@ function SettingPage({ setSettingPage, SettingPage }) {
             </form>
           </div>
 
-          <div className=" p-4 rounded-md bg-white flex gap-y-2 flex-col items-center justify-center">
+          <div className=" rounded-md bg-white flex gap-y-2 flex-col items-center justify-center cursor-pointer">
             <div
               onClick={handleLanguageDropdown}
-              className="w-full flex gap-x-2 items-center justify-center "
+              className="w-full flex gap-x-2 items-center justify-center p-4 "
             >
               <div className="w-[10%] font-bold text-xl p-1 rounded-full bg-slate-200 flex items-center">
                 <IoLanguageOutline />
@@ -138,7 +140,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
             </div>
 
             <form
-              className={`w-full mt-2 ${languageDetails ? "hidden" : "block"} `}
+              className={`w-full mt-2 p-4 ${languageDetails ? "hidden" : "block"} `}
             >
               <div className="w-full flex items-center justify-between mt-2">
                 <label className="flex items-center w-full justify-between  ">
@@ -178,10 +180,10 @@ function SettingPage({ setSettingPage, SettingPage }) {
             </form>
           </div>
 
-          <div className=" p-4 rounded-md bg-white flex gap-y-2 flex-col items-center justify-center">
+          <div className=" rounded-md bg-white flex gap-y-2 flex-col items-center justify-center cursor-pointer">
             <div
               onClick={handleSecurityDropdown}
-              className="w-full flex gap-x-2 items-center justify-center "
+              className="w-full flex gap-x-2 items-center justify-center  p-4"
             >
               <div className="w-[10%] font-bold text-xl p-1 rounded-full bg-slate-200 flex items-center">
                 <CiLock />
@@ -193,7 +195,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
             </div>
 
             <form
-              className={`w-full mt-4 flex flex-col gap-3 ${
+              className={`w-full mt-4 p-4 flex flex-col gap-3 ${
                 securityDetails ? "hidden" : "block"
               } `}
             >
@@ -202,11 +204,12 @@ function SettingPage({ setSettingPage, SettingPage }) {
                 placeholder="**********"
                 bg="white"
                 textColour="text-[#ACB5BB]"
+              
               />
               <PasswordInput
                 name="New Password"
                 placeholder="**********"
-                bg="white"
+                bg="white "
                 textColour="text-[#ACB5BB]"
               />
               <PasswordInput
@@ -227,10 +230,10 @@ function SettingPage({ setSettingPage, SettingPage }) {
             </form>
           </div>
 
-          <div className=" p-4 rounded-md bg-white flex gap-y-2 flex-col items-center justify-center">
+          <div className="rounded-md bg-white flex gap-y-2 flex-col items-center justify-center cursor-pointer">
             <div
               onClick={handleFeedbackDropdown}
-              className="w-full flex gap-x-2 items-center justify-center "
+              className="w-full flex gap-x-2 items-center justify-center  p-4 "
             >
               <div className="w-[10%] font-bold text-xl p-1 rounded-full bg-slate-200 flex items-center">
                 <CiUser />
@@ -242,7 +245,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
             </div>
 
             <form
-              className={`w-full mt-2 ${feedbackDetails ? "hidden" : "block"} `}
+              className={`w-full mt-2 p-4 ${feedbackDetails ? "hidden" : "block"} `}
             >
               <div className="mt-3">
                 <label className="text-[#ACB5BB] font-medium text-sm">
@@ -251,7 +254,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
                 <div className="h-[50px] mt-2 w-full flex rounded-md px-2  items-center justify-center border">
                   <input
                     placeholder="Enter name"
-                    className="w-full outline-none border-none h-[46px]"
+                    className="w-full outline-none border-none h-[46px] placeholder:text-black"
                   />
                 </div>
               </div>
@@ -262,7 +265,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
                 <div className="h-[50px] mt-2 w-full flex rounded-md px-2  items-center justify-center border">
                   <input
                     placeholder="Write word"
-                    className="w-full outline-none border-none h-[46px]"
+                    className="w-full outline-none border-none h-[46px] placeholder:text-black"
                   />
                 </div>
               </div>
@@ -274,7 +277,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
                   <input
                     placeholder="Subject of Feedback"
                     type="select"
-                    className="w-full outline-none border-none h-[46px]"
+                    className="w-full outline-none border-none h-[46px] placeholder:text-black"
                   />
                 </div>
               </div>
@@ -286,7 +289,7 @@ function SettingPage({ setSettingPage, SettingPage }) {
                   <textarea
                     type="email"
                     placeholder="Write message...."
-                    className="w-full outline-none border-none h-full p-2 rounded-md"
+                    className="w-full outline-none border-none h-full p-2 rounded-md placeholder:text-black"
                   />
                 </div>
               </div>

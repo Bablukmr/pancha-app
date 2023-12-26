@@ -9,8 +9,10 @@ function WordDetails() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   const [toggal, setToggle] = useState(true);
+  
+ 
+  
 
   return (
     <div className="p-5 bg-white">
