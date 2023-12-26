@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IoMdMore } from "react-icons/io";
 import ModelComponets from "../componets/modelComponets";
+import CreateNewFolderModel from "../componets/createNewFolderModel";
 
 function LibraryPage() {
   const [folder, setFolder] = useState(true);
@@ -44,10 +45,8 @@ function LibraryPage() {
         <div className="w-[90%] ml-[5%] my-4 flex items-center justify-between ">
           <h1 className="text-lg font-bold">Library Folders</h1>
 
-          {/* <button className="flex items-center justify-center cursor-pointer bg-[#1961C5] py-2 px-3 rounded-md text-white w-fit">
-            +<p className="ml-2 font-normal text-base">Add to Folder</p>
-          </button> */}
-          <ModelComponets />
+          <CreateNewFolderModel />
+
         </div>
         <div className="w-[90%]  ml-[5%] md:w-[30%] md:items-start my-4 flex items-center justify-between ">
           <div
