@@ -8,7 +8,6 @@ export default function ModelComponets() {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [models1, setModels1] = React.useState(true);
 
   return (
     <>
@@ -27,13 +26,10 @@ export default function ModelComponets() {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] bg-white shadow-lg p-4 rounded-md">
+          <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] xl:w-[25%] md:w-[40%] bg-white shadow-lg p-4 rounded-md">
             <>
               <div>
-                <div
-                  // onClick={handleClose}
-                  className="flex flex-col gap-2 items-start justify-start bg-b"
-                >
+                <div className="flex flex-col gap-2 items-start justify-start bg-b">
                   <div
                     onClick={handleClose}
                     className="p-2 text-2xl font-bold  cursor-pointer"
@@ -64,19 +60,19 @@ export default function ModelComponets() {
                     </button>
                   </div>
                 </div>
+                
                 <div className="mt-3">
                   <CreateNewFolderModel />
                 </div>
 
                 {/* <button
-                  onClick={() => setModels1(false)}
                   className="w-full mt-6 mb-3 flex items-center justify-center cursor-pointer bg-[#1961C5] py-4 rounded-md text-white"
                 >
                   <img src="/Add.png" alt="" className="h-[25px]" />{" "}
                   <p className="ml-2 font-normal text-base">
                     Create New Folder
                   </p>
-                </button> */}
+                </button>  */}
               </div>
             </>
           </Box>

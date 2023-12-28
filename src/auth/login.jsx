@@ -1,20 +1,28 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import EmailInput from "../componets/emailInput";
 import PasswordInput from "../componets/passwordInput";
 import { CiMail } from "react-icons/ci";
 import { MdOutlineEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-function Login({setPasswordPage,setPages}) {
-
-   
+function Login({ setPasswordPage, setPages }) {
+  const Navigate = useNavigate();
   const formRef = useRef(null);
   const saveData = (e) => {
     e.preventDefault();
     var data = new FormData(event.target);
     let formObject = Object.fromEntries(data.entries());
     console.log(formObject);
+    localStorage.setItem("token", Math.random() * 24);
+    Navigate("/");
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Navigate("/auth");
+    }
+  }, []);
 
   return (
     <div className="w-[90%] ml-[5%]">
@@ -36,12 +44,19 @@ function Login({setPasswordPage,setPages}) {
           type={"email"}
         />
 
-        <PasswordInput name={"Password"} placeholder={"Password"} bg="bg-[#F6F6F6]"/>
+        <PasswordInput
+          name={"Password"}
+          placeholder={"Password"}
+          bg="bg-[#F6F6F6]"
+        />
         <div className="w-full flex  items-center justify-end">
           {/* <Link>Forget Password?</Link> */}
-          <p 
-          onClick={()=>setPasswordPage(true)}
-          className="text-base font-medium">Forget Password?</p>
+          <p
+            onClick={() => setPasswordPage(true)}
+            className="text-base font-medium cursor-pointer"
+          >
+            Forget Password?
+          </p>
         </div>
         <div className="w-full mt-[10px]">
           <button
@@ -55,8 +70,11 @@ function Login({setPasswordPage,setPages}) {
           <p className="text-base font-medium">
             Don’t have an account?{" "}
             <span
-            onClick={()=>setPages(false)}
-            className="text-lg text-blue-700 underline">SignUp</span>
+              onClick={() => setPages(false)}
+              className="text-lg text-blue-700 underline"
+            >
+              SignUp
+            </span>
           </p>
         </div>
       </form>

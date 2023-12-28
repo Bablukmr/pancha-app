@@ -22,7 +22,7 @@ export default function CreateNewFolderModel() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] bg-white shadow-lg p-4 rounded-md">
+        <Box className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] xl:w-[25%] md:w-[40%] bg-white shadow-lg p-4 rounded-md">
           <>
             <div>
               <div className="flex items-center justify-between bg-b">

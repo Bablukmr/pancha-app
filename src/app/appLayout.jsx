@@ -23,6 +23,47 @@ function AppLayout() {
               className="max-h-full"
             />
           </Link>
+          <div className="hidden md:flex gap-x-5">
+            <Link
+              to="/"
+              onClick={() => setHandlePage("search")}
+              className={`${
+                handlePage === "search"
+                  ? "bg-[#1961C5] text-white"
+                  : "bg-[#E2EAF4] text-black"
+              } w-[100px] h-[50px] rounded-xl flex gap-x-1 items-center justify-center`}
+            >
+              <img src="/Search.png" alt="/" className="h-[20px]" />
+              <p className="p-0 m-0 ">Search</p>
+            </Link>
+
+            <Link
+              to="/library"
+              onClick={() => setHandlePage("library")}
+              className={`${
+                handlePage === "library"
+                  ? "bg-[#1961C5] text-white"
+                  : "bg-[#E2EAF4] text-black"
+              }  text-[12px] font-semibold w-[100px] h-[50px] rounded-xl flex gap-x-1 items-center justify-center`}
+            >
+              <img src="/Library.png" alt="/" className="h-[20px]" />{" "}
+              <p className="p-0 m-0 t">Library</p>
+            </Link>
+
+            <Link
+              to="/dictionary"
+              onClick={() => setHandlePage("dictionary")}
+              className={`${
+                handlePage === "dictionary"
+                  ? "bg-[#1961C5] text-white"
+                  : "bg-[#E2EAF4] text-black"
+              }  w-[100px] h-[50px] rounded-xl flex gap-x-1 items-center justify-center`}
+            >
+              <img src="/Dictionary.png" alt="/" className="h-[20px]" />{" "}
+              <p className="p-0 m-0 ">Dictionary</p>
+            </Link>
+          </div>
+
           <div
             onClick={() => Navigate("/setting")}
             className="h-[40px] cursor-pointer"
@@ -32,11 +73,11 @@ function AppLayout() {
         </div>
       </div>
 
-      <div className="bg-white my-[80px] h-full overflow-y-auto ">
+      <div className="bg-white my-[80px] md:mt-[90px] h-full overflow-y-auto ">
         <AppRoute />
       </div>
 
-      <div className="fixed w-full bottom-0">
+      <div className="fixed w-full bottom-0 md:hidden">
         <div className="flex bg-[#F8F8F8] py-[16px] px-[10px] gap-[8px] items-center justify-around ">
           <Link
             to="/"
@@ -47,7 +88,8 @@ function AppLayout() {
                 : "bg-[#E2EAF4] text-black"
             } w-[100px] h-[50px] rounded-xl flex gap-x-1 items-center justify-center`}
           >
-            O <p className="p-0 m-0 ">Search</p>
+            <img src="/Search.png" alt="/" className="h-[20px]" />{" "}
+            <p className="p-0 m-0 ">Search</p>
           </Link>
 
           <Link
@@ -59,7 +101,8 @@ function AppLayout() {
                 : "bg-[#E2EAF4] text-black"
             }  text-[12px] font-semibold w-[100px] h-[50px] rounded-xl flex gap-x-1 items-center justify-center`}
           >
-            L <p className="p-0 m-0 t">Library</p>
+            <img src="/Library.png" alt="/" className="h-[20px]" />{" "}
+            <p className="p-0 m-0 t">Library</p>
           </Link>
 
           <Link
@@ -71,7 +114,8 @@ function AppLayout() {
                 : "bg-[#E2EAF4] text-black"
             }  w-[100px] h-[50px] rounded-xl flex gap-x-1 items-center justify-center`}
           >
-            D <p className="p-0 m-0 ">Dictionary</p>
+            <img src="/Dictionary.png" alt="/" className="h-[20px]" />
+            <p className="p-0 m-0 ">Dictionary</p>
           </Link>
         </div>
       </div>

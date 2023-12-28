@@ -56,7 +56,7 @@ function SignUp({ setPasswordPage, setPages }) {
         <div className="w-full flex  items-center justify-end">
           <p
             onClick={() => setPasswordPage(true)}
-            className="text-base font-medium"
+            className="text-base font-medium cursor-pointer"
           >
             Forget Password?
           </p>
