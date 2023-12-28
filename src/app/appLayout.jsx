@@ -13,6 +13,8 @@ function AppLayout() {
   }, [handlePage]);
 
   return (
+    <>
+    {/* <SettingPage/> */}
     <div className="bg-white">
       <div className="w-full border-b fixed top-0 bg-white">
         <div className="my-[20px] flex items-center justify-between w-[90%] ml-[5%]">
@@ -120,6 +122,7 @@ function AppLayout() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 

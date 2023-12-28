@@ -353,7 +353,7 @@ function SettingPage() {
         </Modal>
       </div>
 
-      <div className="bg-[#F4F4F4] h-screen md:hidden">
+      <div className="bg-[#F4F4F4] h-screen md:h-0">
         <div className="w-full border-b fixed top-0 bg-white">
           <div className="my-[20px] flex items-center justify-between w-[90%] ml-[5%]">
             <div
@@ -370,7 +370,7 @@ function SettingPage() {
             </div>
           </div>
         </div>
-        <div className=" pb-4 w-[90%] ml-[5%] ">
+        <div className=" pb-4 w-[90%] ml-[5%] md:hidden ">
           <h1 className="text-lg font-semibold py-4">Settings</h1>
           <div className="w-full flex gap-y-3 flex-col justify-center">
             <div className="  rounded-md bg-white flex gap-y-2 flex-col items-center justify-center cursor-pointer">
@@ -388,7 +388,7 @@ function SettingPage() {
                   {personalInfoDetails ? <IoCaretDown /> : <IoCaretUp />}
                 </div>
               </div>
-              <Persnal /> 
+              <Persnal />
             </div>
 
             <div className=" rounded-md bg-white flex gap-y-2 flex-col items-center justify-center cursor-pointer">
@@ -449,7 +449,7 @@ function SettingPage() {
         </div>
       </div>
 
-      <div className="hidden px-[60px] pt-[20px] md:flex gap-4  bg-[#F4F4F4] h-screen">
+      <div className="hidden px-[60px] pt-[20px] md:flex gap-4  bg-[#F4F4F4] h-0 md:h-screen">
         <div className="md:w-[40%] xl:w-[40%] bg-white flex flex-col gap-y-3 rounded-md h-fit">
           <div
             onClick={handlePersonalInfoDropdown}
@@ -511,7 +511,7 @@ function SettingPage() {
             </div>
           </div>
         </div>
-        <div className="md:w-[60%] xl:w-[80%] h-fit bg-white rounded-md">
+        <div className="md:w-[60%] xl:w-[80%] h-fit bg-white  rounded-md">
           <Persnal />
           <Language />
           <Security />
