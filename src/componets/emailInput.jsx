@@ -5,6 +5,7 @@ function EmailInput({
   type,
   onChange,
   errMsg,
+  value
 }) {
   return (
     <div className="w-full flex flex-col gap2">
@@ -22,6 +23,7 @@ function EmailInput({
 
         <input
           onChange={onChange}
+          value={value}
           type={type}
           className=" text-sm h-[45px] border-none w-full bg-[#F6F6F6] outline-none py-4 px-2"
           placeholder={placeholder}

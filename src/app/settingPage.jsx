@@ -15,10 +15,17 @@ import { GoChevronRight, GoChevronLeft } from "react-icons/go";
 
 function SettingPage() {
   const Navigate = useNavigate();
-  const [personalInfoDetails, setPersonalInfoDetails] = useState(true);
-  const [languageDetails, setLanguageDetails] = useState(true);
-  const [securityDetails, setSecurityDetails] = useState(true);
-  const [feedbackDetails, setFeedbackDetails] = useState(true);
+  const [personalInfoDetailsMobile, setPersonalInfoDetailsMobile] =
+    useState(true);
+  const [languageDetailsMobile, setLanguageDetailsMobile] = useState(true);
+  const [securityDetailsMobile, setSecurityDetailsMobile] = useState(true);
+  const [feedbackDetailsMobile, setFeedbackDetailsMobile] = useState(true);
+
+  const [personalInfoDetailsDesktop, setPersonalInfoDetailsDesktop] =
+    useState(false);
+  const [languageDetailsDesktop, setLanguageDetailsDesktop] = useState(true);
+  const [securityDetailsDesktop, setSecurityDetailsDesktop] = useState(true);
+  const [feedbackDetailsDesktop, setFeedbackDetailsDesktop] = useState(true);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = (e) => {
@@ -27,30 +34,57 @@ function SettingPage() {
   };
   const handleClose = () => setOpen(false);
 
-  const handlePersonalInfoDropdown = () => {
-    setPersonalInfoDetails(!personalInfoDetails);
-    setLanguageDetails(true);
-    setSecurityDetails(true);
-    setFeedbackDetails(true);
+  const handlePersonalInfoDropdownMobile = () => {
+    setPersonalInfoDetailsMobile(!personalInfoDetailsMobile);
+    setLanguageDetailsMobile(true);
+    setSecurityDetailsMobile(true);
+    setFeedbackDetailsMobile(true);
+  };
+  const handlePersonalInfoDesktop = () => {
+    setPersonalInfoDetailsDesktop(false);
+    setLanguageDetailsDesktop(true);
+    setSecurityDetailsDesktop(true);
+    setFeedbackDetailsDesktop(true);
   };
 
-  const handleLanguageDropdown = () => {
-    setLanguageDetails(!languageDetails);
-    setPersonalInfoDetails(true);
-    setSecurityDetails(true);
-    setFeedbackDetails(true);
+  const handleLanguageDropdownMobile = () => {
+    setLanguageDetailsMobile(!languageDetailsMobile);
+    setPersonalInfoDetailsMobile(true);
+    setSecurityDetailsMobile(true);
+    setFeedbackDetailsMobile(true);
   };
-  const handleSecurityDropdown = () => {
-    setSecurityDetails(!securityDetails);
-    setPersonalInfoDetails(true);
-    setFeedbackDetails(true);
-    setLanguageDetails(true);
+
+  const handleLanguageDesktop = () => {
+    setLanguageDetailsDesktop(false);
+    setPersonalInfoDetailsDesktop(true);
+    setSecurityDetailsDesktop(true);
+    setFeedbackDetailsDesktop(true);
   };
-  const handleFeedbackDropdown = () => {
-    setFeedbackDetails(!feedbackDetails);
-    setPersonalInfoDetails(true);
-    setSecurityDetails(true);
-    setLanguageDetails(true);
+
+  const handleSecurityDropdownMobile = () => {
+    setSecurityDetailsMobile(!securityDetailsMobile);
+    setPersonalInfoDetailsMobile(true);
+    setFeedbackDetailsMobile(true);
+    setLanguageDetailsMobile(true);
+  };
+  const handleSecurityDesktop = () => {
+    setSecurityDetailsDesktop(false);
+    setLanguageDetailsDesktop(true);
+    setPersonalInfoDetailsDesktop(true);
+    setFeedbackDetailsDesktop(true);
+  };
+
+  const handleFeedbackDropdownMobile = () => {
+    setFeedbackDetailsMobile(!feedbackDetailsMobile);
+    setPersonalInfoDetailsMobile(true);
+    setSecurityDetailsMobile(true);
+    setLanguageDetailsMobile(true);
+  };
+  const handleFeedbackDesktop = () => {
+    setFeedbackDetailsDesktop(false);
+    setSecurityDetailsDesktop(true);
+    setLanguageDetailsDesktop(true);
+    setPersonalInfoDetailsDesktop(true);
   };
 
   const [selectedLanguages, setSelectedLanguages] = useState({
@@ -76,13 +110,9 @@ function SettingPage() {
     window.location.reload();
   };
 
-  const Persnal = () => {
+  const Persnal = ({ value }) => {
     return (
-      <form
-        className={`w-full mt-2 p-4 ${
-          personalInfoDetails ? "hidden" : "block"
-        } `}
-      >
+      <form className={`w-full mt-2 p-4 ${value ? "hidden" : "block"} `}>
         <div className="mt-3">
           <label className="text-[#ACB5BB] font-medium text-sm">
             First Name
@@ -137,11 +167,9 @@ function SettingPage() {
     );
   };
 
-  const Language = () => {
+  const Language = ({ value }) => {
     return (
-      <form
-        className={`w-full mt-2 p-4 ${languageDetails ? "hidden" : "block"}`}
-      >
+      <form className={`w-full mt-2 p-4 ${value ? "hidden" : "block"}`}>
         <div className="w-full flex items-center justify-between mt-2">
           <label className="flex items-center w-full justify-between">
             <span className="text-base font-medium mr-2 cursor-pointer">
@@ -202,11 +230,11 @@ function SettingPage() {
       </form>
     );
   };
-  const Security = () => {
+  const Security = ({ value }) => {
     return (
       <form
         className={`w-full mt-4 p-4 flex flex-col gap-3 ${
-          securityDetails ? "hidden" : "block"
+          value ? "hidden" : "block"
         } `}
       >
         <PasswordInput
@@ -240,11 +268,9 @@ function SettingPage() {
     );
   };
 
-  const Feedbacks = () => {
+  const Feedbacks = ({ value }) => {
     return (
-      <form
-        className={`w-full mt-2 p-4 ${feedbackDetails ? "hidden" : "block"} `}
-      >
+      <form className={`w-full mt-2 p-4 ${value ? "hidden" : "block"} `}>
         <div className="mt-3">
           <label className="text-[#ACB5BB] font-medium text-sm">
             Full name
@@ -375,7 +401,7 @@ function SettingPage() {
           <div className="w-full flex gap-y-3 flex-col justify-center">
             <div className="  rounded-md bg-white flex gap-y-2 flex-col items-center justify-center cursor-pointer">
               <div
-                onClick={handlePersonalInfoDropdown}
+                onClick={handlePersonalInfoDropdownMobile}
                 className="w-full flex gap-x-2 items-center justify-center p-4"
               >
                 <div className="w-[10%] font-bold text-xl p-1 rounded-full bg-slate-200 flex items-center justify-center">
@@ -385,15 +411,15 @@ function SettingPage() {
                   Personal Information
                 </h4>
                 <div className="w-[10%] font-bold text-2xl text-[#5CA3FF]">
-                  {personalInfoDetails ? <IoCaretDown /> : <IoCaretUp />}
+                  {personalInfoDetailsMobile ? <IoCaretDown /> : <IoCaretUp />}
                 </div>
               </div>
-              <Persnal />
+              <Persnal value={personalInfoDetailsMobile} />
             </div>
 
             <div className=" rounded-md bg-white flex gap-y-2 flex-col items-center justify-center cursor-pointer">
               <div
-                onClick={handleLanguageDropdown}
+                onClick={handleLanguageDropdownMobile}
                 className="w-full flex gap-x-2 items-center justify-center p-4 "
               >
                 <div className="w-[10%] font-bold text-xl p-1 rounded-full bg-slate-200 flex items-center justify-center">
@@ -403,15 +429,15 @@ function SettingPage() {
                   Selected languages
                 </h4>
                 <div className="w-[10%] font-bold text-2xl text-[#5CA3FF]">
-                  {languageDetails ? <IoCaretDown /> : <IoCaretUp />}
+                  {languageDetailsMobile ? <IoCaretDown /> : <IoCaretUp />}
                 </div>
               </div>
-              <Language />
+              <Language value={languageDetailsMobile} />
             </div>
 
             <div className=" rounded-md bg-white flex gap-y-2 flex-col items-center justify-center cursor-pointer">
               <div
-                onClick={handleSecurityDropdown}
+                onClick={handleSecurityDropdownMobile}
                 className="w-full flex gap-x-2 items-center justify-center  p-4"
               >
                 <div className="w-[10%] font-bold text-xl p-1 rounded-full bg-slate-200 flex items-center justify-center">
@@ -421,16 +447,16 @@ function SettingPage() {
                   Security
                 </h4>
                 <div className="w-[10%] font-bold text-2xl text-[#5CA3FF]">
-                  {securityDetails ? <IoCaretDown /> : <IoCaretUp />}
+                  {securityDetailsMobile ? <IoCaretDown /> : <IoCaretUp />}
                 </div>
               </div>
 
-              <Security />
+              <Security value={securityDetailsMobile} />
             </div>
 
             <div className="rounded-md bg-white flex gap-y-2 flex-col items-center justify-center cursor-pointer">
               <div
-                onClick={handleFeedbackDropdown}
+                onClick={handleFeedbackDropdownMobile}
                 className="w-full flex gap-x-2 items-center justify-center  p-4 "
               >
                 <div className="w-[10%] font-bold text-xl p-1 rounded-full bg-slate-200 flex items-center justify-center">
@@ -440,82 +466,130 @@ function SettingPage() {
                   Feedback
                 </h4>
                 <div className="w-[10%] font-bold text-2xl text-[#5CA3FF]">
-                  {feedbackDetails ? <IoCaretDown /> : <IoCaretUp />}
+                  {feedbackDetailsMobile ? <IoCaretDown /> : <IoCaretUp />}
                 </div>
               </div>
-              <Feedbacks />
+              <Feedbacks value={feedbackDetailsMobile} />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="hidden px-[60px] pt-[20px] md:flex gap-4  bg-[#F4F4F4] h-0 md:h-screen">
-        <div className="md:w-[40%] xl:w-[40%] bg-white flex flex-col gap-y-3 rounded-md h-fit">
+      <div className="hidden px-[60px] pt-[20px] md:flex gap-4  bg-[#F4F4F4] h-0 md:h-screen ">
+        <div className="md:w-[40%] xl:w-[40%] bg-white flex flex-col gap-y-3 rounded-md h-fit p-2">
           <div
-            onClick={handlePersonalInfoDropdown}
-            className={`w-full flex gap-x-2 items-center justify-center p-4 cursor-pointer  rounded-md`}
+            onClick={handlePersonalInfoDesktop}
+            className={`w-full flex gap-x-2 items-center justify-center p-3 cursor-pointer rounded-md ${
+              personalInfoDetailsDesktop ? "" : "bg-[#1961C5] text-white"
+            }`}
           >
-            <div className="w-[10%] font-bold text-xl p-2 md:p-1 xl:p-2 rounded-full bg-slate-200 flex items-center justify-center">
+            <div
+              className={`w-[10%] font-bold text-xl p-2 md:p-1 xl:p-2 rounded-full flex items-center justify-center ${
+                personalInfoDetailsDesktop
+                  ? "bg-slate-200"
+                  : "bg-white text-blue-950"
+              }`}
+            >
               <CiUser />
             </div>
             <h4 className="md:w-[80%] xl:w-[60%] ml-4 font-semibold text-base md:text-sm">
               Personal Information
             </h4>
-            <div className="w-[10%] font-bold text-2xl text-[#5CA3FF]">
+            <div
+              className={`w-[10%] font-bold text-2xl ${
+                personalInfoDetailsDesktop ? "text-[#5CA3FF]" : "text-white"
+              }`}
+            >
               <GoChevronRight />
             </div>
           </div>
 
           <div
-            onClick={handleLanguageDropdown}
-            className="w-full flex gap-x-2 items-center justify-center p-4 cursor-pointer"
+            onClick={handleLanguageDesktop}
+            className={`w-full flex gap-x-2 items-center justify-center p-3 cursor-pointer rounded-md ${
+              languageDetailsDesktop ? "" : "bg-[#1961C5] text-white"
+            }`}
           >
-            <div className="w-[10%] font-bold text-xl p-2 md:p-1 xl:p-2 rounded-full bg-slate-200 flex items-center justify-center">
+            <div
+              className={`w-[10%] font-bold text-xl p-2 md:p-1 xl:p-2 rounded-full flex items-center justify-center ${
+                languageDetailsDesktop
+                  ? "bg-slate-200"
+                  : "bg-white text-blue-950"
+              }`}
+            >
               <IoLanguageOutline />
             </div>
             <h4 className="md:w-[80%] xl:w-[60%] ml-4 font-semibold text-base md:text-sm">
               Selected languages
             </h4>
-            <div className="w-[10%] font-bold text-2xl text-[#5CA3FF]">
+            <div
+              className={`w-[10%] font-bold text-2xl ${
+                languageDetailsDesktop ? "text-[#5CA3FF]" : "text-white"
+              }`}
+            >
               <GoChevronRight />
             </div>
           </div>
 
           <div
-            onClick={handleSecurityDropdown}
-            className="w-full flex gap-x-2 items-center justify-center p-4 cursor-pointer"
+            onClick={handleSecurityDesktop}
+            className={`w-full flex gap-x-2 items-center justify-center p-3 cursor-pointer rounded-md ${
+              securityDetailsDesktop ? "" : "bg-[#1961C5] text-white"
+            }`}
           >
-            <div className="w-[10%] font-bold text-xl p-2 md:p-1 xl:p-2 rounded-full bg-slate-200 flex items-center justify-center">
+            <div
+              className={`w-[10%] font-bold text-xl p-2 md:p-1 xl:p-2 rounded-full flex items-center justify-center ${
+                securityDetailsDesktop
+                  ? "bg-slate-200"
+                  : "bg-white text-blue-950"
+              }`}
+            >
               <CiLock />
             </div>
             <h4 className="md:w-[80%] xl:w-[60%] ml-4 font-semibold text-base md:text-sm">
               Security
             </h4>
-            <div className="w-[10%] font-bold text-2xl text-[#5CA3FF]">
+            <div
+              className={`w-[10%] font-bold text-2xl ${
+                securityDetailsDesktop ? "text-[#5CA3FF]" : "text-white"
+              }`}
+            >
               <GoChevronRight />
             </div>
           </div>
 
           <div
-            onClick={handleFeedbackDropdown}
-            className="w-full flex gap-x-2 items-center justify-center p-4 cursor-pointer"
+            onClick={handleFeedbackDesktop}
+            className={`w-full flex gap-x-2 items-center justify-center p-3 cursor-pointer rounded-md ${
+              feedbackDetailsDesktop ? "" : "bg-[#1961C5] text-white"
+            }`}
           >
-            <div className="w-[10%] font-bold text-xl p-2 md:p-1 xl:p-2 rounded-full bg-slate-200 flex items-center justify-center">
+            <div
+              className={`w-[10%] font-bold text-xl p-2 md:p-1 xl:p-2 rounded-full flex items-center justify-center ${
+                feedbackDetailsDesktop
+                  ? "bg-slate-200"
+                  : "bg-white text-blue-950"
+              }`}
+            >
               <RiMessage2Line />
             </div>
             <h4 className="md:w-[80%] xl:w-[60%] ml-4 font-semibold text-base md:text-sm">
               Feedback
             </h4>
-            <div className="w-[10%] font-bold text-2xl text-[#5CA3FF]">
+            <div
+              className={`w-[10%] font-bold text-2xl ${
+                feedbackDetailsDesktop ? "text-[#5CA3FF]" : "text-white"
+              }`}
+            >
               <GoChevronRight />
             </div>
           </div>
         </div>
         <div className="md:w-[60%] xl:w-[80%] h-fit bg-white  rounded-md">
-          <Persnal />
-          <Language />
-          <Security />
-          <Feedbacks />
+          <Persnal value={personalInfoDetailsDesktop} />
+          <Language value={languageDetailsDesktop} />
+          <Security value={securityDetailsDesktop} />
+          <Feedbacks value={feedbackDetailsDesktop} />
         </div>
       </div>
     </>

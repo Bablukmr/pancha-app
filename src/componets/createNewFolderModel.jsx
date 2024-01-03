@@ -3,10 +3,8 @@ import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { IoMdClose } from "react-icons/io";
 
-export default function CreateNewFolderModel() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function CreateNewFolderModel({handleAddFolder,value,onChange,handleOpen,handleClose,open}) {
+
 
   return (
     <div>
@@ -38,13 +36,15 @@ export default function CreateNewFolderModel() {
                 Add new folder to my folders{" "}
               </h2>
             </div>
-            <form>
+            <form onSubmit={handleAddFolder}>
               <div>
                 <label className="font-bold text-sm ">
                   Enter New Folder Name
                 </label>
                 <div className="w-full border flex items-center justify-center p-1 rounded-md h-[55px] my-2 bg-[#F8F8F8]">
                   <input
+                  value={value}
+                  onChange={onChange}
                     placeholder="Enter New Folder Name"
                     className="w-full outline-none rounded-md h-[50px] text-base font-medium bg-[#F8F8F8] px-2"
                   />
@@ -52,7 +52,8 @@ export default function CreateNewFolderModel() {
               </div>
 
               <button
-                onClick={handleOpen}
+                // onClick={handleOpen}
+                type="submit"
                 className="w-full mt-6 mb-3 flex items-center justify-center cursor-pointer bg-[#1961C5] py-4 rounded-md text-white"
               >
                 <img src="/Add.png" alt="" className="h-[25px]" />{" "}
