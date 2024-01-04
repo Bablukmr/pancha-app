@@ -4,7 +4,7 @@ import ModelComponets from "../componets/modelComponets";
 import CreateNewFolderModel from "../componets/createNewFolderModel";
 import Notificationbox from "../componets/notificationbox";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Loading from "../componets/loading";
 
@@ -202,7 +202,8 @@ function LibraryPage() {
             <div className="w-[90%] ml-[5%] mt-[140px] md:mt-[160px] mb-[20px] grid gap-5 grid-cols-1 md:grid-cols-4 overflow-y-auto">
               {folder
                 ? publicFolder?.map((a) => (
-                    <div
+                    <Link
+                    to={`/library/${a.name}`}
                       key={a.id}
                       className="w-[90%] ml-[5%] rounded-md h-[220px] md:h-[150px]  xl:h-[220px] bg-[#E8EFF9] flex flex-col items-center justify-center"
                     >
@@ -219,10 +220,11 @@ function LibraryPage() {
                           <IoMdMore />
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   ))
                 : userFolder?.map((a) => (
-                    <div
+                    <Link
+                    to={`/library/${a.name}`}
                       key={a.id}
                       className="w-[90%] ml-[5%] rounded-md h-[220px] md:h-[150px]  xl:h-[220px] bg-[#E8EFF9] flex flex-col items-center justify-center"
                     >
@@ -239,7 +241,7 @@ function LibraryPage() {
                           <IoMdMore />
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   ))}
             </div>
           </div>
